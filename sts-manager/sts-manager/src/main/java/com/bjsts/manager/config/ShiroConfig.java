@@ -2,7 +2,6 @@ package com.bjsts.manager.config;
 
 import com.bjsts.manager.shiro.authentication.RetryLimitHashedCredentialsMatcher;
 import com.bjsts.manager.shiro.realm.UserRealm;
-import com.bjsts.manager.shiro.session.RedisSessionManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
@@ -11,6 +10,7 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +55,8 @@ public class ShiroConfig {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm());
-        securityManager.setSessionManager(new RedisSessionManager());
+        //securityManager.setSessionManager(new RedisSessionManager());
+        securityManager.setSessionManager(new DefaultWebSessionManager());
         return securityManager;
     }
 

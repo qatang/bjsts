@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property scope="context" name="LogFileNamePrefix" value="arsenal-manager" />
+    <property scope="context" name="LogFileNamePrefix" value="sts-manager" />
 
     <if condition='isDefined("WRAPPER_CONF_DIR")'>
         <then>

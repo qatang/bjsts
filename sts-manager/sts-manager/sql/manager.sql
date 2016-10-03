@@ -1,6 +1,28 @@
-CREATE DATABASE `zy_ars_mgr` DEFAULT CHARACTER SET=utf8;
+CREATE DATABASE `sts_mgr` DEFAULT CHARACTER SET=utf8;
 
-USE `zy_ars_mgr`;
+USE `sts_mgr`;
+
+CREATE TABLE `a_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(32) NOT NULL,
+  `salt` VARCHAR(64) NOT NULL,
+  `name` VARCHAR(20) NULL,
+  `email` VARCHAR(128) NOT NULL,
+  `mobile` VARCHAR(32) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  `email_valid` TINYINT(2) NOT NULL,
+  `mobile_valid` TINYINT(2) NOT NULL,
+  `root` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`),
+  UNIQUE KEY `uk_email` (`email`),
+  KEY `idx_created_time` (`created_time`),
+  KEY `idx_updated_time` (`updated_time`),
+  KEY `idx_valid` (`valid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_user_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -68,6 +90,8 @@ CREATE TABLE `a_log` (
   KEY `idx_params` (`params`(255)),
   KEY `idx_created_time` (`created_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `a_user` VALUES ('1', 'jinsheng', '0c31e2319f5989e0829b34610b8feae1', '83074a679cca378f7c374ddc6583cc5b', 'jinsheng', '977269167@qq.com', '15901298088', '2016-04-26 11:31:30', '2016-05-18 11:49:08', '1', '1', '1', '1');
 
 INSERT INTO `a_role` VALUES (1, '2016-05-05 17:00:53', '系统管理员', 'admin', 0, '系统管理员', '2016-05-13 10:57:50', 1);
 

@@ -58,14 +58,14 @@ public class DefaultInterceptor extends HandlerInterceptorAdapter implements Ser
         if (userInfo == null) {
             return true;
         }
-        userInfo = userService.get(userInfo.getId());
+/*        userInfo = userService.get(userInfo.getId());
         if (userInfo == null) {
             Subject subject = SecurityUtils.getSubject();
             subject.logout();
             response.sendRedirect("/signin");
             logger.error("未发现当前用户，无法记录操作日志");
             return false;
-        }
+        }*/
 
         try {
             log.setUserId(userInfo.getId());

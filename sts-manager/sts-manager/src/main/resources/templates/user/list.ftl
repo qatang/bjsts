@@ -57,7 +57,7 @@
                                         <tr>
                                             <td class='center' style="width: 30px;">${userInfo.id}</td>
                                             <td class="center"><a onclick="diag('用户查看', '${ctx}/user/view/${userInfo.id}')" style="cursor:pointer;">${userInfo.username}</a></td>
-                                            <td class="center">${userInfo.name}</td>
+                                            <td class="center">${userInfo.name!""}</td>
                                             <td class="center">${userInfo.email}</td>
                                             <td class="center">${userInfo.mobile}</td>
                                             <td class="center">${userInfo.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
