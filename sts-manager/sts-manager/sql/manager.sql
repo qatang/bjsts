@@ -7,11 +7,21 @@ CREATE TABLE `a_user` (
   `username` VARCHAR(20) NOT NULL,
   `password` VARCHAR(32) NOT NULL,
   `salt` VARCHAR(64) NOT NULL,
-  `name` VARCHAR(20) NULL,
   `email` VARCHAR(128) NOT NULL,
   `mobile` VARCHAR(32) NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `department_id` bigint(20) NOT NULL DEFAULT 0,
+  `real_name` VARCHAR(32) NOT NULL DEFAULT '',
+  `male_type` TINYINT(2) NOT NULL,
+  `position` VARCHAR(32) NOT NULL DEFAULT '',
+  `id_card` VARCHAR(32) NOT NULL DEFAULT '',
+  `entry_time` TIMESTAMP NULL DEFAULT NULL,
+  `departure_time` TIMESTAMP NULL DEFAULT NULL,
+  `education_type` TINYINT(3) NOT NULL,
+  `polity_type` TINYINT(3) NOT NULL,
+  `birthday` TIMESTAMP NULL DEFAULT NULL,
+  `on_job` TINYINT(2) NOT NULL DEFAULT 0,
   `valid` TINYINT(2) NOT NULL,
   `email_valid` TINYINT(2) NOT NULL,
   `mobile_valid` TINYINT(2) NOT NULL,
@@ -22,6 +32,17 @@ CREATE TABLE `a_user` (
   KEY `idx_created_time` (`created_time`),
   KEY `idx_updated_time` (`updated_time`),
   KEY `idx_valid` (`valid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `a_department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_user_role` (

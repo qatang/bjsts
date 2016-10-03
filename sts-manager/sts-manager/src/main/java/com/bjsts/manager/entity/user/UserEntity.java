@@ -5,6 +5,12 @@ import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
+import com.bjsts.manager.enums.EducationType;
+import com.bjsts.manager.enums.MaleType;
+import com.bjsts.manager.enums.PolityType;
+import com.bjsts.manager.enums.converter.EducationTypeConverter;
+import com.bjsts.manager.enums.converter.MaleTypeConverter;
+import com.bjsts.manager.enums.converter.PolityTypeConverter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -49,6 +55,46 @@ public class UserEntity extends AbstractEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
+    @Column(name = "department_id")
+    private Long departmentId;
+
+    @Column(name = "real_name", nullable = false)
+    private String realName;
+
+    @Convert(converter = MaleTypeConverter.class)
+    @Column(nullable = false, name = "male_type")
+    private MaleType maleType = MaleType.MALE;
+
+    @Column(name = "position")
+    private String position;
+
+    @Column(name = "id_card")
+    private String idCard;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "entry_time")
+    private Date entryTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "departure_time")
+    private Date departureTime;
+
+    @Convert(converter = EducationTypeConverter.class)
+    @Column(nullable = false, name = "education_type")
+    private EducationType educationType;
+
+    @Convert(converter = PolityTypeConverter.class)
+    @Column(nullable = false, name = "polity_type")
+    private PolityType polityType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "birthday")
+    private Date birthday;
+
+    @Convert(converter = YesNoStatusConverter.class)
+    @Column(nullable = false, name = "on_job")
+    private YesNoStatus onJob;
+
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
@@ -64,6 +110,8 @@ public class UserEntity extends AbstractEntity {
     @Convert(converter = YesNoStatusConverter.class)
     @Column(name = "root", nullable = false)
     private YesNoStatus root = YesNoStatus.NO;
+
+    private String memo;
 
     public Long getId() {
         return id;
@@ -129,6 +177,94 @@ public class UserEntity extends AbstractEntity {
         this.updatedTime = updatedTime;
     }
 
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public MaleType getMaleType() {
+        return maleType;
+    }
+
+    public void setMaleType(MaleType maleType) {
+        this.maleType = maleType;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public Date getEntryTime() {
+        return entryTime;
+    }
+
+    public void setEntryTime(Date entryTime) {
+        this.entryTime = entryTime;
+    }
+
+    public Date getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public EducationType getEducationType() {
+        return educationType;
+    }
+
+    public void setEducationType(EducationType educationType) {
+        this.educationType = educationType;
+    }
+
+    public PolityType getPolityType() {
+        return polityType;
+    }
+
+    public void setPolityType(PolityType polityType) {
+        this.polityType = polityType;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public YesNoStatus getOnJob() {
+        return onJob;
+    }
+
+    public void setOnJob(YesNoStatus onJob) {
+        this.onJob = onJob;
+    }
+
     public EnableDisableStatus getValid() {
         return valid;
     }
@@ -153,12 +289,19 @@ public class UserEntity extends AbstractEntity {
         this.mobileValid = mobileValid;
     }
 
-    public void setRoot(YesNoStatus root) {
-        this.root = root;
-    }
-
     public YesNoStatus getRoot() {
         return root;
     }
 
+    public void setRoot(YesNoStatus root) {
+        this.root = root;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 }
