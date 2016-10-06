@@ -148,6 +148,45 @@ CREATE TABLE `a_contract` (
   PRIMARY KEY (`id`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `a_product_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `customerId` bigint(20) NOT NULL DEFAULT 0,
+  `description` VARCHAR(512) NOT NULL,
+  `amount` bigint(20) NOT NULL DEFAULT 0,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `a_purchase` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_name` VARCHAR(128) NOT NULL,
+  `product_model` VARCHAR(128) NOT NULL,
+  `quantity` bigint(20) NOT NULL DEFAULT 0,
+  `amount` bigint(20) NOT NULL DEFAULT 0,
+  `single_amount` bigint(20) NOT NULL DEFAULT 0,
+  `total_amount` bigint(20) NOT NULL DEFAULT 0,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `a_stock` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_name` VARCHAR(128) NOT NULL,
+  `product_model` VARCHAR(128) NOT NULL,
+  `quantity` bigint(20) NOT NULL DEFAULT 0,
+  `amount` bigint(20) NOT NULL DEFAULT 0,
+  `single_amount` bigint(20) NOT NULL DEFAULT 0,
+  `total_amount` bigint(20) NOT NULL DEFAULT 0,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO `a_user` VALUES ('1', 'jinsheng', '0c31e2319f5989e0829b34610b8feae1', '83074a679cca378f7c374ddc6583cc5b', 'jinsheng', '977269167@qq.com', '15901298088', '2016-04-26 11:31:30', '2016-05-18 11:49:08', '1', '1', '1', '1');
 
 INSERT INTO `a_role` VALUES (1, '2016-05-05 17:00:53', '系统管理员', 'admin', 0, '系统管理员', '2016-05-13 10:57:50', 1);
