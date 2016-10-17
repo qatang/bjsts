@@ -3,8 +3,8 @@ package com.bjsts.manager.entity.purchase;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.purchase.PurchaseReceiptTypeConverter;
-import com.bjsts.manager.enums.purchase.PurchaseReceiptType;
+import com.bjsts.manager.enums.converter.purchase.StockTypeConverter;
+import com.bjsts.manager.enums.purchase.StockType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,15 +12,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 采购单
+ * 出库入库记录
  * @author jinsheng
  * @since 2016-04-28 13:48
  */
 @Entity
-@Table(name = "sts_purchase")
+@Table(name = "sts_stock_item")
 @DynamicInsert
 @DynamicUpdate
-public class PurchaseEntity extends AbstractEntity {
+public class StockItemEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -299721038872026718L;
 
@@ -28,43 +28,25 @@ public class PurchaseEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
+    @Convert(converter = StockTypeConverter.class)
+    @Column(name = "stock_type", nullable = false)
+    private StockType stockType;
+
     @Column(nullable = false, name = "product_name")
     private String productName;
 
     @Column(nullable = false, name = "product_model")
     private String productModel;
 
-    private Long quantity;
+    private String quantity;
 
     @Column(nullable = false, name = "single_amount")
     private Long singleAmount;
 
     @Column(nullable = false, name = "total_amount")
     private Long totalAmount;
-
-    @Column(name = "payed_amount")
-    private Long payedAmount;
-
-    @Column(name = "un_payed_amount")
-    private Long unPayedAmount;
-
-    private String operator;
-
-    private String supplier;
-
-    @Column(name = "supplier_mobile")
-    private String supplierMobile;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "purchase_time")
-    private Date purchaseTime;
-
-    @Convert(converter = PurchaseReceiptTypeConverter.class)
-    @Column(name = "purchase_receipt_type", nullable = false)
-    private PurchaseReceiptType purchaseReceiptType;
-
-    @Column(name = "purchase_contract_url")
-    private String purchaseContractUrl;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -102,11 +84,11 @@ public class PurchaseEntity extends AbstractEntity {
         this.productModel = productModel;
     }
 
-    public Long getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
@@ -150,67 +132,19 @@ public class PurchaseEntity extends AbstractEntity {
         this.updatedTime = updatedTime;
     }
 
-    public Long getPayedAmount() {
-        return payedAmount;
+    public String getName() {
+        return name;
     }
 
-    public void setPayedAmount(Long payedAmount) {
-        this.payedAmount = payedAmount;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Long getUnPayedAmount() {
-        return unPayedAmount;
+    public StockType getStockType() {
+        return stockType;
     }
 
-    public void setUnPayedAmount(Long unPayedAmount) {
-        this.unPayedAmount = unPayedAmount;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
-    }
-
-    public String getSupplierMobile() {
-        return supplierMobile;
-    }
-
-    public void setSupplierMobile(String supplierMobile) {
-        this.supplierMobile = supplierMobile;
-    }
-
-    public Date getPurchaseTime() {
-        return purchaseTime;
-    }
-
-    public void setPurchaseTime(Date purchaseTime) {
-        this.purchaseTime = purchaseTime;
-    }
-
-    public PurchaseReceiptType getPurchaseReceiptType() {
-        return purchaseReceiptType;
-    }
-
-    public void setPurchaseReceiptType(PurchaseReceiptType purchaseReceiptType) {
-        this.purchaseReceiptType = purchaseReceiptType;
-    }
-
-    public String getPurchaseContractUrl() {
-        return purchaseContractUrl;
-    }
-
-    public void setPurchaseContractUrl(String purchaseContractUrl) {
-        this.purchaseContractUrl = purchaseContractUrl;
+    public void setStockType(StockType stockType) {
+        this.stockType = stockType;
     }
 }

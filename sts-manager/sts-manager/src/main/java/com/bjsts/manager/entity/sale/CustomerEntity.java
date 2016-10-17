@@ -1,10 +1,10 @@
 package com.bjsts.manager.entity.sale;
 
 import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
-import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
+import com.bjsts.manager.enums.converter.sale.CustomerTypeConverter;
+import com.bjsts.manager.enums.sale.CustomerType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,7 +16,7 @@ import java.util.Date;
  * @since 2016-04-28 13:48
  */
 @Entity
-@Table(name = "a_customer")
+@Table(name = "sts_customer")
 @DynamicInsert
 @DynamicUpdate
 public class CustomerEntity extends AbstractEntity {
@@ -26,6 +26,10 @@ public class CustomerEntity extends AbstractEntity {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Convert(converter = CustomerTypeConverter.class)
+    @Column(name = "customer_type", nullable = false)
+    private CustomerType customerType;
 
     @Column(name = "company_name")
     private String companyName;
@@ -130,5 +134,13 @@ public class CustomerEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public CustomerType getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(CustomerType customerType) {
+        this.customerType = customerType;
     }
 }

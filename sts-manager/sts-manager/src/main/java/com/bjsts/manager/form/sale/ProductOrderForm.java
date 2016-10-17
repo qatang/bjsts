@@ -1,8 +1,7 @@
 package com.bjsts.manager.form.sale;
 
 import com.bjsts.manager.core.form.AbstractForm;
-import com.bjsts.manager.entity.sale.ContractEntity;
-import com.bjsts.manager.entity.sale.ProductOrderEntity;
+import com.bjsts.manager.entity.sale.PlanEntity;
 
 /**
  * @author jinsheng
@@ -12,13 +11,13 @@ public class ProductOrderForm extends AbstractForm {
 
     private static final long serialVersionUID = 5859168020901454685L;
 
-    private ProductOrderEntity productOrder;
+    private PlanEntity productOrder;
 
-    public ProductOrderEntity getProductOrder() {
+    public PlanEntity getProductOrder() {
         return productOrder;
     }
 
-    public void setProductOrder(ProductOrderEntity productOrder) {
+    public void setProductOrder(PlanEntity productOrder) {
         this.productOrder = productOrder;
     }
 }

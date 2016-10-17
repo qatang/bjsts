@@ -2,7 +2,7 @@ package com.bjsts.manager.controller.sale;
 
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
-import com.bjsts.manager.entity.sale.ProductOrderEntity;
+import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.form.sale.ProductOrderForm;
 import com.bjsts.manager.query.user.UserSearchable;
 import com.bjsts.manager.service.sale.ProductOrderService;
@@ -35,8 +35,8 @@ public class ProductOrderController extends AbstractController {
     @RequiresPermissions("arsenal:productOrder:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(UserSearchable productOrderSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<ProductOrderEntity> productOrderEntityList = productOrderService.findAll();
-        modelMap.addAttribute("list", productOrderEntityList);
+        List<PlanEntity> planEntityList = productOrderService.findAll();
+        modelMap.addAttribute("list", planEntityList);
         return "productOrder/list";
     }
 
@@ -47,7 +47,7 @@ public class ProductOrderController extends AbstractController {
             modelMap.addAttribute(BindingResult.class.getName().concat(".productOrderForm"), modelMap.get(BINDING_RESULT_KEY));
         }
         if (Objects.isNull(productOrderForm.getProductOrder())) {
-            productOrderForm.setProductOrder(new ProductOrderEntity());
+            productOrderForm.setProductOrder(new PlanEntity());
         }
         modelMap.put("action", "create");
         return "productOrder/edit";
@@ -60,8 +60,8 @@ public class ProductOrderController extends AbstractController {
             redirectAttributes.addFlashAttribute(productOrderForm);
             return "redirect:/productOrder/create";
         }
-        ProductOrderEntity productOrderEntity = productOrderForm.getProductOrder();
-        productOrderService.save(productOrderEntity);
+        PlanEntity planEntity = productOrderForm.getProductOrder();
+        productOrderService.save(planEntity);
         return "result";
     }
 
@@ -71,13 +71,13 @@ public class ProductOrderController extends AbstractController {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
             modelMap.addAttribute(BindingResult.class.getName().concat(".productOrderForm"), modelMap.get(BINDING_RESULT_KEY));
         }
-        ProductOrderEntity productOrderEntity = productOrderService.get(id);
-        if (Objects.isNull(productOrderEntity)) {
+        PlanEntity planEntity = productOrderService.get(id);
+        if (Objects.isNull(planEntity)) {
             logger.error("修改订单,未查询[id={}]的订单信息", id);
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
             return "redirect:/error";
         }
-        productOrderForm.setProductOrder(productOrderEntity);
+        productOrderForm.setProductOrder(planEntity);
         modelMap.put("action", "update");
         return "productOrder/edit";
     }
@@ -89,9 +89,9 @@ public class ProductOrderController extends AbstractController {
             redirectAttributes.addFlashAttribute(productOrderForm);
             return "redirect:/productOrder/update/" + productOrderForm.getProductOrder().getId();
         }
-        ProductOrderEntity productOrder = productOrderForm.getProductOrder();
-        ProductOrderEntity productOrderEntity = productOrderService.get(productOrder.getId());
-        productOrderService.update(productOrderEntity);
+        PlanEntity productOrder = productOrderForm.getProductOrder();
+        PlanEntity planEntity = productOrderService.get(productOrder.getId());
+        productOrderService.update(planEntity);
         return "result";
     }
 

@@ -2,7 +2,7 @@ package com.bjsts.manager.controller.sale;
 
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
-import com.bjsts.manager.entity.sale.SaleItemEntity;
+import com.bjsts.manager.entity.sale.PlanTraceEntity;
 import com.bjsts.manager.form.sale.SaleItemForm;
 import com.bjsts.manager.query.user.UserSearchable;
 import com.bjsts.manager.service.sale.SaleItemService;
@@ -35,8 +35,8 @@ public class SaleItemController extends AbstractController {
     @RequiresPermissions("arsenal:saleItem:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(UserSearchable saleItemSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<SaleItemEntity> saleItemEntityList = saleItemService.findAll();
-        modelMap.addAttribute("list", saleItemEntityList);
+        List<PlanTraceEntity> planTraceEntityList = saleItemService.findAll();
+        modelMap.addAttribute("list", planTraceEntityList);
         return "saleItem/list";
     }
 
@@ -47,7 +47,7 @@ public class SaleItemController extends AbstractController {
             modelMap.addAttribute(BindingResult.class.getName().concat(".saleItemForm"), modelMap.get(BINDING_RESULT_KEY));
         }
         if (Objects.isNull(saleItemForm.getSaleItem())) {
-            saleItemForm.setSaleItem(new SaleItemEntity());
+            saleItemForm.setSaleItem(new PlanTraceEntity());
         }
         modelMap.put("action", "create");
         return "saleItem/edit";
@@ -60,8 +60,8 @@ public class SaleItemController extends AbstractController {
             redirectAttributes.addFlashAttribute(saleItemForm);
             return "redirect:/saleItem/create";
         }
-        SaleItemEntity saleItemEntity = saleItemForm.getSaleItem();
-        saleItemService.save(saleItemEntity);
+        PlanTraceEntity planTraceEntity = saleItemForm.getSaleItem();
+        saleItemService.save(planTraceEntity);
         return "result";
     }
 
@@ -71,13 +71,13 @@ public class SaleItemController extends AbstractController {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
             modelMap.addAttribute(BindingResult.class.getName().concat(".saleItemForm"), modelMap.get(BINDING_RESULT_KEY));
         }
-        SaleItemEntity saleItemEntity = saleItemService.get(id);
-        if (Objects.isNull(saleItemEntity)) {
+        PlanTraceEntity planTraceEntity = saleItemService.get(id);
+        if (Objects.isNull(planTraceEntity)) {
             logger.error("修改项目,未查询[id={}]的项目信息", id);
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
             return "redirect:/error";
         }
-        saleItemForm.setSaleItem(saleItemEntity);
+        saleItemForm.setSaleItem(planTraceEntity);
         modelMap.put("action", "update");
         return "saleItem/edit";
     }
@@ -89,10 +89,10 @@ public class SaleItemController extends AbstractController {
             redirectAttributes.addFlashAttribute(saleItemForm);
             return "redirect:/saleItem/update/" + saleItemForm.getSaleItem().getId();
         }
-        SaleItemEntity saleItem = saleItemForm.getSaleItem();
-        SaleItemEntity saleItemEntity = saleItemService.get(saleItem.getId());
-        saleItemEntity.setName(saleItem.getName());
-        saleItemService.update(saleItemEntity);
+        PlanTraceEntity saleItem = saleItemForm.getSaleItem();
+        PlanTraceEntity planTraceEntity = saleItemService.get(saleItem.getId());
+        planTraceEntity.setName(saleItem.getName());
+        saleItemService.update(planTraceEntity);
         return "result";
     }
 

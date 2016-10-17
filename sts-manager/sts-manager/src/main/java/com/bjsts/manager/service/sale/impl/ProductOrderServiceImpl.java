@@ -1,11 +1,8 @@
 package com.bjsts.manager.service.sale.impl;
 
 import com.bjsts.manager.core.service.AbstractService;
-import com.bjsts.manager.entity.sale.ContractEntity;
-import com.bjsts.manager.entity.sale.ProductOrderEntity;
-import com.bjsts.manager.repository.sale.ContractRepository;
+import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.repository.sale.ProductOrderRepository;
-import com.bjsts.manager.service.sale.ContractService;
 import com.bjsts.manager.service.sale.ProductOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +15,7 @@ import javax.transaction.Transactional;
  */
 @Service
 @Transactional
-public class ProductOrderServiceImpl extends AbstractService<ProductOrderEntity, Long> implements ProductOrderService {
+public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> implements ProductOrderService {
 
     @Autowired
     private ProductOrderRepository productOrderRepository;

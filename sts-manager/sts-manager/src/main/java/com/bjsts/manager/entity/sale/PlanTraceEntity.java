@@ -3,6 +3,8 @@ package com.bjsts.manager.entity.sale;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
+import com.bjsts.manager.enums.converter.sale.PlanTraceTypeConverter;
+import com.bjsts.manager.enums.sale.PlanTraceType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -10,15 +12,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 销售项目
+ * 项目进度
  * @author jinsheng
  * @since 2016-04-28 13:48
  */
 @Entity
-@Table(name = "a_sale_item")
+@Table(name = "sts_plan_trace")
 @DynamicInsert
 @DynamicUpdate
-public class SaleItemEntity extends AbstractEntity {
+public class PlanTraceEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -299721038872026718L;
 
@@ -26,13 +28,26 @@ public class SaleItemEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    /**
+     * 项目编码，格式：sts20161016001
+     */
+    @Column(name = "plan_no", nullable = false)
+    private String planNo;
+
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Convert(converter = PlanTraceTypeConverter.class)
+    @Column(name = "plan_trace_type", nullable = false)
+    private PlanTraceType planTraceType;
 
     private String description;
 
-    @Column(name = "customer_id")
-    private Long customerId;
+    /**
+     * 报价单地址
+     */
+    @Column(name = "trace_url")
+    private String traceUrl;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -54,28 +69,12 @@ public class SaleItemEntity extends AbstractEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
     }
 
     public EnableDisableStatus getValid() {
@@ -100,5 +99,37 @@ public class SaleItemEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getPlanNo() {
+        return planNo;
+    }
+
+    public void setPlanNo(String planNo) {
+        this.planNo = planNo;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public PlanTraceType getPlanTraceType() {
+        return planTraceType;
+    }
+
+    public void setPlanTraceType(PlanTraceType planTraceType) {
+        this.planTraceType = planTraceType;
+    }
+
+    public String getTraceUrl() {
+        return traceUrl;
+    }
+
+    public void setTraceUrl(String traceUrl) {
+        this.traceUrl = traceUrl;
     }
 }
