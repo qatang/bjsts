@@ -91,7 +91,7 @@ public class SaleItemController extends AbstractController {
         }
         PlanTraceEntity saleItem = saleItemForm.getSaleItem();
         PlanTraceEntity planTraceEntity = saleItemService.get(saleItem.getId());
-        planTraceEntity.setName(saleItem.getName());
+        //planTraceEntity.setName(saleItem.getName());
         saleItemService.update(planTraceEntity);
         return "result";
     }

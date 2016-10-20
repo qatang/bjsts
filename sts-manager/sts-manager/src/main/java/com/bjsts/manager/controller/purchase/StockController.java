@@ -30,12 +30,13 @@ import java.util.Objects;
 public class StockController extends AbstractController {
 
     @Autowired
-    private final ThreadLocal<StockService> stockService = new ThreadLocal<>();
+    //private final ThreadLocal<StockService> stockService = new ThreadLocal<>();
+    private StockService stockService;
 
     @RequiresPermissions("arsenal:stock:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(UserSearchable stockSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<StockEntity> stockEntityList = stockService.get().findAll();
+        List<StockEntity> stockEntityList = stockService.findAll();
         modelMap.addAttribute("list", stockEntityList);
         return "stock/list";
     }
@@ -61,7 +62,7 @@ public class StockController extends AbstractController {
             return "redirect:/stock/create";
         }
         StockEntity stockEntity = stockForm.getStock();
-        stockService.get().save(stockEntity);
+        stockService.save(stockEntity);
         return "result";
     }
 
@@ -71,7 +72,7 @@ public class StockController extends AbstractController {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
             modelMap.addAttribute(BindingResult.class.getName().concat(".stockForm"), modelMap.get(BINDING_RESULT_KEY));
         }
-        StockEntity stockEntity = stockService.get().get(id);
+        StockEntity stockEntity = stockService.get(id);
         if (Objects.isNull(stockEntity)) {
             logger.error("修改库存,未查询[id={}]的库存信息", id);
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
@@ -90,15 +91,15 @@ public class StockController extends AbstractController {
             return "redirect:/stock/update/" + stockForm.getStock().getId();
         }
         StockEntity stock = stockForm.getStock();
-        StockEntity stockEntity = stockService.get().get(stock.getId());
-        stockService.get().update(stockEntity);
+        StockEntity stockEntity = stockService.get(stock.getId());
+        stockService.update(stockEntity);
         return "result";
     }
 
     @RequiresPermissions("arsenal:stock:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
-        modelMap.put("stock", stockService.get().get(id));
+        modelMap.put("stock", stockService.get(id));
         return "stock/view";
     }
 }

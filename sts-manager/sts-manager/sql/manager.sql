@@ -26,6 +26,7 @@ CREATE TABLE `a_user` (
   `email_valid` TINYINT(2) NOT NULL,
   `mobile_valid` TINYINT(2) NOT NULL,
   `root` TINYINT(2) NOT NULL,
+  `memo` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`),
   UNIQUE KEY `uk_email` (`email`),
