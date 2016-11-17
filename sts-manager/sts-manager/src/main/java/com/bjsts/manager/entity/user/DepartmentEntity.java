@@ -25,7 +25,6 @@ public class DepartmentEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(updatable = false)
     private String name;
 
     @Temporal(TemporalType.TIMESTAMP)

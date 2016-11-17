@@ -1,83 +1,76 @@
-[#ftl strip_whitespace=true]
-[#import "${ctx}/common/macroes.ftl" as macro]
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>欢迎登录</title>
-        [#include "${ctx}/common/head.ftl"/]
-    </head>
-    <body class="login-layout light-login">
-        <div class="main-container">
-            <div class="main-content">
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <div class="login-container">
-                            <div class="center">
-                                <h1>
-                                    <i class="ace-icon fa fa-futbol-o green"></i>
-                                    <span class="red">出票系统</span>
-                                    <span class="white" id="id-text2">综合后台</span>
-                                </h1>
-                                <h6 class="blue" id="id-company-text">&copy; 2011-2016 8win.com All Rights Reserved</h6>
-                            </div>
-
-                            <div class="space-6"></div>
-
-                            <div class="position-relative">
-                                <div id="login-box" class="login-box visible widget-box no-border">
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <h4 class="header blue lighter bigger">
-                                                <i class="ace-icon fa fa-coffee green"></i>
-                                                Please Enter Your Information
-                                            </h4>
-
-                                            <div class="space-6"></div>
-
-                                            <form action="${ctx}/signin" method="post" name="userForm" id="userForm">
-                                                <fieldset>
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="text" class="form-control" name="userInfo.username" id="username" value="${userForm.userInfo.username!''}" placeholder="Username" required="" />
-                                                            <i class="ace-icon fa fa-user"></i>
-                                                        </span>
-                                                    </label>
-
-                                                    <label class="block clearfix">
-                                                        <span class="block input-icon input-icon-right">
-                                                            <input type="password" class="form-control" name="userInfo.password" id="password" value="${userForm.userInfo.password!''}" placeholder="Password" required="" />
-                                                            <i class="ace-icon fa fa-lock"></i>
-                                                        </span>
-                                                    </label>
-
-                                                    [@macro.errors /]
-
-                                                    <div class="clearfix">
-                                                        <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
-                                                            <i class="ace-icon fa fa-key"></i>
-                                                            <span class="bigger-110">Login</span>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="space-4"></div>
-                                                </fieldset>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>signin</title>
+    <link rel="stylesheet" type="text/css" href="${ctx}/static/login/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="${ctx}/static/login/css/camera.css" />
+    <link rel="stylesheet" type="text/css" href="${ctx}/static/login/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" type="text/css" href="${ctx}/static/login/matrix-login.css" />
+    <link rel="stylesheet" type="text/css" href="${ctx}/static/login/font-awesome.css" />
+    <script src="${ctx}/static/login/js/jquery-1.5.1.min.js"></script>
+</head>
+<body>
+<div style="width:100%;text-align: center;margin: 0 auto;position: absolute;">
+    <div id="loginbox">
+        <form action="${ctx}/signin" method="post" name="userForm" id="loginForm">
+            <div class="control-group normal_text">
+                <h3>
+                    <img src="${ctx}/static/login/logo.png" alt="Logo" />
+                </h3>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="main_input_box">
+                                <span class="add-on bg_lg">
+                                <i><img height="37" src="${ctx}/static/login/user.png" /></i>
+                                </span><input type="text" name="userInfo.username" id="loginname" value="" placeholder="请输入用户名" />
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="main_input_box">
+                                <span class="add-on bg_ly">
+                                <i><img height="37" src="${ctx}/static/login/suo.png" /></i>
+                                </span><input type="password" name="userInfo.password" id="password" placeholder="请输入密码" value=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div style="width:86%;padding-left:8%;">
+                    <span class="pull-right" style="padding-right:3%;"><a href="javascript:cancel();" class="btn btn-success">取消</a></span>
+                    <span class="pull-right">
+                                <button type="submit" class="flip-link btn btn-info">登录</button>
+                            </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-        [#include "${ctx}/common/footer.ftl"/]
+<div id="templatemo_banner_slide" class="container_wapper">
+    <div class="camera_wrap camera_emboss" id="camera_slide">
+        <div data-src="${ctx}/static/login/images/banner_slide_01.jpg"></div>
+        <div data-src="${ctx}/static/login/images/banner_slide_02.jpg"></div>
+        <div data-src="${ctx}/static/login/images/banner_slide_03.jpg"></div>
+    </div>
+</div>
 
-        <script>
-            if (window != top) {
-                top.location.href = location.href;
-            }
-        </script>
-    </body>
+<script src="${ctx}/static/login/js/bootstrap.min.js"></script>
+<script src="${ctx}/static/js/jquery-1.7.2.js"></script>
+<script src="${ctx}/static/login/js/jquery.easing.1.3.js"></script>
+<script src="${ctx}/static/login/js/jquery.mobile.customized.min.js"></script>
+<script src="${ctx}/static/login/js/camera.min.js"></script>
+<script src="${ctx}/static/login/js/templatemo_script.js"></script>
+<script src="${ctx}/static/js/jquery.tips.js"></script>
+<script src="${ctx}/static/js/jquery.cookie.js"></script>
+
+<script>
+    var cancel = function() {
+        $("#loginname").val('');
+        $("#password").val('');
+    }
+</script>
+</body>
 </html>

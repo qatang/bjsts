@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>出票综合管理系统</title>
+        <title>顺天盛综合管理系统</title>
         <#include "${ctx}/common/head.ftl"/>
     </head>
     <body class="no-skin">

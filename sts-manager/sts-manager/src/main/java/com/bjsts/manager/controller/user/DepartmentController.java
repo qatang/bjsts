@@ -4,7 +4,7 @@ import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.DepartmentEntity;
 import com.bjsts.manager.form.user.DepartmentForm;
-import com.bjsts.manager.query.user.UserSearchable;
+import com.bjsts.manager.query.user.DepartmentSearchable;
 import com.bjsts.manager.service.user.DepartmentService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +32,15 @@ public class DepartmentController extends AbstractController {
     @Autowired
     private DepartmentService departmentService;
 
-    @RequiresPermissions("arsenal:department:list")
+    @RequiresPermissions("sts:department:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public String list(UserSearchable departmentSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
+    public String list(DepartmentSearchable departmentSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         List<DepartmentEntity> departmentEntityList = departmentService.findAll();
         modelMap.addAttribute("list", departmentEntityList);
         return "department/list";
     }
 
-    @RequiresPermissions("arsenal:department:create")
+    @RequiresPermissions("sts:department:create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute DepartmentForm departmentForm, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -53,7 +53,7 @@ public class DepartmentController extends AbstractController {
         return "department/edit";
     }
 
-    @RequiresPermissions("arsenal:department:create")
+    @RequiresPermissions("sts:department:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(DepartmentForm departmentForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -65,7 +65,7 @@ public class DepartmentController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:department:update")
+    @RequiresPermissions("sts:department:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute DepartmentForm departmentForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -82,7 +82,7 @@ public class DepartmentController extends AbstractController {
         return "department/edit";
     }
 
-    @RequiresPermissions("arsenal:department:update")
+    @RequiresPermissions("sts:department:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(DepartmentForm departmentForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -96,7 +96,7 @@ public class DepartmentController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:department:view")
+    @RequiresPermissions("sts:department:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("department", departmentService.get(id));

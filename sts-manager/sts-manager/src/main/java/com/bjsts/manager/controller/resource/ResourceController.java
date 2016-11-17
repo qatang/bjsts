@@ -37,7 +37,7 @@ public class ResourceController extends AbstractController {
         return ResourceType.list();
     }
 
-    @RequiresPermissions("arsenal:resource:list")
+    @RequiresPermissions("sts:resource:list")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(ResourceForm resourceForm, ModelMap modelMap) {
         Long parentId = null;
@@ -57,7 +57,7 @@ public class ResourceController extends AbstractController {
         return "resource/list";
     }
 
-    @RequiresPermissions("arsenal:resource:create")
+    @RequiresPermissions("sts:resource:create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute ResourceForm resourceForm, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -70,7 +70,7 @@ public class ResourceController extends AbstractController {
         return "resource/edit";
     }
 
-    @RequiresPermissions("arsenal:resource:create")
+    @RequiresPermissions("sts:resource:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(ResourceForm resourceForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -98,7 +98,7 @@ public class ResourceController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:resource:update")
+    @RequiresPermissions("sts:resource:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute ResourceForm resourceForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -115,7 +115,7 @@ public class ResourceController extends AbstractController {
         return "resource/edit";
     }
 
-    @RequiresPermissions("arsenal:resource:update")
+    @RequiresPermissions("sts:resource:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(ResourceForm resourceForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -137,21 +137,21 @@ public class ResourceController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:resource:view")
+    @RequiresPermissions("sts:resource:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("resource", resourceService.get(id));
         return "resource/view";
     }
 
-    @RequiresPermissions("arsenal:resource:enable")
+    @RequiresPermissions("sts:resource:enable")
     @RequestMapping(value = "/enable/{id}", method = RequestMethod.GET)
     public String enable(@PathVariable Long id) {
         resourceService.updateValid(id, EnableDisableStatus.ENABLE);
         return "redirect:/resource/list";
     }
 
-    @RequiresPermissions("arsenal:resource:disable")
+    @RequiresPermissions("sts:resource:disable")
     @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
     public String disable(@PathVariable Long id) {
         resourceService.updateValid(id, EnableDisableStatus.DISABLE);

@@ -129,7 +129,7 @@
 
         [#if dataList?has_content]
             [#list dataList as data]
-                <option value="${data.value?c}" [#if value?has_content && data.value == value]selected[/#if]>${data.getName()}</option>
+                <option value="${data.id?c}" [#if value?has_content && data.id == value]selected[/#if]>${data.getName()}</option>
             [/#list]
         [/#if]
     </select>

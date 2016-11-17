@@ -41,9 +41,7 @@ CREATE TABLE `a_department` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_role_id` (`role_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_user_role` (
@@ -113,6 +111,32 @@ CREATE TABLE `a_log` (
   KEY `idx_created_time` (`created_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `a_attendance` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(20) NOT NULL,
+  `real_name` VARCHAR(20) NULL,
+  `department_id` BIGINT(20) NOT NULL,
+  `memo` VARCHAR (200) NULL,
+  `start_time` TIMESTAMP NULL,
+  `end_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `a_social_security` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(20) NOT NULL,
+  `real_name` VARCHAR(20) NULL,
+  `id_card` BIGINT(20) NOT NULL,
+  `mobile` VARCHAR(32) NOT NULL,
+  `memo` VARCHAR (200) NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `a_customer` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `company_name` VARCHAR(64) NOT NULL,
@@ -124,7 +148,7 @@ CREATE TABLE `a_customer` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_sale_item` (
@@ -135,7 +159,7 @@ CREATE TABLE `a_sale_item` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_contract` (
@@ -146,7 +170,7 @@ CREATE TABLE `a_contract` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_product_order` (
@@ -157,7 +181,7 @@ CREATE TABLE `a_product_order` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_purchase` (
@@ -171,7 +195,7 @@ CREATE TABLE `a_purchase` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `a_stock` (
@@ -185,7 +209,7 @@ CREATE TABLE `a_stock` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `a_user` VALUES ('1', 'jinsheng', '0c31e2319f5989e0829b34610b8feae1', '83074a679cca378f7c374ddc6583cc5b', 'jinsheng', '977269167@qq.com', '15901298088', '2016-04-26 11:31:30', '2016-05-18 11:49:08', '1', '1', '1', '1');
@@ -196,28 +220,28 @@ INSERT INTO `a_user_role` VALUES (1, 1, 1);
 
 INSERT INTO `a_resource` VALUES (1, '2016-05-05 17:02:30', null, '0', null, '系统管理', '0', '0', '1', '2016-05-13 11:38:14', null, '1', null, 'menu-icon fa fa-desktop blue');
 INSERT INTO `a_resource` VALUES (2, '2016-05-05 17:04:35', null, '0', null, '用户管理', '0', '1', '1', '2016-05-05 17:05:07', '/user/list', '1', '1', 'menu-icon fa fa-users green');
-INSERT INTO `a_resource` VALUES (3, '2016-05-06 13:19:32', 'arsenal:user:list', '1', null, '用户列表', '0', '2', '2', '2016-05-06 13:20:04', '/user/list', '1', '2', null);
-INSERT INTO `a_resource` VALUES (4, '2016-05-10 11:09:18', 'arsenal:user:view', '1', null, '用户查看', '0', '2', '2', '2016-05-10 11:09:51', '/user/view/**', '1', '2', null);
-INSERT INTO `a_resource` VALUES (5, '2016-05-13 13:43:23', 'arsenal:user:changePassword', '1', null, '密码修改', '0', '2', '2', '2016-05-13 13:43:22', '/user/password/change', '1', '2', null);
-INSERT INTO `a_resource` VALUES (6, '2016-05-13 15:54:44', 'arsenal:user:role', '1', null, '分配角色', '0', '2', '2', '2016-05-16 11:34:24', '/user/role/allot/**', '1', '2', null);
+INSERT INTO `a_resource` VALUES (3, '2016-05-06 13:19:32', 'sts:user:list', '1', null, '用户列表', '0', '2', '2', '2016-05-06 13:20:04', '/user/list', '1', '2', null);
+INSERT INTO `a_resource` VALUES (4, '2016-05-10 11:09:18', 'sts:user:view', '1', null, '用户查看', '0', '2', '2', '2016-05-10 11:09:51', '/user/view/**', '1', '2', null);
+INSERT INTO `a_resource` VALUES (5, '2016-05-13 13:43:23', 'sts:user:changePassword', '1', null, '密码修改', '0', '2', '2', '2016-05-13 13:43:22', '/user/password/change', '1', '2', null);
+INSERT INTO `a_resource` VALUES (6, '2016-05-13 15:54:44', 'sts:user:role', '1', null, '分配角色', '0', '2', '2', '2016-05-16 11:34:24', '/user/role/allot/**', '1', '2', null);
 INSERT INTO `a_resource` VALUES (7, '2016-05-12 11:48:33', null, '0', null, '角色管理', '0', '1', '1', '2016-05-16 14:45:26', '/role/list', '1', '1', 'menu-icon fa fa-user blue');
-INSERT INTO `a_resource` VALUES (8, '2016-05-12 13:09:21', 'arsenal:role:list', '1', null, '角色列表', '0', '2', '2', '2016-05-12 13:09:50', '/role/list', '1', '7', null);
-INSERT INTO `a_resource` VALUES (9, '2016-05-12 15:07:24', 'arsenal:role:view', '1', null, '角色查看', '0', '2', '2', '2016-05-12 15:08:03', '/role/view/**', '1', '7', null);
-INSERT INTO `a_resource` VALUES (10, '2016-05-12 15:09:56', 'arsenal:role:enable', '1', null, '角色启用', '0', '2', '2', '2016-05-12 15:10:02', '/role/enable/**', '1', '7', null);
-INSERT INTO `a_resource` VALUES (11, '2016-05-12 15:46:57', 'arsenal:role:disable', '1', null, '角色禁用', '0', '2', '2', '2016-05-12 15:47:24', '/role/disable/**', '1', '7', null);
-INSERT INTO `a_resource` VALUES (12, '2016-05-12 15:48:16', 'arsenal:role:create', '1', null, '角色添加', '0', '2', '2', '2016-05-12 15:48:42', '/role/create', '1', '7', null);
-INSERT INTO `a_resource` VALUES (13, '2016-05-12 15:49:01', 'arsenal:role:update', '1', null, '角色修改', '0', '2', '2', '2016-05-12 15:49:21', '/role/update/**', '1', '7', null);
-INSERT INTO `a_resource` VALUES (14, '2016-05-13 17:42:50', 'arsenal:role:resource', '1', null, '分配权限', '0', '2', '2', '2016-05-16 11:44:02', '/role/resource/allot/**', '1', '7', null);
+INSERT INTO `a_resource` VALUES (8, '2016-05-12 13:09:21', 'sts:role:list', '1', null, '角色列表', '0', '2', '2', '2016-05-12 13:09:50', '/role/list', '1', '7', null);
+INSERT INTO `a_resource` VALUES (9, '2016-05-12 15:07:24', 'sts:role:view', '1', null, '角色查看', '0', '2', '2', '2016-05-12 15:08:03', '/role/view/**', '1', '7', null);
+INSERT INTO `a_resource` VALUES (10, '2016-05-12 15:09:56', 'sts:role:enable', '1', null, '角色启用', '0', '2', '2', '2016-05-12 15:10:02', '/role/enable/**', '1', '7', null);
+INSERT INTO `a_resource` VALUES (11, '2016-05-12 15:46:57', 'sts:role:disable', '1', null, '角色禁用', '0', '2', '2', '2016-05-12 15:47:24', '/role/disable/**', '1', '7', null);
+INSERT INTO `a_resource` VALUES (12, '2016-05-12 15:48:16', 'sts:role:create', '1', null, '角色添加', '0', '2', '2', '2016-05-12 15:48:42', '/role/create', '1', '7', null);
+INSERT INTO `a_resource` VALUES (13, '2016-05-12 15:49:01', 'sts:role:update', '1', null, '角色修改', '0', '2', '2', '2016-05-12 15:49:21', '/role/update/**', '1', '7', null);
+INSERT INTO `a_resource` VALUES (14, '2016-05-13 17:42:50', 'sts:role:resource', '1', null, '分配权限', '0', '2', '2', '2016-05-16 11:44:02', '/role/resource/allot/**', '1', '7', null);
 INSERT INTO `a_resource` VALUES (15, '2016-05-12 18:42:51', null, '0', null, '资源管理', '0', '1', '1', '2016-05-12 18:43:22', '/resource/list', '1', '1', 'menu-icon fa fa-key orange2');
-INSERT INTO `a_resource` VALUES (16, '2016-05-12 18:45:29', 'arsenal:resource:list', '1', null, '资源列表', '0', '2', '2', '2016-05-12 18:46:04', '/resource/list', '1', '15', null);
-INSERT INTO `a_resource` VALUES (17, '2016-05-12 18:46:52', 'arsenal:resource:view', '1', null, '资源查看', '0', '2', '2', '2016-05-12 18:47:22', '/resource/view/**', '1', '15', null);
-INSERT INTO `a_resource` VALUES (18, '2016-05-12 18:47:53', 'arsenal:resource:enable', '1', null, '资源启用', '0', '2', '2', '2016-05-12 18:48:21', '/resource/enable/**', '1', '15', null);
-INSERT INTO `a_resource` VALUES (19, '2016-05-12 18:48:45', 'arsenal:resource:disable', '1', null, '资源禁用', '0', '2', '2', '2016-05-12 18:49:10', '/resource/disable/**', '1', '15', null);
-INSERT INTO `a_resource` VALUES (20, '2016-05-12 18:49:36', 'arsenal:resource:create', '1', null, '资源添加', '0', '2', '2', '2016-05-12 18:50:03', '/resource/create', '1', '15', null);
-INSERT INTO `a_resource` VALUES (21, '2016-05-12 18:50:20', 'arsenal:resource:update', '1', null, '资源修改', '0', '2', '2', '2016-05-12 18:50:46', '/resource/update/**', '1', '15', null);
+INSERT INTO `a_resource` VALUES (16, '2016-05-12 18:45:29', 'sts:resource:list', '1', null, '资源列表', '0', '2', '2', '2016-05-12 18:46:04', '/resource/list', '1', '15', null);
+INSERT INTO `a_resource` VALUES (17, '2016-05-12 18:46:52', 'sts:resource:view', '1', null, '资源查看', '0', '2', '2', '2016-05-12 18:47:22', '/resource/view/**', '1', '15', null);
+INSERT INTO `a_resource` VALUES (18, '2016-05-12 18:47:53', 'sts:resource:enable', '1', null, '资源启用', '0', '2', '2', '2016-05-12 18:48:21', '/resource/enable/**', '1', '15', null);
+INSERT INTO `a_resource` VALUES (19, '2016-05-12 18:48:45', 'sts:resource:disable', '1', null, '资源禁用', '0', '2', '2', '2016-05-12 18:49:10', '/resource/disable/**', '1', '15', null);
+INSERT INTO `a_resource` VALUES (20, '2016-05-12 18:49:36', 'sts:resource:create', '1', null, '资源添加', '0', '2', '2', '2016-05-12 18:50:03', '/resource/create', '1', '15', null);
+INSERT INTO `a_resource` VALUES (21, '2016-05-12 18:50:20', 'sts:resource:update', '1', null, '资源修改', '0', '2', '2', '2016-05-12 18:50:46', '/resource/update/**', '1', '15', null);
 INSERT INTO `a_resource` VALUES (22, '2016-05-13 10:48:42', null, '0', null, '日志管理', '0', '1', '1', '2016-05-13 15:07:24', '/log/list', '1', '1', 'menu-icon fa fa-pencil-square-o grey');
-INSERT INTO `a_resource` VALUES (23, '2016-05-13 10:49:35', 'arsenal:log:list', '1', null, '日志列表', '0', '2', '2', '2016-05-13 10:54:22', '/log/list', '1', '22', null);
-INSERT INTO `a_resource` VALUES (24, '2016-05-13 10:56:39', 'arsenal:log:view', '1', null, '日志查看', '0', '2', '2', '2016-05-13 10:56:38', '/log/view/**', '1', '22', null);
+INSERT INTO `a_resource` VALUES (23, '2016-05-13 10:49:35', 'sts:log:list', '1', null, '日志列表', '0', '2', '2', '2016-05-13 10:54:22', '/log/list', '1', '22', null);
+INSERT INTO `a_resource` VALUES (24, '2016-05-13 10:56:39', 'sts:log:view', '1', null, '日志查看', '0', '2', '2', '2016-05-13 10:56:38', '/log/view/**', '1', '22', null);
 
 INSERT INTO `a_role_resource` VALUES (1, 1, 1);
 INSERT INTO `a_role_resource` VALUES (2, 1, 2);

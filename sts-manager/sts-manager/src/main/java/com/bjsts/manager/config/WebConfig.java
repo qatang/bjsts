@@ -2,6 +2,10 @@ package com.bjsts.manager.config;
 
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
+import com.bjsts.manager.enums.converter.EducationTypeConverter;
+import com.bjsts.manager.enums.converter.MaleTypeConverter;
+import com.bjsts.manager.enums.converter.PolityTypeConverter;
+import com.bjsts.manager.enums.converter.resource.ResourceTypeConverter;
 import com.bjsts.manager.handler.WebExceptionHandler;
 import com.bjsts.manager.interceptor.DefaultInterceptor;
 import com.bjsts.manager.interceptor.ModelAttributeInterceptor;
@@ -101,6 +105,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry.addConverter(new EnableDisableStatusConverter());
         registry.addConverter(new YesNoStatusConverter());
+        registry.addConverter(new ResourceTypeConverter());
+        registry.addConverter(new MaleTypeConverter());
+        registry.addConverter(new EducationTypeConverter());
+        registry.addConverter(new PolityTypeConverter());
 
         DateFormatter dateFormatter = new DateFormatter("yyyy-MM-dd HH:mm:ss");
         dateFormatter.setLenient(true);

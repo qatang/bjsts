@@ -16,7 +16,7 @@ public interface UserService extends IService<UserEntity, Long> {
 
     List<Long> findRoleIdByUserId(Long userId);
 
-    ApiResponse<UserEntity> findAll(UserSearchable userSearchable, Pageable pageable, String identifier);
+    ApiResponse<UserEntity> findAll(UserSearchable userSearchable, Pageable pageable);
 
     void bindRole(Long userId, List<Long> roleIdList);
 

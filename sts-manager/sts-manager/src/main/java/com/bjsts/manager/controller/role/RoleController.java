@@ -40,7 +40,7 @@ public class RoleController extends AbstractController {
     @Autowired
     private ResourceService resourceService;
 
-    @RequiresPermissions("arsenal:role:list")
+    @RequiresPermissions("sts:role:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(RoleSearchable roleSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         roleSearchable.setPageable(pageable);
@@ -49,7 +49,7 @@ public class RoleController extends AbstractController {
         return "role/list";
     }
 
-    @RequiresPermissions("arsenal:role:create")
+    @RequiresPermissions("sts:role:create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute RoleForm roleForm, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -62,7 +62,7 @@ public class RoleController extends AbstractController {
         return "role/edit";
     }
 
-    @RequiresPermissions("arsenal:role:create")
+    @RequiresPermissions("sts:role:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(RoleForm roleForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -74,7 +74,7 @@ public class RoleController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:role:update")
+    @RequiresPermissions("sts:role:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute RoleForm roleForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -91,7 +91,7 @@ public class RoleController extends AbstractController {
         return "role/edit";
     }
 
-    @RequiresPermissions("arsenal:role:update")
+    @RequiresPermissions("sts:role:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(RoleForm roleForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -108,28 +108,28 @@ public class RoleController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:role:view")
+    @RequiresPermissions("sts:role:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("role", roleService.get(id));
         return "role/view";
     }
 
-    @RequiresPermissions("arsenal:role:enable")
+    @RequiresPermissions("sts:role:enable")
     @RequestMapping(value = "/enable/{id}", method = RequestMethod.GET)
     public String enable(@PathVariable Long id) {
         roleService.updateValid(id, EnableDisableStatus.ENABLE);
         return "redirect:/role/list";
     }
 
-    @RequiresPermissions("arsenal:role:disable")
+    @RequiresPermissions("sts:role:disable")
     @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
     public String disable(@PathVariable Long id) {
         roleService.updateValid(id, EnableDisableStatus.DISABLE);
         return "redirect:/role/list";
     }
 
-    @RequiresPermissions("arsenal:role:resource")
+    @RequiresPermissions("sts:role:resource")
     @RequestMapping(value = "/resource/allot/{id}", method = RequestMethod.GET)
     public String allotResource(@PathVariable Long id, @ModelAttribute RoleForm roleForm, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -165,7 +165,7 @@ public class RoleController extends AbstractController {
         return "role/resource/allot";
     }
 
-    @RequiresPermissions("arsenal:role:resource")
+    @RequiresPermissions("sts:role:resource")
     @RequestMapping(value = "/resource/allot", method = RequestMethod.POST)
     public String allotResource(RoleForm roleForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {

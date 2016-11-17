@@ -4,13 +4,10 @@ import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.AbstractService;
-import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.entity.user.UserRoleEntity;
-import com.bjsts.manager.query.user.UserSearchable;
-import com.bjsts.manager.repository.user.UserRepository;
-import com.bjsts.manager.repository.user.UserRoleRepository;
-import com.bjsts.manager.service.user.UserService;
-import com.google.common.collect.Lists;
+import com.bjsts.manager.entity.user.AttendanceEntity;
+import com.bjsts.manager.query.user.AttendanceSearchable;
+import com.bjsts.manager.repository.user.AttendanceRepository;
+import com.bjsts.manager.service.user.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author jinsheng
@@ -26,21 +22,18 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class UserServiceImpl extends AbstractService<UserEntity, Long> implements UserService {
+public class AttendanceServiceImpl extends AbstractService<AttendanceEntity, Long> implements AttendanceService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserRoleRepository userRoleRepository;
+    private AttendanceRepository attendanceRepository;
 
     @Override
-    public List<Long> findRoleIdByUserId(Long userId) {
-        return userRoleRepository.findByUserId(userId).stream().map(UserRoleEntity::getRoleId).collect(Collectors.toList());
+    public List<AttendanceEntity> findByUserId(Long userId) {
+        return attendanceRepository.findByUserId(userId);
     }
 
     @Override
-    public ApiResponse<UserEntity> findAll(UserSearchable userSearchable, Pageable pageable) {
+    public ApiResponse<AttendanceEntity> findAll(AttendanceSearchable attendanceSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
 
        /* if (StringUtils.isNotEmpty(userSearchable.getId())) {
@@ -74,35 +67,9 @@ public class UserServiceImpl extends AbstractService<UserEntity, Long> implement
         }*/
 
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
-        userSearchable.convertPageable(requestPage, pageable);
+        attendanceSearchable.convertPageable(requestPage, pageable);
 
-        Page<UserEntity> userEntityPage = userRepository.findAll(convertSpecification(request), convertPageable(requestPage));
-        return convertApiResponse(userEntityPage);
-    }
-
-    @Override
-    public void bindRole(Long userId, List<Long> roleIdList) {
-
-        List<UserRoleEntity> userRoleEntityList = userRoleRepository.findByUserId(userId);
-
-        if (userRoleEntityList != null && !userRoleEntityList.isEmpty()) {
-            userRoleRepository.deleteInBatch(userRoleEntityList);
-        }
-
-        if (roleIdList != null && !roleIdList.isEmpty()) {
-            List<UserRoleEntity> saveUserRoleEntityList = Lists.newArrayList();
-            roleIdList.forEach(roleId -> {
-                UserRoleEntity userRoleEntity = new UserRoleEntity();
-                userRoleEntity.setUserId(userId);
-                userRoleEntity.setRoleId(roleId);
-                saveUserRoleEntityList.add(userRoleEntity);
-            });
-            userRoleRepository.save(saveUserRoleEntityList);
-        }
-    }
-
-    @Override
-    public UserEntity findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        Page<AttendanceEntity> attendanceEntityPage = attendanceRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(attendanceEntityPage);
     }
 }

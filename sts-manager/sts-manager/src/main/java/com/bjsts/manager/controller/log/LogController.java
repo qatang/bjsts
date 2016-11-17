@@ -28,7 +28,7 @@ public class LogController extends AbstractController {
     @Autowired
     private LogService logService;
 
-    @RequiresPermissions("arsenal:log:list")
+    @RequiresPermissions("sts:log:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(LogSearchable logSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         logSearchable.setPageable(pageable);
@@ -37,7 +37,7 @@ public class LogController extends AbstractController {
         return "log/list";
     }
 
-    @RequiresPermissions("arsenal:log:view")
+    @RequiresPermissions("sts:log:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("log", logService.get(id));

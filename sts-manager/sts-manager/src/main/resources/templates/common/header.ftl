@@ -19,7 +19,7 @@
         <div class="navbar-header pull-left">
             <!-- #section:basics/navbar.layout.brand -->
             <a class="navbar-brand">
-                <small> <i class="fa fa-futbol-o"></i> 出票综合管理系统 </small>
+                <small> <i class="fa fa-futbol-o"></i> 顺天盛综合管理系统 </small>
             </a>
 
             <!-- /section:basics/navbar.layout.brand -->

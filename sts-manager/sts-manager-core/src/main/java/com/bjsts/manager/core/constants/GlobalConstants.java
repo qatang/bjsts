@@ -22,16 +22,6 @@ public class GlobalConstants {
     public static final String USER_SESSION_ID = "USER_SESSION_ID";
 
     /**
-     * 用户中心系统唯一标识
-     */
-    public static final String SYSTEM_ARSENAL_IDENTIFIER = "system:zy:arsenal";
-
-    /**
-     * 线下出票系统唯一标识
-     */
-    public static final String SYSTEM_ARSENAL_OFFLINE_IDENTIFIER = "system:zy:arsenal:offline";
-
-    /**
      * 自定义cookieName
      */
     public static final String CUSTOM_COOKIE_NAME = "ARSENAL_MANAGER_SESSION";
