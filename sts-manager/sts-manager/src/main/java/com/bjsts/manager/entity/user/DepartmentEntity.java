@@ -14,7 +14,7 @@ import java.util.Date;
  * @since 2014-12-19 15:01
  */
 @Entity
-@Table(name = "a_department")
+@Table(name = "sts_department")
 @DynamicInsert
 @DynamicUpdate
 public class DepartmentEntity extends AbstractEntity {

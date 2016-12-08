@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property scope="context" name="LogFileNamePrefix" value="sts-manager" />
-
-    <if condition='isDefined("WRAPPER_CONF_DIR")'>
-        <then>
-            <property scope="context" name="LogFolder" value="${WRAPPER_CONF_DIR}/../logs" />
-            <property scope="context" name="LogLevel" value="INFO" />
-            <property scope="context" name="LogAppender" value="file" />
-        </then>
-        <else>
-            <property scope="context" name="LogFolder" value="logs" />
-            <property scope="context" name="LogLevel" value="INFO" />
-            <property scope="context" name="LogAppender" value="stdout" />
-        </else>
-    </if>
-
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%date [%thread] %-5level %msg - %logger{80}%n</pattern>
-        </encoder>
-    </appender>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <appender name="file"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LogFolder}/${LogFileNamePrefix}.log</file>
+        <file>logs/ucenter-manager.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LogFolder}/${LogFileNamePrefix}-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>logs/sts-manager-%d{yyyy-MM-dd}.log</FileNamePattern>
             <maxHistory>60</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -34,8 +15,8 @@
     </appender>
 
     <root>
-        <level value="${LogLevel}"/>
-        <appender-ref ref="${LogAppender}"/>
+        <level value="INFO"/>
+        <appender-ref ref="file"/>
     </root>
 
 </configuration>

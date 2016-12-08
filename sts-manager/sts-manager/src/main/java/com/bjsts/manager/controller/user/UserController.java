@@ -16,6 +16,7 @@ import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.service.user.UserService;
 import com.bjsts.manager.shiro.authentication.PasswordHelper;
 import com.bjsts.manager.validator.user.PasswordChangeValidator;
+import com.bjsts.manager.validator.user.PasswordResetValidator;
 import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -55,6 +56,9 @@ public class UserController extends AbstractController {
 
     @Autowired
     private PasswordChangeValidator passwordChangeValidator;
+
+    @Autowired
+    private PasswordResetValidator passwordResetValidator;
 
     @Autowired
     private DepartmentService departmentService;
@@ -216,6 +220,49 @@ public class UserController extends AbstractController {
             return "redirect:/user/role/allot/" + userForm.getUserInfo().getId();
         }
         userService.bindRole(userForm.getUserInfo().getId(), userForm.getRoleIdList());
+        return "result";
+    }
+
+    @RequiresPermissions("sts:user:resetPassword")
+    @RequestMapping(value = "/password/reset", method = RequestMethod.GET)
+    public String resetPassword(@ModelAttribute UserForm userForm, ModelMap modelMap) {
+        if (Objects.isNull(userForm) || Objects.isNull(userForm.getUserInfo()) || Objects.isNull(userForm.getUserInfo().getId())) {
+            return "redirect:/user/list";
+        }
+        UserEntity userInfo = userService.get(userForm.getUserInfo().getId());
+        if (userInfo == null) {
+            logger.error("重置密码失败：未查询到id={}的用户", userForm.getUserInfo().getId());
+            return "redirect:/user/list";
+        }
+
+        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
+            modelMap.addAttribute(BindingResult.class.getName().concat(".userForm"), modelMap.get(BINDING_RESULT_KEY));
+        }
+
+        userForm.setUserInfo(userInfo);
+        return "user/passwordReset";
+    }
+
+    @RequiresPermissions("sts:user:resetPassword")
+    @RequestMapping(value = "/password/reset", method = RequestMethod.POST)
+    public String resetPassword(UserForm userForm, BindingResult result, RedirectAttributes redirectAttributes) {
+        try {
+            passwordResetValidator.validate(userForm);
+        } catch (ValidateFailedException e) {
+            logger.error(e.getMessage(), e);
+            result.addError(new ObjectError(e.getField(), e.getMessage()));
+        }
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(userForm);
+            return "redirect:/user/password/reset";
+        }
+        UserEntity userInfo = userService.get(userForm.getUserInfo().getId());
+        userInfo.setPassword(userForm.getNewPassword());
+        passwordHelper.encryptPassword(userInfo);
+        userService.update(userInfo);
+
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE_KEY, "重置密码成功！");
         return "result";
     }
 

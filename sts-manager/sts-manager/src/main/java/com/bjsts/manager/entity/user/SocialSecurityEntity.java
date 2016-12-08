@@ -12,7 +12,7 @@ import java.util.Date;
  * @author wangzhiliang
  */
 @Entity
-@Table(name = "a_attendance")
+@Table(name = "sts_attendance")
 @DynamicInsert
 @DynamicUpdate
 public class SocialSecurityEntity extends AbstractEntity {

@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @since 2016-04-28 15:28
  */
 @Entity
-@Table(name = "a_user_role")
+@Table(name = "sts_user_role")
 @DynamicInsert
 @DynamicUpdate
 public class UserRoleEntity extends AbstractEntity {

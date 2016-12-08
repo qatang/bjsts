@@ -69,12 +69,17 @@
                                                 <td class="center">
                                                     <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="green" onclick="diag('用户修改', '${ctx}/user/update/${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
-                                                            <i class="ace-icon fa fa-pencil bigger-130" title="编辑"></i>
+                                                            编辑
                                                         </a>
                                                     </div>
                                                     <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="blue" onclick="diag('分配角色', '${ctx}/user/role/allot/${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
-                                                            <i class="ace-icon fa fa-user bigger-130" title="分配角色"></i>
+                                                            分配角色
+                                                        </a>
+                                                    </div>
+                                                    <div class="hidden-sm hidden-xs btn-group">
+                                                        <a class="grey" onclick="diag('重置密码', '${ctx}/user/password/reset?userInfo.id=${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
+                                                            重置密码
                                                         </a>
                                                     </div>
                                                 </td>

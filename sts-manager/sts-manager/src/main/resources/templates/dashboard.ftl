@@ -5,7 +5,69 @@
         <#include "${ctx}/common/head.ftl"/>
     </head>
     <body class="no-skin">
-        <#include "${ctx}/common/header.ftl"/>
+    <div id="navbar" class="navbar navbar-default">
+        <script type="text/javascript">
+            try{ace.settings.check('navbar' , 'fixed');}catch(e){}
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a class="navbar-brand">
+                    <small> <i class="fa fa-futbol-o"></i> 顺天盛综合管理系统 </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+
+                <!-- #section:basics/navbar.toggle -->
+
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <li class="light-blue">
+                        <a>欢迎登录, ${currentUser.username}</a>
+                    </li>
+                    <li class="light-blue">
+                        <a data-toggle="dropdown"  class="dropdown-toggle" href="#">
+                            <img class="nav-user-photo" src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" />
+                            <span class="user-info" id="user_info">
+								</span>
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a onclick="diag('修改密码', '${ctx}/user/password/change');" style="cursor:pointer;"><i class="ace-icon fa fa-cog"></i>修改密码</a><!-- editUserH()在 WebRoot\static\js\myjs\head.js中 -->
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="${ctx}/signout"><i class="ace-icon fa fa-power-off"></i>退出登录</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+    <div id="fhsmsobj"><!-- 站内信声音消息提示 --></div>
 
         <div id="websocket_button"></div><!-- 少了此处，聊天窗口就无法关闭 -->
         <!-- /section:basics/navbar.layout -->
@@ -16,7 +78,58 @@
 
             <!-- #section:basics/sidebar -->
             <!-- 左侧菜单 -->
-            <#include "${ctx}/common/left.ftl">
+            <div id="sidebar" class="sidebar                  responsive">
+                <script type="text/javascript">
+                    try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="nav nav-list">
+                    <li class="">
+                        <a href="${ctx}/">
+                            <i class="menu-icon fa fa-tachometer"></i>
+                            <span class="menu-text">后台首页</span>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <#if menus??>
+                    <#list menus as menu>
+                    <li class="" id="lm${menu.id}">
+                        <a style="cursor:pointer;" class="dropdown-toggle">
+                            <i class="${menu.resourceIcon!'menu-icon fa fa-leaf black'}"></i>
+                            <span class="menu-text">
+                            ${menu.name}
+                            </span>
+                            <#if menu.children?has_content><b class="arrow fa fa-angle-down"></b></#if>
+                        </a>
+                        <b class="arrow"></b>
+                        <#if menu.children?has_content>
+                        <ul class="submenu">
+                            <#list menu.children as child>
+                            <li class="" id="z${child.id}">
+                                <a style="cursor:pointer;" <#if child.url??>target="mainFrame" onclick="siMenu('z${child.id}','lm${menu.id}','${child.name}','${child.url}')"</#if>>
+                                <i class="<#if child.resourceIcon??>${child.resourceIcon}<#else>menu-icon fa fa-leaf black</#if>"></i>
+                            ${child.name}
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                            </#list>
+                        </ul>
+                        </#if>
+                    </li>
+                    </#list>
+                    </#if>
+                </ul><!-- /.nav-list -->
+
+                <!-- #section:basics/sidebar.layout.minimize -->
+                <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                    <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+                </div>
+
+                <!-- /section:basics/sidebar.layout.minimize -->
+                <script type="text/javascript">
+                    try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+                </script>
+            </div>
 
             <!-- /section:basics/sidebar -->
             <div class="main-content">

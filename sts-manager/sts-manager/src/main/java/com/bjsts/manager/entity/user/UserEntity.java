@@ -22,7 +22,7 @@ import java.util.Date;
  * @since 2014-12-19 15:01
  */
 @Entity
-@Table(name = "a_user")
+@Table(name = "sts_user")
 @DynamicInsert
 @DynamicUpdate
 public class UserEntity extends AbstractEntity {
@@ -98,20 +98,6 @@ public class UserEntity extends AbstractEntity {
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
-
-    @Convert(converter = YesNoStatusConverter.class)
-    @Column(name = "email_valid", nullable = false)
-    private YesNoStatus emailValid = YesNoStatus.NO;
-
-    @Convert(converter = YesNoStatusConverter.class)
-    @Column(name = "mobile_valid", nullable = false)
-    private YesNoStatus mobileValid = YesNoStatus.NO;
-
-    @Convert(converter = YesNoStatusConverter.class)
-    @Column(name = "root", nullable = false)
-    private YesNoStatus root = YesNoStatus.NO;
-
-    private String memo;
 
     public Long getId() {
         return id;
@@ -271,37 +257,5 @@ public class UserEntity extends AbstractEntity {
 
     public void setValid(EnableDisableStatus valid) {
         this.valid = valid;
-    }
-
-    public YesNoStatus getEmailValid() {
-        return emailValid;
-    }
-
-    public void setEmailValid(YesNoStatus emailValid) {
-        this.emailValid = emailValid;
-    }
-
-    public YesNoStatus getMobileValid() {
-        return mobileValid;
-    }
-
-    public void setMobileValid(YesNoStatus mobileValid) {
-        this.mobileValid = mobileValid;
-    }
-
-    public YesNoStatus getRoot() {
-        return root;
-    }
-
-    public void setRoot(YesNoStatus root) {
-        this.root = root;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
     }
 }

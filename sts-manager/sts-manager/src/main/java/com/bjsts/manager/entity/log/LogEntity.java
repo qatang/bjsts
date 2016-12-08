@@ -10,7 +10,7 @@ import java.util.Date;
  * @since 2016-05-13 14:18
  */
 @Entity
-@Table(name = "a_log")
+@Table(name = "sts_log")
 public class LogEntity extends AbstractEntity {
 
     private static final long serialVersionUID = 1195039157803982555L;

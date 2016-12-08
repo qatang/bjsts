@@ -16,7 +16,7 @@ import java.util.Date;
  * @since 2016-04-28 13:48
  */
 @Entity
-@Table(name = "a_role")
+@Table(name = "sts_role")
 @DynamicInsert
 @DynamicUpdate
 public class RoleEntity extends AbstractEntity {

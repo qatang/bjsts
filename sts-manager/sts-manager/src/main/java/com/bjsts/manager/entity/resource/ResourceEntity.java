@@ -17,7 +17,7 @@ import java.util.List;
  * @since 2016-04-27 14:58
  */
 @Entity
-@Table(name = "a_resource")
+@Table(name = "sts_resource")
 @DynamicInsert
 @DynamicUpdate
 public class ResourceEntity extends AbstractEntity {
