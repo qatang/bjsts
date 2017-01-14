@@ -2,7 +2,7 @@ package com.bjsts.manager.enums.converter.resource;
 
 
 import com.bjsts.core.enums.converter.BaseEnumConverter;
-import com.bjsts.manager.enums.resource.ResourceType;
+import com.bjsts.manager.enums.system.ResourceType;
 
 /**
  * @author jinsheng

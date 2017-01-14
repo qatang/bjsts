@@ -37,7 +37,7 @@ public class DepartmentController extends AbstractController {
     public String list(DepartmentSearchable departmentSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         List<DepartmentEntity> departmentEntityList = departmentService.findAll();
         modelMap.addAttribute("list", departmentEntityList);
-        return "department/list";
+        return "user/department/list";
     }
 
     @RequiresPermissions("sts:department:create")
@@ -50,7 +50,7 @@ public class DepartmentController extends AbstractController {
             departmentForm.setDepartment(new DepartmentEntity());
         }
         modelMap.put("action", "create");
-        return "department/edit";
+        return "user/department/edit";
     }
 
     @RequiresPermissions("sts:department:create")
@@ -79,7 +79,7 @@ public class DepartmentController extends AbstractController {
         }
         departmentForm.setDepartment(departmentEntity);
         modelMap.put("action", "update");
-        return "department/edit";
+        return "user/department/edit";
     }
 
     @RequiresPermissions("sts:department:update")
@@ -100,6 +100,6 @@ public class DepartmentController extends AbstractController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("department", departmentService.get(id));
-        return "department/view";
+        return "user/department/view";
     }
 }

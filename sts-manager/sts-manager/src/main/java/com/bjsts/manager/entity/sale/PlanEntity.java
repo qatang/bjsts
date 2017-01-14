@@ -22,12 +22,14 @@ import java.util.Date;
  * @since 2016-04-28 13:48
  */
 @Entity
-@Table(name = "sts_plan_trace")
+@Table(name = "sts_plan")
 @DynamicInsert
 @DynamicUpdate
 public class PlanEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -299721038872026718L;
+
+    public static final String SEQ_ID_GENERATOR = "plan";
 
     @Id
     @GeneratedValue

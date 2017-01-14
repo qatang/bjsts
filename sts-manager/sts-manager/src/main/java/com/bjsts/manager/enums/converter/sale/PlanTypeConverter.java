@@ -2,7 +2,6 @@ package com.bjsts.manager.enums.converter.sale;
 
 
 import com.bjsts.core.enums.converter.BaseEnumConverter;
-import com.bjsts.manager.enums.MaleType;
 import com.bjsts.manager.enums.sale.PlanType;
 
 /**

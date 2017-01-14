@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 客户信息录入
  * @author jinsheng
  * @since 2016-04-26 16:56
  */
@@ -32,7 +33,7 @@ public class CustomerController extends AbstractController {
     @Autowired
     private CustomerService customerService;
 
-    @RequiresPermissions("arsenal:customer:list")
+    @RequiresPermissions("sts:customer:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(UserSearchable customerSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         List<CustomerEntity> customerEntityList = customerService.findAll();
@@ -40,7 +41,7 @@ public class CustomerController extends AbstractController {
         return "customer/list";
     }
 
-    @RequiresPermissions("arsenal:customer:create")
+    @RequiresPermissions("sts:customer:create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute CustomerForm customerForm, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -53,7 +54,7 @@ public class CustomerController extends AbstractController {
         return "customer/edit";
     }
 
-    @RequiresPermissions("arsenal:customer:create")
+    @RequiresPermissions("sts:customer:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(CustomerForm customerForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -65,7 +66,7 @@ public class CustomerController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:customer:update")
+    @RequiresPermissions("sts:customer:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute CustomerForm customerForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -82,7 +83,7 @@ public class CustomerController extends AbstractController {
         return "customer/edit";
     }
 
-    @RequiresPermissions("arsenal:customer:update")
+    @RequiresPermissions("sts:customer:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(CustomerForm customerForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -96,7 +97,7 @@ public class CustomerController extends AbstractController {
         return "result";
     }
 
-    @RequiresPermissions("arsenal:customer:view")
+    @RequiresPermissions("sts:customer:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("customer", customerService.get(id));

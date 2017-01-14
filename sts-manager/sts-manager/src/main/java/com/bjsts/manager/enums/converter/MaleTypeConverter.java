@@ -2,7 +2,7 @@ package com.bjsts.manager.enums.converter;
 
 
 import com.bjsts.core.enums.converter.BaseEnumConverter;
-import com.bjsts.manager.enums.MaleType;
+import com.bjsts.manager.enums.user.MaleType;
 
 /**
  * @author jinsheng

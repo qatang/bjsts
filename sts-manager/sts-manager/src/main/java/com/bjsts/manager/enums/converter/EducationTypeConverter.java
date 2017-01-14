@@ -2,7 +2,7 @@ package com.bjsts.manager.enums.converter;
 
 
 import com.bjsts.core.enums.converter.BaseEnumConverter;
-import com.bjsts.manager.enums.EducationType;
+import com.bjsts.manager.enums.user.EducationType;
 
 /**
  * @author jinsheng

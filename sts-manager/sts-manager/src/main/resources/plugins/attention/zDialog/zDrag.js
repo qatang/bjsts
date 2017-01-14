@@ -1,1 +1,77 @@
-﻿eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('2 1={6:k,Z:m(b,a,f){5(f==k){b.11=1.F}b.0=a;5(A(7(b.0.4.e))){b.0.4.e="B"}5(A(7(b.0.4.j))){b.0.4.j="B"}b.0.y=u s();b.0.H=u s();b.0.D=u s();5(f!=k){2 b=1.6=b;f=1.W(f);2 d=7(b.0.4.j);2 c=7(b.0.4.e);b.0.y(c,d,f.8,f.9);b.o=f.8;b.q=f.9;3.v=1.x;3.r=1.w}},F:m(d){2 a=1.6=R;d=1.t(d);2 c=7(a.0.4.j);2 b=7(a.0.4.e);a.0.y(b,c,d.8,d.9);a.o=d.8;a.q=d.9;3.v=1.x;3.r=1.w;z E},x:m(i){i=1.t(i);2 f=1.6;2 b=i.9;2 c=i.8;2 h=7(f.0.4.j);2 g=7(f.0.4.e);5(3.C){1.6.T()}U{i.S()}2 d,a;d=g+c-f.o;a=h+(b-f.q);f.0.4.e=d+"G";f.0.4.j=a+"G";f.o=c;f.q=b;f.0.D(d,a,i.8,i.9);z E},w:m(){5(3.C){1.6.10()}3.v=k;3.r=k;1.6.0.H(7(1.6.0.4.e),7(1.6.0.4.j));1.6=k},t:m(c){2 a=N.I(3.J.M,3.p.M);2 b=N.I(3.J.L,3.p.L);5(l c=="n"){c=12.14}5(l c.O=="n"){c.O=c.P}5(l c.K=="n"){c.K=c.Q}5(l c.8=="n"){c.8=c.V+a-3.p.13}5(l c.9=="n"){c.9=c.X+b-3.p.Y}z c}};',62,67,'root|Drag|var|document|style|if|obj|parseInt|pageX|pageY|||||left|||||top|null|typeof|function|undefined|lastMouseX|body|lastMouseY|onmouseup|Function|fixEvent|new|onmousemove|end|drag|onDragStart|return|isNaN|0px|all|onDrag|false|start|px|onDragEnd|max|documentElement|layerY|scrollTop|scrollLeft|Math|layerX|offsetX|offsetY|this|preventDefault|setCapture|else|clientX|fixe|clientY|clientTop|init|releaseCapture|onmousedown|window|clientLeft|event'.split('|'),0,{}))
+﻿var Drag={
+    "obj":null,
+    "init":function(handle, dragBody, e){
+        if (e == null) {
+            handle.onmousedown=Drag.start;
+        }
+        handle.root = dragBody;
+
+        if(isNaN(parseInt(handle.root.style.left)))handle.root.style.left="0px";
+        if(isNaN(parseInt(handle.root.style.top)))handle.root.style.top="0px";
+        handle.root.onDragStart=new Function();
+        handle.root.onDragEnd=new Function();
+        handle.root.onDrag=new Function();
+        if (e !=null) {
+            var handle=Drag.obj=handle;
+            e=Drag.fixe(e);
+            var top=parseInt(handle.root.style.top);
+            var left=parseInt(handle.root.style.left);
+            handle.root.onDragStart(left,top,e.pageX,e.pageY);
+            handle.lastMouseX=e.pageX;
+            handle.lastMouseY=e.pageY;
+            document.onmousemove=Drag.drag;
+            document.onmouseup=Drag.end;
+        }
+    },
+    "start":function(e){
+        var handle=Drag.obj=this;
+        e=Drag.fixEvent(e);
+        var top=parseInt(handle.root.style.top);
+        var left=parseInt(handle.root.style.left);
+        //alert(left)
+        handle.root.onDragStart(left,top,e.pageX,e.pageY);
+        handle.lastMouseX=e.pageX;
+        handle.lastMouseY=e.pageY;
+        document.onmousemove=Drag.drag;
+        document.onmouseup=Drag.end;
+        return false;
+    },
+    "drag":function(e){
+        e=Drag.fixEvent(e);
+
+        var handle=Drag.obj;
+        var mouseY=e.pageY;
+        var mouseX=e.pageX;
+        var top=parseInt(handle.root.style.top);
+        var left=parseInt(handle.root.style.left);
+
+        if(document.all){Drag.obj.setCapture();}else{e.preventDefault();};//作用是将所有鼠标事件捕获到handle对象，对于firefox，以用preventDefault来取消事件的默认动作：
+
+        var currentLeft,currentTop;
+        currentLeft=left+mouseX-handle.lastMouseX;
+        currentTop=top+(mouseY-handle.lastMouseY);
+        handle.root.style.left=currentLeft +"px";
+        handle.root.style.top=currentTop+"px";
+        handle.lastMouseX=mouseX;
+        handle.lastMouseY=mouseY;
+        handle.root.onDrag(currentLeft,currentTop,e.pageX,e.pageY);
+        return false;
+    },
+    "end":function(){
+        if(document.all){Drag.obj.releaseCapture();};//取消所有鼠标事件捕获到handle对象
+        document.onmousemove=null;
+        document.onmouseup=null;
+        Drag.obj.root.onDragEnd(parseInt(Drag.obj.root.style.left),parseInt(Drag.obj.root.style.top));
+        Drag.obj=null;
+    },
+    "fixEvent":function(e){//格式化事件参数对象
+        var sl = Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+        var st = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+        if(typeof e=="undefined")e=window.event;
+        if(typeof e.layerX=="undefined")e.layerX=e.offsetX;
+        if(typeof e.layerY=="undefined")e.layerY=e.offsetY;
+        if(typeof e.pageX == "undefined")e.pageX = e.clientX + sl - document.body.clientLeft;
+        if(typeof e.pageY == "undefined")e.pageY = e.clientY + st - document.body.clientTop;
+        return e;
+    }
+};

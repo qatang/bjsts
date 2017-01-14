@@ -3,9 +3,20 @@
     <head>
         <title>顺天盛综合管理系统</title>
         <#include "${ctx}/common/head.ftl"/>
+        <!--禁用滚动条-->
+        <style type="text/css">
+            html {
+                overflow: hidden;
+            }
+            .page-content{
+                padding-top:0 !important;
+                padding-left:0 !important;
+                padding-right:10px !important;
+            }
+        </style>
     </head>
     <body class="no-skin">
-    <div id="navbar" class="navbar navbar-default">
+    <div id="navbar" class="navbar navbar-default navbar-fixed-top">
         <script type="text/javascript">
             try{ace.settings.check('navbar' , 'fixed');}catch(e){}
         </script>
@@ -67,9 +78,9 @@
             <!-- /section:basics/navbar.dropdown -->
         </div><!-- /.navbar-container -->
     </div>
-    <div id="fhsmsobj"><!-- 站内信声音消息提示 --></div>
+<#--    <div id="fhsmsobj"><!-- 站内信声音消息提示 &ndash;&gt;</div>
 
-        <div id="websocket_button"></div><!-- 少了此处，聊天窗口就无法关闭 -->
+        <div id="websocket_button"></div><!-- 少了此处，聊天窗口就无法关闭 &ndash;&gt;-->
         <!-- /section:basics/navbar.layout -->
         <div class="main-container" id="main-container">
             <script type="text/javascript">
@@ -78,7 +89,7 @@
 
             <!-- #section:basics/sidebar -->
             <!-- 左侧菜单 -->
-            <div id="sidebar" class="sidebar                  responsive">
+            <div id="sidebar" class="sidebar responsive sidebar-fixed sidebar-scroll">
                 <script type="text/javascript">
                     try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
                 </script>

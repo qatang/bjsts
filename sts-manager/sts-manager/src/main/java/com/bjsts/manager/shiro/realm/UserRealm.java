@@ -2,8 +2,8 @@ package com.bjsts.manager.shiro.realm;
 
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.service.resource.ResourceService;
-import com.bjsts.manager.service.role.RoleService;
+import com.bjsts.manager.service.system.ResourceService;
+import com.bjsts.manager.service.system.RoleService;
 import com.bjsts.manager.service.user.UserService;
 import com.bjsts.manager.shiro.authentication.PasswordHelper;
 import com.google.common.collect.Sets;

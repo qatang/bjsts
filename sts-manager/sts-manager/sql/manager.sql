@@ -170,14 +170,30 @@ CREATE TABLE `sts_contract` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `sts_product_order` (
+CREATE TABLE `sts_plan` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `customerId` bigint(20) NOT NULL DEFAULT 0,
-  `description` VARCHAR(512) NOT NULL,
-  `amount` bigint(20) NOT NULL DEFAULT 0,
+  `company` varchar(255) DEFAULT NULL,
+  `complete_time` TIMESTAMP NULL DEFAULT NULL,
+  `contract_amount` bigint(20) DEFAULT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `valid` TINYINT(2) NOT NULL,
+  `deliver_time` TIMESTAMP NULL DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `expect_time` TIMESTAMP NULL DEFAULT NULL,
+  `linkman` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `material_url` varchar(255) DEFAULT NULL,
+  `mobile` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `pay_amount` bigint(20) DEFAULT NULL,
+  `plan_no` varchar(255) NOT NULL,
+  `plan_status` int(11) NOT NULL,
+  `plan_type` int(11) NOT NULL,
+  `price_time` TIMESTAMP NULL DEFAULT NULL,
+  `receipt_amount` bigint(20) DEFAULT NULL,
+  `source_type` int(11) NOT NULL,
+  `updated_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -207,6 +223,13 @@ CREATE TABLE `sts_stock` (
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `id_generator` (
+  `sequence`      VARCHAR(32) NOT NULL,
+  `current_value` BIGINT      NOT NULL DEFAULT 0,
+  `group_key`     VARCHAR(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`sequence`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `sts_user` VALUES ('1', 'admin', '9dcffaac6b711a1dba34ce5a4c49ac9a', 'ab41738cd16e16552c11ab79a2a0486a', 'admin@admin.com', '', '2016-12-08 16:23:22', '2016-12-08 16:23:21', '0', '', '1', '', '', null, null, '1', '1', null, '0', '1');

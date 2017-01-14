@@ -3,8 +3,12 @@ package com.bjsts.manager.controller.sale;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.sale.PlanEntity;
+import com.bjsts.manager.enums.sale.PlanStatus;
+import com.bjsts.manager.enums.sale.PlanType;
+import com.bjsts.manager.enums.sale.SourceType;
 import com.bjsts.manager.form.sale.ProductOrderForm;
-import com.bjsts.manager.query.user.UserSearchable;
+import com.bjsts.manager.query.sale.ProductOrderSearchable;
+import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.sale.ProductOrderService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +36,28 @@ public class ProductOrderController extends AbstractController {
     @Autowired
     private ProductOrderService productOrderService;
 
-    @RequiresPermissions("arsenal:productOrder:list")
-    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public String list(UserSearchable productOrderSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<PlanEntity> planEntityList = productOrderService.findAll();
-        modelMap.addAttribute("list", planEntityList);
-        return "productOrder/list";
+    @Autowired
+    private IdGeneratorService idGeneratorService;
+
+    @ModelAttribute("planTypeList")
+    public List<PlanType> getPlanTypeList() {
+        return PlanType.list();
     }
 
-    @RequiresPermissions("arsenal:productOrder:create")
+    @ModelAttribute("sourceTypeList")
+    public List<SourceType> getSourceTypeList() {
+        return SourceType.list();
+    }
+
+    @RequiresPermissions("sts:productOrder:list")
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public String list(ProductOrderSearchable productOrderSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
+        List<PlanEntity> planEntityList = productOrderService.findAll();
+        modelMap.addAttribute("list", planEntityList);
+        return "sale/productOrder/list";
+    }
+
+    @RequiresPermissions("sts:productOrder:create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute ProductOrderForm productOrderForm, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -50,22 +67,24 @@ public class ProductOrderController extends AbstractController {
             productOrderForm.setProductOrder(new PlanEntity());
         }
         modelMap.put("action", "create");
-        return "productOrder/edit";
+        return "sale/productOrder/edit";
     }
 
-    @RequiresPermissions("arsenal:productOrder:create")
+    @RequiresPermissions("sts:productOrder:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(ProductOrderForm productOrderForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(productOrderForm);
-            return "redirect:/productOrder/create";
+            return "redirect:/sale/productOrder/create";
         }
         PlanEntity planEntity = productOrderForm.getProductOrder();
+        planEntity.setPlanNo(idGeneratorService.generateDateFormatted(PlanEntity.SEQ_ID_GENERATOR));
+        planEntity.setPlanStatus(PlanStatus.ASK_PRICE);
         productOrderService.save(planEntity);
         return "result";
     }
 
-    @RequiresPermissions("arsenal:productOrder:update")
+    @RequiresPermissions("sts:productOrder:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute ProductOrderForm productOrderForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -79,26 +98,36 @@ public class ProductOrderController extends AbstractController {
         }
         productOrderForm.setProductOrder(planEntity);
         modelMap.put("action", "update");
-        return "productOrder/edit";
+        return "sale/productOrder/edit";
     }
 
-    @RequiresPermissions("arsenal:productOrder:update")
+    @RequiresPermissions("sts:productOrder:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(ProductOrderForm productOrderForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(productOrderForm);
-            return "redirect:/productOrder/update/" + productOrderForm.getProductOrder().getId();
+            return "redirect:/sale/productOrder/update/" + productOrderForm.getProductOrder().getId();
         }
         PlanEntity productOrder = productOrderForm.getProductOrder();
         PlanEntity planEntity = productOrderService.get(productOrder.getId());
+        planEntity.setName(productOrder.getName());
+        planEntity.setPlanType(productOrder.getPlanType());
+        planEntity.setSourceType(productOrder.getSourceType());
+        planEntity.setPriceTime(productOrder.getPriceTime());
+        planEntity.setLocation(productOrder.getLocation());
+        planEntity.setLinkman(productOrder.getLinkman());
+        planEntity.setMobile(productOrder.getMobile());
+        planEntity.setCompany(productOrder.getCompany());
+        planEntity.setEmail(productOrder.getEmail());
+        planEntity.setDescription(productOrder.getDescription());
         productOrderService.update(planEntity);
         return "result";
     }
 
-    @RequiresPermissions("arsenal:productOrder:view")
+    @RequiresPermissions("sts:productOrder:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("productOrder", productOrderService.get(id));
-        return "productOrder/view";
+        return "sale/productOrder/view";
     }
 }

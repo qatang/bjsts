@@ -1,13 +1,13 @@
 package com.bjsts.manager.interceptor;
 
 import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.manager.entity.log.LogEntity;
-import com.bjsts.manager.entity.resource.ResourceEntity;
+import com.bjsts.manager.entity.system.LogEntity;
+import com.bjsts.manager.entity.system.ResourceEntity;
 import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.enums.resource.ResourceType;
-import com.bjsts.manager.service.log.LogService;
-import com.bjsts.manager.service.resource.ResourceService;
-import com.bjsts.manager.service.role.RoleService;
+import com.bjsts.manager.enums.system.ResourceType;
+import com.bjsts.manager.service.system.LogService;
+import com.bjsts.manager.service.system.ResourceService;
+import com.bjsts.manager.service.system.RoleService;
 import com.bjsts.manager.service.user.UserService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
