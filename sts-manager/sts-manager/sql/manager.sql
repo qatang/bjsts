@@ -244,7 +244,7 @@ CREATE TABLE `sts_document` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_group_object_id` (`group`, `object_id`)
+  KEY `idx_group_object_id` (`group_key`, `object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `sts_user` VALUES ('1', 'admin', '9dcffaac6b711a1dba34ce5a4c49ac9a', 'ab41738cd16e16552c11ab79a2a0486a', 'admin@admin.com', '', '2016-12-08 16:23:22', '2016-12-08 16:23:21', '0', '', '1', '', '', null, null, '1', '1', null, '0', '1');
