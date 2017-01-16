@@ -13,6 +13,8 @@ import com.bjsts.manager.interceptor.DefaultInterceptor;
 import com.bjsts.manager.interceptor.ModelAttributeInterceptor;
 import com.bjsts.manager.interceptor.PatternMatcherInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,9 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.config.annotation.*;
+
+import javax.servlet.MultipartConfigElement;
+import java.io.File;
 
 /**
  * @author jinsheng
@@ -44,11 +49,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ModelAttributeInterceptor modelAttributeInterceptor;
 
+    @Value("${file.external.url}")
+    private String fileExternalUrl;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/", "classpath:/static/");
         registry.addResourceHandler("/plugins/**").addResourceLocations("/plugins/", "classpath:/plugins/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/", "classpath:/static/favicon.ico");
+        registry.addResourceHandler("/file/**").addResourceLocations("file:" + fileExternalUrl + File.separator);
     }
 
     @Override
@@ -122,5 +131,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public WebExceptionHandler webExceptionHandler() {
         return new WebExceptionHandler();
+    }
+
+    @Bean
+    MultipartConfigElement createMultipartConfigElement()
+    {
+        MultipartConfigFactory mcf = new MultipartConfigFactory();
+        /**
+         * 设置最大上传文件的大小，默认是10MB
+         */
+        mcf.setMaxFileSize("50MB");
+        return mcf.createMultipartConfig();
     }
 }

@@ -65,6 +65,10 @@
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目说明:</td>
                                         <td>${productOrder.description}</td>
                                     </tr>
+                                    <tr>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
+                                        <td><a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a></td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>

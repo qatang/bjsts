@@ -161,6 +161,12 @@ public class PlanEntity extends AbstractEntity {
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
+    /**
+     * 客户提供的项目资料
+     */
+    @Column(name = "document_id")
+    private Long documentId;
+
     public Long getId() {
         return id;
     }
@@ -343,5 +349,13 @@ public class PlanEntity extends AbstractEntity {
 
     public void setValid(EnableDisableStatus valid) {
         this.valid = valid;
+    }
+
+    public Long getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(Long documentId) {
+        this.documentId = documentId;
     }
 }

@@ -13,11 +13,21 @@ public class ProductOrderForm extends AbstractForm {
 
     private PlanEntity productOrder;
 
+    private String customerFileUrl;
+
     public PlanEntity getProductOrder() {
         return productOrder;
     }
 
     public void setProductOrder(PlanEntity productOrder) {
         this.productOrder = productOrder;
+    }
+
+    public String getCustomerFileUrl() {
+        return customerFileUrl;
+    }
+
+    public void setCustomerFileUrl(String customerFileUrl) {
+        this.customerFileUrl = customerFileUrl;
     }
 }

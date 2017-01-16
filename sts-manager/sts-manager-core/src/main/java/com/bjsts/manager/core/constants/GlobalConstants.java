@@ -40,4 +40,9 @@ public class GlobalConstants {
      * 默认资源级数
      */
     public static final int DEFAULT_TREE_LEVEL = 3;
+
+    /**
+     * 客户资料文件夹
+     */
+    public static final String CUSTOMER_FILE = "customer";
 }

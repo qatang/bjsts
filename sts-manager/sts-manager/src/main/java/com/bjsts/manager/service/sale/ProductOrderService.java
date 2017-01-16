@@ -8,5 +8,5 @@ import com.bjsts.manager.entity.sale.PlanEntity;
  * @since 2016-04-28 15:44
  */
 public interface ProductOrderService extends IService<PlanEntity, Long> {
-
+    PlanEntity save(PlanEntity planEntity, String fileUrl);
 }

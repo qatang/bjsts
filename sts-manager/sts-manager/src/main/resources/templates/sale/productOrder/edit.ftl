@@ -4,6 +4,7 @@
 <html>
 <head>
 [#include "${ctx}/common/head.ftl"/]
+
 </head>
 <body class="no-skin">
 <div class="main-container" id="main-container">
@@ -86,6 +87,13 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
+                                    <td>
+                                        <input id="input-customerFileUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
+                                        [@macro.inputText name="customerFileUrl" id="customerFileUrl" value=productOrderForm.customerFileUrl!'' placeholder="文件地址"/]
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td style="text-align: center;" colspan="10">
                                         <button class="btn btn-mini btn-primary" type="submit">保存</button>
                                         <button class="btn btn-mini btn-danger" type="button" onclick="top.Dialog.close();">取消</button>
@@ -102,4 +110,33 @@
 </body>
 
 [#include "${ctx}/common/footer.ftl"/]
+
+<link href="/plugins/bootstrap-fileinput-master/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<script src="/plugins/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
+
+<script>
+    var customerFileUrl = null;
+    if ('${productOrderForm.customerFileUrl!''}' != "") {
+        customerFileUrl = "${productOrderForm.customerFileUrl!''}";
+    }
+
+    $("#input-customerFileUrl").fileinput({
+        language: "zh",
+        uploadUrl: "/productOrder/upload",
+        autoReplace: true,
+        uploadAsync: true,
+        maxFileCount: 1,
+        allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
+        initialPreview: [
+            customerFileUrl
+        ]
+    }).on("filebatchselected", function(event, files) {
+        $(this).fileinput("upload");
+    }).on("fileuploaded", function(event, data) {
+        if (data.response) {
+            $("#customerFileUrl").val(data.response.path);
+        }
+    });
+</script>
 </html>

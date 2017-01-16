@@ -2,16 +2,22 @@ package com.bjsts.manager.controller.sale;
 
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
+import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.enums.sale.PlanStatus;
 import com.bjsts.manager.enums.sale.PlanType;
 import com.bjsts.manager.enums.sale.SourceType;
 import com.bjsts.manager.form.sale.ProductOrderForm;
 import com.bjsts.manager.query.sale.ProductOrderSearchable;
+import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.sale.ProductOrderService;
+import com.bjsts.manager.utils.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,9 +25,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -38,6 +51,12 @@ public class ProductOrderController extends AbstractController {
 
     @Autowired
     private IdGeneratorService idGeneratorService;
+
+    @Autowired
+    private DocumentService documentService;
+
+    @Value("${file.external.url}")
+    private String fileExternalUrl;
 
     @ModelAttribute("planTypeList")
     public List<PlanType> getPlanTypeList() {
@@ -80,7 +99,13 @@ public class ProductOrderController extends AbstractController {
         PlanEntity planEntity = productOrderForm.getProductOrder();
         planEntity.setPlanNo(idGeneratorService.generateDateFormatted(PlanEntity.SEQ_ID_GENERATOR));
         planEntity.setPlanStatus(PlanStatus.ASK_PRICE);
-        productOrderService.save(planEntity);
+
+        String customFileUrl = productOrderForm.getCustomerFileUrl();
+        if (StringUtils.isEmpty(customFileUrl)) {
+            productOrderService.save(planEntity);
+        } else {
+            productOrderService.save(planEntity, customFileUrl);
+        }
         return "result";
     }
 
@@ -97,6 +122,12 @@ public class ProductOrderController extends AbstractController {
             return "redirect:/error";
         }
         productOrderForm.setProductOrder(planEntity);
+
+        Long documentId = planEntity.getDocumentId();
+        if (documentId != null) {
+            DocumentEntity documentEntity = documentService.get(documentId);
+            productOrderForm.setCustomerFileUrl(documentEntity.getUrl());
+        }
         modelMap.put("action", "update");
         return "sale/productOrder/edit";
     }
@@ -120,14 +151,63 @@ public class ProductOrderController extends AbstractController {
         planEntity.setCompany(productOrder.getCompany());
         planEntity.setEmail(productOrder.getEmail());
         planEntity.setDescription(productOrder.getDescription());
-        productOrderService.update(planEntity);
+
+        String customFileUrl = productOrderForm.getCustomerFileUrl();
+        if (StringUtils.isEmpty(customFileUrl)) {
+            productOrderService.save(planEntity);
+        } else {
+            productOrderService.save(planEntity, customFileUrl);
+        }
         return "result";
     }
 
     @RequiresPermissions("sts:productOrder:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
-        modelMap.put("productOrder", productOrderService.get(id));
+        PlanEntity planEntity = productOrderService.get(id);
+
+        Long documentId = planEntity.getDocumentId();
+        if (documentId != null) {
+            DocumentEntity documentEntity = documentService.get(documentId);
+            modelMap.addAttribute("customerFileUrl", documentEntity.getUrl());
+        }
+        modelMap.put("productOrder", planEntity);
         return "sale/productOrder/view";
+    }
+
+    @RequiresPermissions("sts:productOrder:upload")
+    @RequestMapping("/upload")
+    @ResponseBody
+    public Map<String, String> upload(@RequestParam(value = "file", required = false) MultipartFile file, ModelMap modelMap) {
+        Map<String, String> map = new HashMap<>();
+        if (!file.isEmpty()) {
+            try {
+                InputStream input = file.getInputStream();
+
+                String fullFileDir = fileExternalUrl + File.separator + GlobalConstants.CUSTOMER_FILE + File.separator;
+                if (!FileUtils.createDirectory(fullFileDir)) {
+                    String message = "创建文件夹失败，请重试!";
+                    map.put("message", message);
+                    return map;
+                }
+
+                String fileName = File.separator + GlobalConstants.CUSTOMER_FILE + File.separator + file.getOriginalFilename();
+                OutputStream output = new FileOutputStream(fileExternalUrl + fileName);
+                IOUtils.copy(input, output);
+
+                output.close();
+                input.close();
+
+                String message = "上传成功!";
+
+                map.put("path", fileName);
+                map.put("message", message);
+            } catch (Exception e) {
+                map.put("message", "上传失败 => " + e.getMessage());
+            }
+        } else {
+            map.put("message", "上传失败，文件为空.");
+        }
+        return map;
     }
 }

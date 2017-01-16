@@ -194,6 +194,7 @@ CREATE TABLE `sts_plan` (
   `source_type` int(11) NOT NULL,
   `updated_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` int(11) NOT NULL,
+  `document_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -230,6 +231,18 @@ CREATE TABLE `id_generator` (
   `current_value` BIGINT      NOT NULL DEFAULT 0,
   `group_key`     VARCHAR(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`sequence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_document` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `url` VARCHAR(255) NOT NULL,
+  `group_key` VARCHAR(32) NOT NULL,
+  `object_id` VARCHAR(32) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_group_object_id` (`group`, `object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `sts_user` VALUES ('1', 'admin', '9dcffaac6b711a1dba34ce5a4c49ac9a', 'ab41738cd16e16552c11ab79a2a0486a', 'admin@admin.com', '', '2016-12-08 16:23:22', '2016-12-08 16:23:21', '0', '', '1', '', '', null, null, '1', '1', null, '0', '1');
