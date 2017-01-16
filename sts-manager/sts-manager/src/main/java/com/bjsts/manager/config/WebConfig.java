@@ -6,6 +6,7 @@ import com.bjsts.manager.enums.converter.EducationTypeConverter;
 import com.bjsts.manager.enums.converter.MaleTypeConverter;
 import com.bjsts.manager.enums.converter.PolityTypeConverter;
 import com.bjsts.manager.enums.converter.resource.ResourceTypeConverter;
+import com.bjsts.manager.enums.converter.sale.PlanStatusConverter;
 import com.bjsts.manager.enums.converter.sale.PlanTypeConverter;
 import com.bjsts.manager.enums.converter.sale.SourceTypeConverter;
 import com.bjsts.manager.handler.WebExceptionHandler;
@@ -122,6 +123,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new PolityTypeConverter());
         registry.addConverter(new PlanTypeConverter());
         registry.addConverter(new SourceTypeConverter());
+        registry.addConverter(new PlanStatusConverter());
 
         DateFormatter dateFormatter = new DateFormatter("yyyy-MM-dd HH:mm:ss");
         dateFormatter.setLenient(true);

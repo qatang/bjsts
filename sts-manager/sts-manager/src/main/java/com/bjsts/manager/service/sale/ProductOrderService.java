@@ -4,6 +4,7 @@ import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.IService;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.query.sale.QuoteSearchable;
+import com.bjsts.manager.query.sale.SaleItemSearchable;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -16,4 +17,8 @@ public interface ProductOrderService extends IService<PlanEntity, Long> {
     PlanEntity saveQuote(PlanEntity planEntity, String quoteFileUrl);
 
     ApiResponse<PlanEntity> findAll(QuoteSearchable quoteSearchable, Pageable pageable);
+
+    ApiResponse<PlanEntity> findAll(SaleItemSearchable saleItemSearchable, Pageable pageable);
+
+    PlanEntity findByPlanNo(String planNo);
 }

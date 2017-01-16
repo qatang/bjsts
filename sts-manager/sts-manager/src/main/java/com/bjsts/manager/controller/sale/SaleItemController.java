@@ -1,13 +1,24 @@
 package com.bjsts.manager.controller.sale;
 
+import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
+import com.bjsts.manager.entity.document.DocumentEntity;
+import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.entity.sale.PlanTraceEntity;
+import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.enums.sale.PlanStatus;
 import com.bjsts.manager.form.sale.SaleItemForm;
-import com.bjsts.manager.query.user.UserSearchable;
+import com.bjsts.manager.query.sale.SaleItemSearchable;
+import com.bjsts.manager.service.document.DocumentService;
+import com.bjsts.manager.service.sale.ProductOrderService;
 import com.bjsts.manager.service.sale.SaleItemService;
+import com.google.common.collect.Lists;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 项目管理
+ * 项目追踪管理
  * @author wangzhiliang
  */
 @Controller
@@ -30,42 +41,96 @@ import java.util.Objects;
 public class SaleItemController extends AbstractController {
 
     @Autowired
+    private ProductOrderService productOrderService;
+
+    @Autowired
     private SaleItemService saleItemService;
 
-    @RequiresPermissions("arsenal:saleItem:list")
-    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public String list(UserSearchable saleItemSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<PlanTraceEntity> planTraceEntityList = saleItemService.findAll();
-        modelMap.addAttribute("list", planTraceEntityList);
-        return "saleItem/list";
+    @Autowired
+    private DocumentService documentService;
+
+    @ModelAttribute("planStatusList")
+    public List<PlanStatus> getPlanStatusList() {
+        return PlanStatus.list();
     }
 
-    @RequiresPermissions("arsenal:saleItem:create")
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(@ModelAttribute SaleItemForm saleItemForm, ModelMap modelMap) {
+    @RequiresPermissions("sts:saleItem:list")
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public String list(SaleItemSearchable saleItemSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
+        ApiResponse<PlanEntity> apiResponse = productOrderService.findAll(saleItemSearchable, pageable);
+        Page<PlanEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+        modelMap.addAttribute("page", page);
+        return "sale/saleItem/list";
+    }
+
+    @RequiresPermissions("sts:saleItem:list")
+    @RequestMapping(value = "/list/{planNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String listTrace(@PathVariable String planNo, ModelMap modelMap) {
+        List<PlanTraceEntity> planTraceEntityList = saleItemService.findByPlanNo(planNo);
+        modelMap.addAttribute("list", planTraceEntityList);
+        return "sale/saleItem/listTrace";
+    }
+
+    @RequiresPermissions("sts:saleItem:create")
+    @RequestMapping(value = "/create/{planNo}", method = RequestMethod.GET)
+    public String create(@PathVariable String planNo, @ModelAttribute SaleItemForm saleItemForm, ModelMap modelMap, RedirectAttributes redirectAttributes) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
             modelMap.addAttribute(BindingResult.class.getName().concat(".saleItemForm"), modelMap.get(BINDING_RESULT_KEY));
         }
+
+        PlanEntity planEntity = productOrderService.findByPlanNo(planNo);
+
+        if (planEntity == null) {
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
+            return "redirect:/error";
+        } else {
+            modelMap.addAttribute("productOrder", planEntity);
+
+            Long documentId = planEntity.getDocumentId();
+            if (documentId != null) {
+                DocumentEntity documentEntity = documentService.get(documentId);
+                modelMap.addAttribute("customerFileUrl", documentEntity.getUrl());
+            }
+
+            Long quoteFileId = planEntity.getQuoteFileId();
+            if (quoteFileId != null) {
+                DocumentEntity documentEntity = documentService.get(quoteFileId);
+                modelMap.addAttribute("quoteFileUrl", documentEntity.getUrl());
+            }
+        }
+
         if (Objects.isNull(saleItemForm.getSaleItem())) {
-            saleItemForm.setSaleItem(new PlanTraceEntity());
+            PlanTraceEntity planTraceEntity = new PlanTraceEntity();
+            planTraceEntity.setPlanNo(planNo);
+            saleItemForm.setSaleItem(planTraceEntity);
         }
         modelMap.put("action", "create");
-        return "saleItem/edit";
+        return "sale/saleItem/edit";
     }
 
-    @RequiresPermissions("arsenal:saleItem:create")
+    @RequiresPermissions("sts:saleItem:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(SaleItemForm saleItemForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute(saleItemForm);
             return "redirect:/saleItem/create";
         }
+        PlanEntity planEntity = saleItemForm.getProductOrder();
+        PlanEntity db = productOrderService.get(planEntity.getId());
+        db.setPlanStatus(planEntity.getPlanStatus());
+        productOrderService.save(db);
+
         PlanTraceEntity planTraceEntity = saleItemForm.getSaleItem();
+        planTraceEntity.setPlanNo(db.getPlanNo());
+
+        UserEntity userInfo = (UserEntity) SecurityUtils.getSubject().getPrincipal();
+        planTraceEntity.setUserId(userInfo.getId());
+        planTraceEntity.setRealName(userInfo.getRealName());
         saleItemService.save(planTraceEntity);
         return "result";
     }
 
-    @RequiresPermissions("arsenal:saleItem:update")
+    /*@RequiresPermissions("sts:saleItem:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute SaleItemForm saleItemForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         if (modelMap.containsKey(BINDING_RESULT_KEY)) {
@@ -79,10 +144,10 @@ public class SaleItemController extends AbstractController {
         }
         saleItemForm.setSaleItem(planTraceEntity);
         modelMap.put("action", "update");
-        return "saleItem/edit";
+        return "sale/saleItem/edit";
     }
 
-    @RequiresPermissions("arsenal:saleItem:update")
+    @RequiresPermissions("sts:saleItem:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(SaleItemForm saleItemForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -94,12 +159,5 @@ public class SaleItemController extends AbstractController {
         //planTraceEntity.setName(saleItem.getName());
         saleItemService.update(planTraceEntity);
         return "result";
-    }
-
-    @RequiresPermissions("arsenal:saleItem:view")
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public String view(@PathVariable Long id, ModelMap modelMap) {
-        modelMap.put("saleItem", saleItemService.get(id));
-        return "saleItem/view";
-    }
+    }*/
 }

@@ -1,10 +1,6 @@
 package com.bjsts.manager.entity.sale;
 
-import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.sale.PlanTraceTypeConverter;
-import com.bjsts.manager.enums.sale.PlanTraceType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -37,21 +33,14 @@ public class PlanTraceEntity extends AbstractEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Convert(converter = PlanTraceTypeConverter.class)
-    @Column(name = "plan_trace_type", nullable = false)
-    private PlanTraceType planTraceType;
+    @Column(name = "real_name")
+    private String realName;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "trace_time", updatable = false, nullable = false)
+    private Date traceTime = new Date();
 
     private String description;
-
-    /**
-     * 报价单地址
-     */
-    @Column(name = "trace_url")
-    private String traceUrl;
-
-    @Convert(converter = EnableDisableStatusConverter.class)
-    @Column(nullable = false)
-    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -75,14 +64,6 @@ public class PlanTraceEntity extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public EnableDisableStatus getValid() {
-        return valid;
-    }
-
-    public void setValid(EnableDisableStatus valid) {
-        this.valid = valid;
     }
 
     public Date getCreatedTime() {
@@ -117,19 +98,19 @@ public class PlanTraceEntity extends AbstractEntity {
         this.userId = userId;
     }
 
-    public PlanTraceType getPlanTraceType() {
-        return planTraceType;
+    public Date getTraceTime() {
+        return traceTime;
     }
 
-    public void setPlanTraceType(PlanTraceType planTraceType) {
-        this.planTraceType = planTraceType;
+    public void setTraceTime(Date traceTime) {
+        this.traceTime = traceTime;
     }
 
-    public String getTraceUrl() {
-        return traceUrl;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setTraceUrl(String traceUrl) {
-        this.traceUrl = traceUrl;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }

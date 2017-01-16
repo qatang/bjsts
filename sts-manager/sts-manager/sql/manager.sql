@@ -148,14 +148,15 @@ CREATE TABLE `sts_customer` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `sts_sale_item` (
+CREATE TABLE `sts_plan_trace` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(64) NOT NULL,
+  `plan_no` varchar(255) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `real_name` VARCHAR(20) NOT NULL DEFAULT '',
   `description` VARCHAR(512) NOT NULL,
-  `customer_id` bigint(20) NOT NULL DEFAULT 0,
+  `trace_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `valid` TINYINT(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface ProductOrderRepository extends IRepository<PlanEntity, Long> {
     List<PlanEntity> findByPlanStatus(PlanStatus planStatus);
+
+    PlanEntity findByPlanNo(String planNo);
 }

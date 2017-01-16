@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author jinsheng
@@ -20,5 +21,8 @@ public class SaleItemServiceImpl extends AbstractService<PlanTraceEntity, Long> 
     @Autowired
     private SaleItemRepository saleItemRepository;
 
-
+    @Override
+    public List<PlanTraceEntity> findByPlanNo(String planNo) {
+        return saleItemRepository.findByPlanNo(planNo);
+    }
 }
