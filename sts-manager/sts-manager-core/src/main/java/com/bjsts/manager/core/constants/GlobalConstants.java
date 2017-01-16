@@ -45,4 +45,9 @@ public class GlobalConstants {
      * 客户资料文件夹
      */
     public static final String CUSTOMER_FILE = "customer";
+
+    /**
+     * 报价单文件夹
+     */
+    public static final String QUOTE_FILE = "quote";
 }

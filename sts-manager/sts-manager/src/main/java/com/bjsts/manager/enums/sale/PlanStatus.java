@@ -20,7 +20,7 @@ public enum PlanStatus {
     ASK_PRICE(1, "询价"),
     ABANDON(2, "弃单"),
     CONTINUE(3, "持续跟进"),
-    PURCHASE(4, "已提交报价单"),
+    QUOTE(4, "已提交报价单"),
     UN_COMPLETE(5, "无法完成"),
     COMPLETE(6, "成单"),
     OTHERS(7, "其他"),

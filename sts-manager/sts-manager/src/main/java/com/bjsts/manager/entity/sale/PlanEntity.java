@@ -52,26 +52,6 @@ public class PlanEntity extends AbstractEntity {
     private String location;
 
     /**
-     * 项目说明
-     */
-    private String description;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time", updatable = false, nullable = false)
-    private Date createdTime = new Date();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_time")
-    private Date updatedTime;
-
-    /**
-     * 项目状态
-     */
-    @Convert(converter = PlanStatusConverter.class)
-    @Column(name = "plan_status", nullable = false)
-    private PlanStatus planStatus;
-
-    /**
      * 项目类型
      */
     @Convert(converter = PlanTypeConverter.class)
@@ -113,6 +93,56 @@ public class PlanEntity extends AbstractEntity {
     private String email;
 
     /**
+     * 项目说明
+     */
+    private String description;
+
+    /**
+     * 客户提供的项目资料
+     */
+    @Column(name = "document_id")
+    private Long documentId;
+
+    /**
+     * 项目状态
+     */
+    @Convert(converter = PlanStatusConverter.class)
+    @Column(name = "plan_status", nullable = false)
+    private PlanStatus planStatus;
+
+    /************************************************************************************
+     *
+     * 报价相关
+     *
+     ************************************************************************************/
+
+    /**
+     * 报价员
+     */
+    private String quoter;
+
+    /**
+     * 报价时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "quote_time")
+    private Date quoteTime;
+
+    /**
+     * 报价材料 文档编码
+     */
+    @Column(name = "quote_file_id")
+    private Long quoteFileId;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time", updatable = false, nullable = false)
+    private Date createdTime = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Date updatedTime;
+
+    /**
      * 合同总金额
      */
     @Column(name = "contract_amount")
@@ -129,12 +159,6 @@ public class PlanEntity extends AbstractEntity {
      */
     @Column(name = "receipt_amount")
     private Long receiptAmount;
-
-    /**
-     * 报价材料
-     */
-    @Column(name = "material_url")
-    private String materialUrl;
 
     /**
      * 预计交付日期
@@ -161,11 +185,6 @@ public class PlanEntity extends AbstractEntity {
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
-    /**
-     * 客户提供的项目资料
-     */
-    @Column(name = "document_id")
-    private Long documentId;
 
     public Long getId() {
         return id;
@@ -311,14 +330,6 @@ public class PlanEntity extends AbstractEntity {
         this.receiptAmount = receiptAmount;
     }
 
-    public String getMaterialUrl() {
-        return materialUrl;
-    }
-
-    public void setMaterialUrl(String materialUrl) {
-        this.materialUrl = materialUrl;
-    }
-
     public Date getExpectTime() {
         return expectTime;
     }
@@ -357,5 +368,29 @@ public class PlanEntity extends AbstractEntity {
 
     public void setDocumentId(Long documentId) {
         this.documentId = documentId;
+    }
+
+    public String getQuoter() {
+        return quoter;
+    }
+
+    public void setQuoter(String quoter) {
+        this.quoter = quoter;
+    }
+
+    public Date getQuoteTime() {
+        return quoteTime;
+    }
+
+    public void setQuoteTime(Date quoteTime) {
+        this.quoteTime = quoteTime;
+    }
+
+    public Long getQuoteFileId() {
+        return quoteFileId;
+    }
+
+    public void setQuoteFileId(Long quoteFileId) {
+        this.quoteFileId = quoteFileId;
     }
 }

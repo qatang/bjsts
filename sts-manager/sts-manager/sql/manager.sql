@@ -182,7 +182,6 @@ CREATE TABLE `sts_plan` (
   `expect_time` TIMESTAMP NULL DEFAULT NULL,
   `linkman` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `material_url` varchar(255) DEFAULT NULL,
   `mobile` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `pay_amount` bigint(20) DEFAULT NULL,
@@ -194,7 +193,9 @@ CREATE TABLE `sts_plan` (
   `source_type` int(11) NOT NULL,
   `updated_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` int(11) NOT NULL,
-  `document_id` bigint(20) DEFAULT NULL,
+  `quoter` VARCHAR(32) DEFAULT NULL,
+  `quote_time` TIMESTAMP NULL DEFAULT NULL,
+  `quote_file_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
