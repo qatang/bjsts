@@ -8,6 +8,7 @@ import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.enums.sale.PlanStatus;
+import com.bjsts.manager.query.sale.ProductOrderSearchable;
 import com.bjsts.manager.query.sale.QuoteSearchable;
 import com.bjsts.manager.query.sale.SaleItemSearchable;
 import com.bjsts.manager.repository.document.DocumentRepository;
@@ -74,6 +75,17 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
     }
 
     @Override
+    public ApiResponse<PlanEntity> findAll(ProductOrderSearchable productOrderSearchable, Pageable pageable) {
+        ApiRequest request = ApiRequest.newInstance();
+
+        ApiRequestPage requestPage = ApiRequestPage.newInstance();
+        productOrderSearchable.convertPageable(requestPage, pageable);
+
+        Page<PlanEntity> planEntityPage = productOrderRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(planEntityPage);
+    }
+
+    @Override
     public ApiResponse<PlanEntity> findAll(QuoteSearchable quoteSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
 
@@ -90,8 +102,8 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         quoteSearchable.convertPageable(requestPage, pageable);
 
-        Page<PlanEntity> userEntityPage = productOrderRepository.findAll(convertSpecification(request), convertPageable(requestPage));
-        return convertApiResponse(userEntityPage);
+        Page<PlanEntity> planEntityPage = productOrderRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(planEntityPage);
     }
 
     @Override
@@ -101,8 +113,8 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         saleItemSearchable.convertPageable(requestPage, pageable);
 
-        Page<PlanEntity> userEntityPage = productOrderRepository.findAll(convertSpecification(request), convertPageable(requestPage));
-        return convertApiResponse(userEntityPage);
+        Page<PlanEntity> planEntityPage = productOrderRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(planEntityPage);
     }
 
     @Override

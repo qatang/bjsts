@@ -52,8 +52,16 @@
                                         [#list page.content as attendance]
                                         <tr>
                                             <td class="center">${attendance.realName!""}</td>
-                                            <td class="center">${attendance.startTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                                            <td class="center">${attendance.endTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                            <td class="center">
+                                                [#if attendance.startTime??]
+                                                    ${attendance.startTime?string("yyyy-MM-dd HH:mm:ss")}
+                                                [/#if]
+                                            </td>
+                                            <td class="center">
+                                                [#if attendance.endTime??]
+                                                ${attendance.endTime?string("yyyy-MM-dd HH:mm:ss")}
+                                                [/#if]
+                                            </td>
                                             <td class="center">
                                                 <div class="hidden-sm hidden-xs btn-group">
                                                     <a class="green" onclick="diag('考勤修改', '${ctx}/attendance/update/${attendance.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">

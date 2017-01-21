@@ -1,5 +1,6 @@
 package com.bjsts.manager.controller.sale;
 
+import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
@@ -13,11 +14,14 @@ import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.sale.ProductOrderService;
 import com.bjsts.manager.utils.FileUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -71,8 +75,9 @@ public class ProductOrderController extends AbstractController {
     @RequiresPermissions("sts:productOrder:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ProductOrderSearchable productOrderSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<PlanEntity> planEntityList = productOrderService.findAll();
-        modelMap.addAttribute("list", planEntityList);
+        ApiResponse<PlanEntity> apiResponse = productOrderService.findAll(productOrderSearchable, pageable);
+        Page<PlanEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+        modelMap.addAttribute("page", page);
         return "sale/productOrder/list";
     }
 

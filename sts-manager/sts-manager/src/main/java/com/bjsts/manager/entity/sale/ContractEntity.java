@@ -1,7 +1,5 @@
 package com.bjsts.manager.entity.sale;
 
-import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import com.bjsts.manager.enums.converter.sale.ContractStatusConverter;
 import com.bjsts.manager.enums.sale.ContractStatus;
@@ -24,6 +22,8 @@ public class ContractEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -299721038872026718L;
 
+    public static final String SEQ_ID_GENERATOR = "contract";
+
     @Id
     @GeneratedValue
     private Long id;
@@ -34,12 +34,65 @@ public class ContractEntity extends AbstractEntity {
     @Column(name = "plan_no", nullable = false)
     private String planNo;
 
-    @Column(name = "contract_no")
+    /**
+     * 项目名称
+     */
+    @Column(name = "plan_name", nullable = false)
+    private String planName;
+
+    @Column(name = "contract_no", nullable = false)
     private String contractNo;
 
     @Convert(converter = ContractStatusConverter.class)
     @Column(nullable = false)
     private ContractStatus status;
+
+    /**
+     * 合同内容
+     */
+    @Column(name = "content", nullable = false)
+    private String content;
+
+    /**
+     * 变更内容
+     */
+    @Column(name = "change_content")
+    private String changeContent;
+
+    /**
+     * 客户名称
+     */
+    @Column(nullable = false)
+    private String company;
+
+    /**
+     * 联系人
+     */
+    @Column(nullable = false)
+    private String linkman;
+
+    /**
+     * 签订时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "sign_time", nullable = false)
+    private Date signTime;
+
+    /**
+     * 质保日期
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "quality_time", nullable = false)
+    private Date qualityTime;
+
+    /**
+     * 合同金额
+     */
+    @Column(nullable = false)
+    private Long amount;
+
+    @Column(name = "contract_url")
+    private Long contractUrl;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -48,27 +101,6 @@ public class ContractEntity extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_time")
     private Date updatedTime;
-
-    private String content;
-
-    private String customer;
-
-    private Long amount;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "sign_time")
-    private Date signTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "quality_time")
-    private Date qualityTime;
-
-    @Column(name = "contract_url")
-    private String contractUrl;
-
-    @Convert(converter = EnableDisableStatusConverter.class)
-    @Column(nullable = false)
-    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
     public Long getId() {
         return id;
@@ -126,14 +158,6 @@ public class ContractEntity extends AbstractEntity {
         this.content = content;
     }
 
-    public String getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(String customer) {
-        this.customer = customer;
-    }
-
     public Long getAmount() {
         return amount;
     }
@@ -158,19 +182,43 @@ public class ContractEntity extends AbstractEntity {
         this.qualityTime = qualityTime;
     }
 
-    public String getContractUrl() {
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public String getChangeContent() {
+        return changeContent;
+    }
+
+    public void setChangeContent(String changeContent) {
+        this.changeContent = changeContent;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+
+    public Long getContractUrl() {
         return contractUrl;
     }
 
-    public void setContractUrl(String contractUrl) {
+    public void setContractUrl(Long contractUrl) {
         this.contractUrl = contractUrl;
-    }
-
-    public EnableDisableStatus getValid() {
-        return valid;
-    }
-
-    public void setValid(EnableDisableStatus valid) {
-        this.valid = valid;
     }
 }

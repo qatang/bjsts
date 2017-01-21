@@ -54,8 +54,8 @@
                                     </thead>
 
                                     <tbody>
-                                        [#if list?has_content]
-                                            [#list list as plan]
+                                        [#if page?? && page.content?has_content]
+                                            [#list page.content as plan]
                                                 <tr>
                                                     <td class="center"><a onclick="diag('查看项目', '${ctx}/productOrder/view/${plan.id}');">${plan.planNo}</a></td>
                                                     <td class="center">${plan.name!''}</td>
@@ -79,6 +79,16 @@
                                         [/#if]
                                     </tbody>
                                 </table>
+
+                                <div class="page-header position-relative">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td style="vertical-align:top;">
+                                                <div style="float: right;padding-top: 0px;margin-top: 0px;">[@macro.pagination page=page/]</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

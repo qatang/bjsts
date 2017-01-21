@@ -120,7 +120,6 @@ CREATE TABLE `sts_attendance` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE `sts_social_security` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT(20) NOT NULL,
@@ -142,29 +141,6 @@ CREATE TABLE `sts_customer` (
   `email` VARCHAR(128) NOT NULL,
   `mobile` VARCHAR(32) NOT NULL,
   `tel` VARCHAR(32) NOT NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `sts_plan_trace` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `plan_no` varchar(255) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `real_name` VARCHAR(20) NOT NULL DEFAULT '',
-  `description` VARCHAR(512) NOT NULL,
-  `trace_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `sts_contract` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `contract_no` VARCHAR(64) NOT NULL,
-  `description` VARCHAR(512) NOT NULL,
-  `amount` bigint(20) NOT NULL DEFAULT 0,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
@@ -194,9 +170,41 @@ CREATE TABLE `sts_plan` (
   `source_type` int(11) NOT NULL,
   `updated_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` int(11) NOT NULL,
+  `document_id` bigint(20) DEFAULT NULL,
   `quoter` VARCHAR(32) DEFAULT NULL,
   `quote_time` TIMESTAMP NULL DEFAULT NULL,
   `quote_file_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_plan_trace` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `real_name` VARCHAR(20) NOT NULL DEFAULT '',
+  `description` VARCHAR(512) NOT NULL,
+  `trace_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_contract` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `plan_name` varchar(255) NOT NULL,
+  `contract_no` VARCHAR(255) NOT NULL,
+  `status` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `change_content` text NULL DEFAULT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  `linkman` varchar(255) DEFAULT NULL,
+  `sign_time` TIMESTAMP NULL DEFAULT NULL,
+  `quality_time` TIMESTAMP NULL DEFAULT NULL,
+  `amount` bigint(20) NOT NULL DEFAULT 0,
+  `contract_url` bigint(20) DEFAULT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

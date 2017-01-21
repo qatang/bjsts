@@ -23,7 +23,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
-                                        <td style="padding-top: 13px;">${userInfo.name}</td>
+                                        <td style="padding-top: 13px;">${userInfo.realName}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">邮箱:</td>

@@ -30,13 +30,13 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">上班时间:</td>
                                     <td>
-                                        [@macro.datetimePicker name="attendance.startTime" value=attendanceForm.attendance.startTime placeholder="上班时间"/]
+                                        [@macro.datetimePicker name="attendance.startTime" value=attendanceForm.attendance.startTime placeholder="上班时间" required=true/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">下班时间:</td>
                                     <td>
-                                    [@macro.datetimePicker name="attendance.endTime" value=attendanceForm.attendance.endTime placeholder="下班时间"/]
+                                    [@macro.datetimePicker name="attendance.endTime" value=attendanceForm.attendance.endTime placeholder="下班时间" required=true/]
                                     </td>
                                 </tr>
                                 <tr>

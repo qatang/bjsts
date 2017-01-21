@@ -50,4 +50,9 @@ public class GlobalConstants {
      * 报价单文件夹
      */
     public static final String QUOTE_FILE = "quote";
+
+    /**
+     * 合同文件夹
+     */
+    public static final String CONTRACT_FILE = "contract";
 }
