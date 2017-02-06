@@ -62,8 +62,16 @@
                                                     <td class="center">${contract.status.getName()}</td>
                                                     <td class="center">${contract.company}</td>
                                                     <td class="center">${contract.linkman}</td>
-                                                    <td class="center">${contract.signTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                                                    <td class="center">${contract.qualityTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                                    <td class="center">
+                                                        [#if contract.signTime??]
+                                                            ${contract.signTime?string("yyyy-MM-dd HH:mm:ss")}
+                                                        [/#if]
+                                                    </td>
+                                                    <td class="center">
+                                                        [#if contract.qualityTime??]
+                                                            ${contract.qualityTime?string("yyyy-MM-dd HH:mm:ss")}
+                                                        [/#if]
+                                                    </td>
                                                     <td class="center">${contract.amount?c}</td>
                                                     <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">

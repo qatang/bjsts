@@ -185,7 +185,7 @@ public class ContractController extends AbstractController {
         try {
             planEntity = productOrderService.findByPlanNo(planNo);
         } catch (Exception e) {
-            logger.error("调用JczqFetchMatchApiService获取竞彩足球在售赛程接口出错！");
+            logger.error("调用productOrderService获取项目信息接口出错！");
             logger.error(e.getMessage(), e);
         }
         return planEntity;

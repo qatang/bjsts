@@ -20,7 +20,8 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">职员:</td>
                                     <td>
-                                        <select class="chosen-select form-control" name="socialSecurity.userId" data-placeholder="请选择" style="">
+                                        <select class="chosen-select form-control" name="socialSecurity.userId" data-placeholder="请选择" style="" onchange="queryUser(this);" id="userId">
+                                            <option value="0">请选择</option>
                                             [#list userList as data]
                                                 <option value="${data.id?c}" [#if socialSecurityForm.socialSecurity.userId?has_content && data.id == socialSecurityForm.socialSecurity.userId]selected[/#if]>${data.getRealName()!""}</option>
                                             [/#list]
@@ -28,15 +29,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">上班时间:</td>
+                                    <td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
                                     <td>
-                                        [@macro.datetimePicker name="socialSecurity.startTime" value=socialSecurityForm.socialSecurity.startTime placeholder="上班时间"/]
+                                        [@macro.inputText name="socialSecurity.realName" value=socialSecurityForm.socialSecurity.realName!"" id="realName"/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">下班时间:</td>
+                                    <td style="width:79px;text-align: right;padding-top: 13px;">身份证号:</td>
                                     <td>
-                                    [@macro.datetimePicker name="socialSecurity.endTime" value=socialSecurityForm.socialSecurity.endTime placeholder="下班时间"/]
+                                        [@macro.inputText name="socialSecurity.idCard" value=socialSecurityForm.socialSecurity.idCard!""/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:79px;text-align: right;padding-top: 13px;">联系电话:</td>
+                                    <td>
+                                        [@macro.inputText name="socialSecurity.mobile" value=socialSecurityForm.socialSecurity.mobile!""/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -62,4 +69,32 @@
 </body>
 
 [#include "${ctx}/common/footer.ftl"/]
+
+<script>
+    /**
+     *
+     * @param url
+     */
+    function queryUser() {
+        userId = $('#userId').val();
+        if (userId == 0) {
+            return;
+        }
+        $.ajax({
+            type: "get",
+            url: "${ctx}/socialSecurity/findUser/" + userId,
+            data: {},
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                alert(data.realName);
+                $('#realName').val(data.realName);
+            },
+            error: function (xmlHttpRequest,error) {
+            },
+            complete: function(xmlHttpRequest) {
+            }
+        });
+    }
+</script>
 </html>

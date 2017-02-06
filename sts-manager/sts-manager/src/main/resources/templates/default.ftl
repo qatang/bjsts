@@ -17,7 +17,7 @@
                                         <i class="ace-icon fa fa-times"></i>
                                     </button>
                                     <i class="ace-icon fa fa-check green"></i>
-                                    欢迎使用出票综合管理系统
+                                    欢迎使用顺天盛综合管理系统
                                 </div>
                             </div>
                         </div>

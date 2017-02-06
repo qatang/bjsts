@@ -11,6 +11,7 @@ import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.service.user.SocialSecurityService;
 import com.bjsts.manager.service.user.UserService;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -122,5 +124,22 @@ public class SocialSecurityController extends AbstractController {
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("socialSecurity", socialSecurityService.get(id));
         return "user/socialSecurity/view";
+    }
+
+    @RequiresPermissions("sts:social_security:findUser")
+    @RequestMapping("/findUser/{userId}")
+    @ResponseBody
+    public Map<String,String> findUser(@PathVariable Long userId) {
+        Map<String, String> result = Maps.newHashMap();
+        try {
+            UserEntity userEntity = userService.get(userId);
+            if (userEntity != null) {
+                result.put("realName", userEntity.getRealName());
+            }
+        } catch (Exception e) {
+            logger.error("调用UserService获取用户信息接口出错！");
+            logger.error(e.getMessage(), e);
+        }
+        return result;
     }
 }
