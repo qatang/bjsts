@@ -1,19 +1,19 @@
-package com.bjsts.manager.controller.user;
+package com.bjsts.manager.controller.system;
 
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.core.exception.ValidateFailedException;
 import com.bjsts.manager.entity.user.DepartmentEntity;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 import com.bjsts.manager.enums.user.EducationType;
 import com.bjsts.manager.enums.user.MaleType;
 import com.bjsts.manager.enums.user.PolityType;
-import com.bjsts.manager.form.user.UserForm;
-import com.bjsts.manager.query.user.UserSearchable;
+import com.bjsts.manager.form.system.UserForm;
+import com.bjsts.manager.query.system.UserSearchable;
 import com.bjsts.manager.service.system.RoleService;
 import com.bjsts.manager.service.user.DepartmentService;
-import com.bjsts.manager.service.user.UserService;
+import com.bjsts.manager.service.system.UserService;
 import com.bjsts.manager.shiro.authentication.PasswordHelper;
 import com.bjsts.manager.validator.user.PasswordChangeValidator;
 import com.bjsts.manager.validator.user.PasswordResetValidator;
@@ -84,7 +84,7 @@ public class UserController extends AbstractController {
         ApiResponse<UserEntity> apiResponse = userService.findAll(userSearchable, pageable);
         Page<UserEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
-        return "user/user/list";
+        return "system/user/list";
     }
 
     @RequiresPermissions("sts:user:create")
@@ -99,7 +99,7 @@ public class UserController extends AbstractController {
         List<DepartmentEntity> departmentEntities = departmentService.findAll();
         modelMap.put("departmentList", departmentEntities);
         modelMap.put("action", "create");
-        return "user/user/edit";
+        return "system/user/edit";
     }
 
     @RequiresPermissions("sts:user:create")
@@ -131,7 +131,7 @@ public class UserController extends AbstractController {
         List<DepartmentEntity> departmentEntities = departmentService.findAll();
         modelMap.put("departmentList", departmentEntities);
         modelMap.put("action", "update");
-        return "user/user/edit";
+        return "system/user/edit";
     }
 
     @RequiresPermissions("sts:user:update")
@@ -152,7 +152,7 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("userInfo", userService.get(id));
-        return "user/user/view";
+        return "system/user/view";
     }
 
     @RequiresPermissions("sts:user:changePassword")
@@ -174,7 +174,7 @@ public class UserController extends AbstractController {
         }
 
         userForm.setUserInfo(userInfo);
-        return "user/user/passwordChange";
+        return "system/user/passwordChange";
     }
 
     @RequiresPermissions("sts:user:changePassword")
@@ -209,7 +209,7 @@ public class UserController extends AbstractController {
         userForm.setUserInfo(userService.get(id));
         userForm.setRoleIdList(userService.findRoleIdByUserId(id));
         modelMap.addAttribute("roles", roleService.findAll());
-        return "user/user/allot";
+        return "system/user/allot";
     }
 
     @RequiresPermissions("sts:user:role")
@@ -240,7 +240,7 @@ public class UserController extends AbstractController {
         }
 
         userForm.setUserInfo(userInfo);
-        return "user/user/passwordReset";
+        return "system/user/passwordReset";
     }
 
     @RequiresPermissions("sts:user:resetPassword")

@@ -9,5 +9,5 @@ import java.util.List;
  * @author wangzhiliang
  */
 public interface AttendanceRepository extends IRepository<AttendanceEntity, Long> {
-    List<AttendanceEntity> findByUserId(Long userId);
+    List<AttendanceEntity> findByStaffId(Long staffId);
 }

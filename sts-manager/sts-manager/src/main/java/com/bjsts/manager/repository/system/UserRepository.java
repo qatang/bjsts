@@ -1,7 +1,7 @@
-package com.bjsts.manager.repository.user;
+package com.bjsts.manager.repository.system;
 
 import com.bjsts.manager.core.repository.IRepository;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 
 /**
  * @author jinsheng

@@ -7,4 +7,5 @@ import com.bjsts.manager.entity.user.SocialSecurityEntity;
  * @author wangzhiliang
  */
 public interface SocialSecurityRepository extends IRepository<SocialSecurityEntity, Long> {
+    SocialSecurityEntity findByStaffId(Long staffId);
 }

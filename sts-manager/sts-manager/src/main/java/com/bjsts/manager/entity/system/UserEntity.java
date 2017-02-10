@@ -1,4 +1,4 @@
-package com.bjsts.manager.entity.user;
+package com.bjsts.manager.entity.system;
 
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
@@ -10,37 +10,34 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 社保
- * @author wangzhiliang
+ * @author qatang
+ * @since 2014-12-19 15:01
  */
 @Entity
-@Table(name = "sts_social_security")
+@Table(name = "sts_user")
 @DynamicInsert
 @DynamicUpdate
-public class SocialSecurityEntity extends AbstractEntity {
-
-    private static final long serialVersionUID = 365635056980224790L;
+public class UserEntity extends AbstractEntity {
+    private static final long serialVersionUID = 1494723713506838837L;
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name="staff_id", updatable = false, nullable = false)
-    private Long staffId;
+    @Column(updatable = false)
+    private String username;
 
-    @Column(name = "real_name", updatable = false, nullable = false)
-    private String realName;
+    @Column(nullable = false)
+    private String password;
 
-    @Column(name = "department_id", nullable = false)
-    private Long departmentId;
+    @Column(nullable = false, length = 64)
+    private String salt;
 
-    @Column(name = "id_card")
-    private String idCard;
+    @Column(nullable = false, length = 128)
+    private String email;
 
     @Column(length = 32)
     private String mobile;
-
-    private String memo;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -49,6 +46,9 @@ public class SocialSecurityEntity extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_time")
     private Date updatedTime;
+
+    @Column(name = "real_name", nullable = false)
+    private String realName;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -62,36 +62,36 @@ public class SocialSecurityEntity extends AbstractEntity {
         this.id = id;
     }
 
-    public Long getStaffId() {
-        return staffId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setStaffId(Long staffId) {
-        this.staffId = staffId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getRealName() {
-        return realName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public String getIdCard() {
-        return idCard;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getMobile() {
@@ -100,14 +100,6 @@ public class SocialSecurityEntity extends AbstractEntity {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
     }
 
     public Date getCreatedTime() {
@@ -124,6 +116,14 @@ public class SocialSecurityEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public EnableDisableStatus getValid() {

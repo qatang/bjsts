@@ -11,17 +11,7 @@ CREATE TABLE `sts_user` (
   `mobile` VARCHAR(32) NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `department_id` bigint(20) NOT NULL DEFAULT 0,
   `real_name` VARCHAR(32) NOT NULL DEFAULT '',
-  `male_type` TINYINT(2) NOT NULL,
-  `position` VARCHAR(32) NOT NULL DEFAULT '',
-  `id_card` VARCHAR(32) NOT NULL DEFAULT '',
-  `entry_time` TIMESTAMP NULL DEFAULT NULL,
-  `departure_time` TIMESTAMP NULL DEFAULT NULL,
-  `education_type` TINYINT(3) NOT NULL,
-  `polity_type` TINYINT(3) NOT NULL,
-  `birthday` TIMESTAMP NULL DEFAULT NULL,
-  `on_job` TINYINT(2) NOT NULL DEFAULT 0,
   `valid` TINYINT(2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`),
@@ -29,15 +19,6 @@ CREATE TABLE `sts_user` (
   KEY `idx_created_time` (`created_time`),
   KEY `idx_updated_time` (`updated_time`),
   KEY `idx_valid` (`valid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `sts_department` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(20) NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `valid` TINYINT(2) NOT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sts_user_role` (
@@ -107,55 +88,67 @@ CREATE TABLE `sts_log` (
   KEY `idx_created_time` (`created_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `sts_attendance` (
+CREATE TABLE `sts_staff` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT(20) NOT NULL,
-  `real_name` VARCHAR(20) NULL,
-  `department_id` BIGINT(20) NOT NULL,
-  `memo` VARCHAR (200) NULL,
-  `start_time` TIMESTAMP NULL,
-  `end_time` TIMESTAMP NULL,
+  `department_id` bigint(20) NOT NULL,
+  `real_name` VARCHAR(32) NOT NULL DEFAULT '',
+  `male_type` TINYINT(2) NOT NULL,
+  `position` VARCHAR(32) NOT NULL DEFAULT '',
+  `id_card` VARCHAR(32) NOT NULL DEFAULT '',
+  `entry_time` TIMESTAMP NULL DEFAULT NULL,
+  `departure_time` TIMESTAMP NULL DEFAULT NULL,
+  `education_type` TINYINT(3) NOT NULL,
+  `polity_type` TINYINT(3) NOT NULL,
+  `birthday` TIMESTAMP NULL DEFAULT NULL,
+  `on_job` TINYINT(2) NOT NULL DEFAULT 0,
+  `mobile` VARCHAR(32) NOT NULL DEFAULT '',
+  `email` VARCHAR(128) NOT NULL DEFAULT '',
+  `memo` VARCHAR(256) NOT NULL DEFAULT '',
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `sts_social_security` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT(20) NOT NULL,
-  `real_name` VARCHAR(20) NULL,
-  `department_id` BIGINT(20) NOT NULL,
-  `id_card` BIGINT(20) NOT NULL,
-  `mobile` VARCHAR(32) NOT NULL,
-  `memo` VARCHAR (200) NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-CREATE TABLE `sts_attendance` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT(20) NOT NULL,
-  `real_name` VARCHAR(20) NULL,
-  `department_id` BIGINT(20) NOT NULL,
-  `memo` VARCHAR (200) NULL,
-  `start_time` TIMESTAMP NULL,
-  `end_time` TIMESTAMP NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `sts_social_security` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT(20) NOT NULL,
-  `real_name` VARCHAR(20) NULL,
-  `department_id` BIGINT(20) NOT NULL,
-  `id_card` BIGINT(20) NOT NULL,
-  `mobile` VARCHAR(32) NOT NULL,
-  `memo` VARCHAR (200) NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_user_id` (`user_id`)
+  KEY `idx_created_time` (`created_time`),
+  KEY `idx_updated_time` (`updated_time`),
+  KEY `idx_valid` (`valid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_attendance` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `staff_id` BIGINT(20) NOT NULL,
+  `real_name` VARCHAR(20) NOT NULL,
+  `department_id` BIGINT(20) NOT NULL,
+  `memo` VARCHAR (200) NULL,
+  `start_time` TIMESTAMP NULL,
+  `end_time` TIMESTAMP NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` tinyint(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_social_security` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `staff_id` BIGINT(20) NOT NULL,
+  `real_name` VARCHAR(20) NOT NULL,
+  `department_id` BIGINT(20) NOT NULL,
+  `id_card` BIGINT(20) NULL,
+  `mobile` VARCHAR(32) NOT NULL DEFAULT '',
+  `memo` VARCHAR (200) NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` tinyint(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_staff_id` (`staff_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sts_customer` (
@@ -280,7 +273,7 @@ CREATE TABLE `sts_document` (
   KEY `idx_group_object_id` (`group_key`, `object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `sts_user` VALUES ('1', 'admin', '9dcffaac6b711a1dba34ce5a4c49ac9a', 'ab41738cd16e16552c11ab79a2a0486a', 'admin@admin.com', '', '2016-12-08 16:23:22', '2016-12-08 16:23:21', '0', '', '1', '', '', null, null, '1', '1', null, '0', '1');
+INSERT INTO `sts_user` VALUES ('1', 'admin', '9dcffaac6b711a1dba34ce5a4c49ac9a', 'ab41738cd16e16552c11ab79a2a0486a', 'admin@admin.com', '', '2016-12-08 16:23:22', '2016-12-08 16:23:21', '', '1');
 
 INSERT INTO `sts_role` VALUES (1, '2016-05-05 17:00:53', '系统管理员', 'admin', 0, '系统管理员', '2016-05-13 10:57:50', 1);
 

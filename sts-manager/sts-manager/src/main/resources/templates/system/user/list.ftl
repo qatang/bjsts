@@ -50,7 +50,6 @@
                                             <th class="center"><i class="ace-icon fa fa-envelope-o"></i>邮箱</th>
                                             <th class="center">手机号</th>
                                             <th class="center"><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>创建时间</th>
-                                            <th class="center">禁用启用状态</th>
                                             <th class="center">操作</th>
                                         </tr>
                                         </thead>
@@ -65,7 +64,6 @@
                                                 <td class="center">${userInfo.email}</td>
                                                 <td class="center">${userInfo.mobile}</td>
                                                 <td class="center">${userInfo.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                                                <td class="center">${userInfo.valid.getName()}</td>
                                                 <td class="center">
                                                     <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="green" onclick="diag('用户修改', '${ctx}/user/update/${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">

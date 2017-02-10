@@ -1,15 +1,19 @@
 package com.bjsts.manager.controller.user;
 
+import com.bjsts.core.api.component.request.ApiPageRequestHelper;
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.PageOrderType;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.AttendanceEntity;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.user.StaffEntity;
 import com.bjsts.manager.form.user.AttendanceForm;
 import com.bjsts.manager.query.user.AttendanceSearchable;
 import com.bjsts.manager.service.user.AttendanceService;
-import com.bjsts.manager.service.user.DepartmentService;
-import com.bjsts.manager.service.user.UserService;
+import com.bjsts.manager.service.user.StaffService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,9 +44,7 @@ public class AttendanceController extends AbstractController {
     @Autowired
     private AttendanceService attendanceService;
     @Autowired
-    private DepartmentService departmentService;
-    @Autowired
-    private UserService userService;
+    private StaffService staffService;
 
     @RequiresPermissions("sts:attendance:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
@@ -61,9 +64,17 @@ public class AttendanceController extends AbstractController {
         if (Objects.isNull(attendanceForm.getAttendance())) {
             attendanceForm.setAttendance(new AttendanceEntity());
         }
-        List<UserEntity> userEntityList = userService.findAll();
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<StaffEntity> staffEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, staffService::findAll);
+
         modelMap.put("action", "create");
-        modelMap.put("userList", userEntityList);
+        modelMap.put("staffList", staffEntityList);
         return "user/attendance/edit";
     }
 
@@ -75,9 +86,18 @@ public class AttendanceController extends AbstractController {
             return "redirect:/attendance/create";
         }
         AttendanceEntity attendanceEntity = attendanceForm.getAttendance();
-        UserEntity userEntity = userService.get(attendanceEntity.getUserId());
-        attendanceEntity.setRealName(userEntity.getRealName());
-        attendanceEntity.setDepartmentId(userEntity.getDepartmentId());
+
+        Long staffId = attendanceEntity.getStaffId();
+        if (staffId == null) {
+            result.addError(new ObjectError("staffId", "请选择职工"));
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+            redirectAttributes.addFlashAttribute(attendanceForm);
+            return "redirect:/attendance/create";
+        }
+
+        StaffEntity staffEntity = staffService.get(attendanceEntity.getStaffId());
+        attendanceEntity.setRealName(staffEntity.getRealName());
+        attendanceEntity.setDepartmentId(staffEntity.getDepartmentId());
         attendanceService.save(attendanceEntity);
         return "result";
     }
@@ -95,8 +115,16 @@ public class AttendanceController extends AbstractController {
             return "redirect:/error";
         }
         attendanceForm.setAttendance(attendanceEntity);
-        List<UserEntity> userEntityList = userService.findAll();
-        modelMap.put("userList", userEntityList);
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<StaffEntity> staffEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, staffService::findAll);
+
+        modelMap.put("staffList", staffEntityList);
         modelMap.put("action", "update");
         return "user/attendance/edit";
     }
@@ -110,9 +138,9 @@ public class AttendanceController extends AbstractController {
         }
         AttendanceEntity attendance = attendanceForm.getAttendance();
         AttendanceEntity attendanceEntity = attendanceService.get(attendance.getId());
-        UserEntity userEntity = userService.get(attendanceEntity.getUserId());
-        attendanceEntity.setRealName(userEntity.getRealName());
-        attendanceEntity.setDepartmentId(userEntity.getDepartmentId());
+        StaffEntity staffEntity = staffService.get(attendanceEntity.getStaffId());
+        attendanceEntity.setRealName(staffEntity.getRealName());
+        attendanceEntity.setDepartmentId(staffEntity.getDepartmentId());
         attendanceService.update(attendanceEntity);
         return "result";
     }
@@ -122,5 +150,18 @@ public class AttendanceController extends AbstractController {
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("attendance", attendanceService.get(id));
         return "user/attendance/view";
+    }
+
+    @RequiresPermissions("sts:department:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        AttendanceEntity attendanceEntity = attendanceService.get(id);
+        if (Objects.isNull(attendanceEntity)) {
+            logger.error("删除考勤信息,未查询[id={}]的考勤信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={}]的考勤信息!");
+            return "redirect:/error";
+        }
+        attendanceService.delete(id);
+        return "redirect:/attendance/list";
     }
 }

@@ -27,12 +27,6 @@
                                     [/#if]
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">部门:</td>
-                                    <td>
-                                    [@macro.select name="userInfo.departmentId" value=userForm.userInfo.departmentId dataList=departmentList /]
-                                    </td>
-                                </tr>
                             [#if !userForm.userInfo.id??]
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">密码:</td>
@@ -54,32 +48,6 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
                                     <td><input type="text" name="userInfo.realName" id="name" value="${userForm.userInfo.realName!''}" maxlength="32" placeholder="这里输入姓名" style="width:98%;"/></td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">性别:</td>
-                                    <td>
-                                    [@macro.selectEnum name="userInfo.maleType" enumObj=userForm.userInfo.maleType!maleTypeList[0] dataList=maleTypeList /]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">职位:</td>
-                                    <td><input type="text" name="userInfo.position" id="position"  value="${userForm.userInfo.position!''}" maxlength="32" placeholder="这里输入职位" style="width:98%;"/></td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">身份证号:</td>
-                                    <td><input type="text" name="userInfo.idCard" id="idCard"  value="${userForm.userInfo.idCard!''}" maxlength="32" placeholder="这里输入身份证号" style="width:98%;"/></td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">教育:</td>
-                                    <td>
-                                    [@macro.selectEnum name="userInfo.educationType" enumObj=userForm.userInfo.educationType!educationTypeList[0] dataList=educationTypeList /]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">政治面貌:</td>
-                                    <td>
-                                    [@macro.selectEnum name="userInfo.polityType" enumObj=userForm.userInfo.polityType!polityTypeList[0] dataList=polityTypeList /]
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: center;" colspan="10">

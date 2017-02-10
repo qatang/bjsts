@@ -1,4 +1,4 @@
-package com.bjsts.manager.entity.user;
+package com.bjsts.manager.entity.system;
 
 import com.bjsts.manager.core.entity.AbstractEntity;
 import org.hibernate.annotations.DynamicInsert;

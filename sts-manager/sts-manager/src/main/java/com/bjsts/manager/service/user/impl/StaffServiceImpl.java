@@ -3,37 +3,31 @@ package com.bjsts.manager.service.user.impl;
 import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.service.AbstractService;
-import com.bjsts.manager.entity.user.AttendanceEntity;
-import com.bjsts.manager.query.user.AttendanceSearchable;
-import com.bjsts.manager.repository.user.AttendanceRepository;
-import com.bjsts.manager.service.user.AttendanceService;
+import com.bjsts.manager.entity.user.StaffEntity;
+import com.bjsts.manager.query.user.StaffSearchable;
+import com.bjsts.manager.repository.user.StaffRepository;
+import com.bjsts.manager.service.user.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
- * @author jinsheng
- * @since 2016-04-27 15:57
+ * @author wangzhiliang
  */
 @Service
 @Transactional
-public class AttendanceServiceImpl extends AbstractService<AttendanceEntity, Long> implements AttendanceService {
+public class StaffServiceImpl extends AbstractService<StaffEntity, Long> implements StaffService {
 
     @Autowired
-    private AttendanceRepository attendanceRepository;
+    private StaffRepository staffRepository;
 
     @Override
-    public List<AttendanceEntity> findByStaffId(Long staffId) {
-        return attendanceRepository.findByStaffId(staffId);
-    }
-
-    @Override
-    public ApiResponse<AttendanceEntity> findAll(AttendanceSearchable attendanceSearchable, Pageable pageable) {
+    public ApiResponse<StaffEntity> findAll(StaffSearchable staffSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
 
        /* if (StringUtils.isNotEmpty(userSearchable.getId())) {
@@ -62,14 +56,19 @@ public class AttendanceServiceImpl extends AbstractService<AttendanceEntity, Lon
             request.filterLessEqual(QUserInfo.createdTime, userSearchable.getEndCreatedTime());
         }
 
-        if (userSearchable.getValid() != null && !Objects.equals(EnableDisableStatus.ALL, userSearchable.getValid())) {
-            request.filterEqual(QUserInfo.valid, userSearchable.getValid());
-        }*/
+        */
+        request.filterEqual("valid", EnableDisableStatus.ENABLE);
 
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
-        attendanceSearchable.convertPageable(requestPage, pageable);
+        staffSearchable.convertPageable(requestPage, pageable);
 
-        Page<AttendanceEntity> attendanceEntityPage = attendanceRepository.findAll(convertSpecification(request), convertPageable(requestPage));
-        return convertApiResponse(attendanceEntityPage);
+        Page<StaffEntity> staffEntityPage = staffRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(staffEntityPage);
+    }
+
+    @Override
+    public ApiResponse<StaffEntity> findAll(ApiRequest request, ApiRequestPage requestPage) {
+        Page<StaffEntity> page = staffRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(page);
     }
 }

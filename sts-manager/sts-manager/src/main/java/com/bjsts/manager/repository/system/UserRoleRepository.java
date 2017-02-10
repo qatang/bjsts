@@ -1,6 +1,6 @@
-package com.bjsts.manager.repository.user;
+package com.bjsts.manager.repository.system;
 
-import com.bjsts.manager.entity.user.UserRoleEntity;
+import com.bjsts.manager.entity.system.UserRoleEntity;
 import com.bjsts.manager.core.repository.IRepository;
 
 import java.util.List;

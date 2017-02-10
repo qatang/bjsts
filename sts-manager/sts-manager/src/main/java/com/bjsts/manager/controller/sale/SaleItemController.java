@@ -6,7 +6,7 @@ import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.entity.sale.PlanTraceEntity;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 import com.bjsts.manager.enums.sale.PlanStatus;
 import com.bjsts.manager.form.sale.SaleItemForm;
 import com.bjsts.manager.query.sale.SaleItemSearchable;

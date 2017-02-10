@@ -12,7 +12,7 @@
                     <div class="page-content">
                         <div class="row">
                             <div class="col-xs-11">
-                                <form action="${ctx}/attendance/list" method="post" name="attendanceForm" id="attendanceForm">
+                                [#--<form action="${ctx}/attendance/list" method="post" name="attendanceForm" id="attendanceForm">
                                     <table style="margin-top:5px;">
                                         <tr>
                                             <td>
@@ -27,7 +27,7 @@
                                             <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
                                         </tr>
                                     </table>
-                                </form>
+                                </form>--]
                             </div>
                             <div class="col-xs-1">
                                 <div style="float:right;margin-top:5px;">
@@ -40,6 +40,7 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
                                     <thead>
                                     <tr>
+                                        <th class="center">职工编号</th>
                                         <th class="center">姓名</th>
                                         <th class="center"><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>上班时间</th>
                                         <th class="center"><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>下班时间</th>
@@ -51,22 +52,18 @@
                                     [#if page?? && page.content?has_content]
                                         [#list page.content as attendance]
                                         <tr>
+                                            <td class="center">${attendance.staffId}</td>
                                             <td class="center">${attendance.realName!""}</td>
-                                            <td class="center">
-                                                [#if attendance.startTime??]
-                                                    ${attendance.startTime?string("yyyy-MM-dd HH:mm:ss")}
-                                                [/#if]
-                                            </td>
-                                            <td class="center">
-                                                [#if attendance.endTime??]
-                                                ${attendance.endTime?string("yyyy-MM-dd HH:mm:ss")}
-                                                [/#if]
-                                            </td>
+                                            <td class="center">[@macro.displayDate value=attendance.startTime!""/]</td>
+                                            <td class="center">[@macro.displayDate value=attendance.endTime!""/]</td>
                                             <td class="center">
                                                 <div class="hidden-sm hidden-xs btn-group">
                                                     <a class="green" onclick="diag('考勤修改', '${ctx}/attendance/update/${attendance.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
-                                                        <i class="ace-icon fa fa-pencil bigger-130" title="编辑"></i>
+                                                        编辑
                                                     </a>
+                                                </div>
+                                                <div class="hidden-sm hidden-xs btn-group">
+                                                    <a href="${ctx}/attendance/disable/${attendance.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
                                                 </div>
                                             </td>
                                         </tr>

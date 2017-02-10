@@ -2,10 +2,10 @@ package com.bjsts.manager.interceptor;
 
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.entity.system.ResourceEntity;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 import com.bjsts.manager.service.system.ResourceService;
 import com.bjsts.manager.service.system.RoleService;
-import com.bjsts.manager.service.user.UserService;
+import com.bjsts.manager.service.system.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.util.AntPathMatcher;

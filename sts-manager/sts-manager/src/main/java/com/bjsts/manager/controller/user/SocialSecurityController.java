@@ -1,15 +1,19 @@
 package com.bjsts.manager.controller.user;
 
+import com.bjsts.core.api.component.request.ApiPageRequestHelper;
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.PageOrderType;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.SocialSecurityEntity;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.user.StaffEntity;
 import com.bjsts.manager.form.user.SocialSecurityForm;
 import com.bjsts.manager.query.user.SocialSecuritySearchable;
-import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.service.user.SocialSecurityService;
-import com.bjsts.manager.service.user.UserService;
+import com.bjsts.manager.service.user.StaffService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,6 +26,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,9 +46,7 @@ public class SocialSecurityController extends AbstractController {
     @Autowired
     private SocialSecurityService socialSecurityService;
     @Autowired
-    private DepartmentService departmentService;
-    @Autowired
-    private UserService userService;
+    private StaffService staffService;
 
     @RequiresPermissions("sts:social_security:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
@@ -63,9 +66,17 @@ public class SocialSecurityController extends AbstractController {
         if (Objects.isNull(socialSecurityForm.getSocialSecurity())) {
             socialSecurityForm.setSocialSecurity(new SocialSecurityEntity());
         }
-        List<UserEntity> userEntityList = userService.findAll();
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<StaffEntity> staffEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, staffService::findAll);
+
         modelMap.put("action", "create");
-        modelMap.put("userList", userEntityList);
+        modelMap.put("staffList", staffEntityList);
         return "user/socialSecurity/edit";
     }
 
@@ -76,10 +87,27 @@ public class SocialSecurityController extends AbstractController {
             redirectAttributes.addFlashAttribute(socialSecurityForm);
             return "redirect:/socialSecurity/create";
         }
+
         SocialSecurityEntity socialSecurityEntity = socialSecurityForm.getSocialSecurity();
-        UserEntity userEntity = userService.get(socialSecurityEntity.getUserId());
-        socialSecurityEntity.setRealName(userEntity.getRealName());
-        socialSecurityEntity.setDepartmentId(userEntity.getDepartmentId());
+        Long staffId = socialSecurityEntity.getStaffId();
+        if (staffId == null) {
+            result.addError(new ObjectError("staffId", "请选择职工"));
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+            redirectAttributes.addFlashAttribute(socialSecurityForm);
+            return "redirect:/socialSecurity/create";
+        }
+
+        StaffEntity staffEntity = staffService.get(staffId);
+
+        SocialSecurityEntity db = socialSecurityService.findByStaffId(socialSecurityEntity.getStaffId());
+        if (db != null) {
+            result.addError(new ObjectError("staffId", "职工已存在"));
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+            redirectAttributes.addFlashAttribute(socialSecurityForm);
+            return "redirect:/socialSecurity/create";
+        }
+        socialSecurityEntity.setRealName(staffEntity.getRealName());
+        socialSecurityEntity.setDepartmentId(staffEntity.getDepartmentId());
         socialSecurityService.save(socialSecurityEntity);
         return "result";
     }
@@ -92,13 +120,21 @@ public class SocialSecurityController extends AbstractController {
         }
         SocialSecurityEntity socialSecurityEntity = socialSecurityService.get(id);
         if (Objects.isNull(socialSecurityEntity)) {
-            logger.error("修改部门,未查询[id={}]的部门信息", id);
-            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
+            logger.error("修改社保信息,未查询[id={}]的社保信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id=" +id+ "]的社保信息!");
             return "redirect:/error";
         }
         socialSecurityForm.setSocialSecurity(socialSecurityEntity);
-        List<UserEntity> userEntityList = userService.findAll();
-        modelMap.put("userList", userEntityList);
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<StaffEntity> staffEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, staffService::findAll);
+
+        modelMap.put("staffList", staffEntityList);
         modelMap.put("action", "update");
         return "user/socialSecurity/edit";
     }
@@ -110,12 +146,13 @@ public class SocialSecurityController extends AbstractController {
             redirectAttributes.addFlashAttribute(socialSecurityForm);
             return "redirect:/socialSecurity/update/" + socialSecurityForm.getSocialSecurity().getId();
         }
+
         SocialSecurityEntity socialSecurity = socialSecurityForm.getSocialSecurity();
         SocialSecurityEntity socialSecurityEntity = socialSecurityService.get(socialSecurity.getId());
-        UserEntity userEntity = userService.get(socialSecurityEntity.getUserId());
-        socialSecurityEntity.setRealName(userEntity.getRealName());
-        socialSecurityEntity.setDepartmentId(userEntity.getDepartmentId());
-        socialSecurityService.update(socialSecurityEntity);
+        socialSecurityEntity.setIdCard(socialSecurity.getIdCard());
+        socialSecurityEntity.setMobile(socialSecurity.getMobile());
+        socialSecurityEntity.setMemo(socialSecurity.getMemo());
+        socialSecurityService.save(socialSecurityEntity);
         return "result";
     }
 
@@ -126,20 +163,33 @@ public class SocialSecurityController extends AbstractController {
         return "user/socialSecurity/view";
     }
 
-    @RequiresPermissions("sts:social_security:findUser")
-    @RequestMapping("/findUser/{userId}")
+    @RequiresPermissions("sts:social_security:findStaff")
+    @RequestMapping("/findStaff/{staffId}")
     @ResponseBody
-    public Map<String,String> findUser(@PathVariable Long userId) {
+    public Map<String,String> findStaff(@PathVariable Long staffId) {
         Map<String, String> result = Maps.newHashMap();
         try {
-            UserEntity userEntity = userService.get(userId);
-            if (userEntity != null) {
-                result.put("realName", userEntity.getRealName());
+            StaffEntity staffEntity = staffService.get(staffId);
+            if (staffEntity != null) {
+                result.put("realName", staffEntity.getRealName());
             }
         } catch (Exception e) {
             logger.error("调用UserService获取用户信息接口出错！");
             logger.error(e.getMessage(), e);
         }
         return result;
+    }
+
+    @RequiresPermissions("sts:social_security:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        SocialSecurityEntity socialSecurityEntity = socialSecurityService.get(id);
+        if (Objects.isNull(socialSecurityEntity)) {
+            logger.error("删除社保信息,未查询[id={}]的社保信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={}]的社保信息!");
+            return "redirect:/error";
+        }
+        socialSecurityService.delete(id);
+        return "redirect:/socialSecurity/list";
     }
 }

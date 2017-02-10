@@ -66,4 +66,9 @@ public class SocialSecurityServiceImpl extends AbstractService<SocialSecurityEnt
         Page<SocialSecurityEntity> socialSecurityEntityPage = socialSecurityRepository.findAll(convertSpecification(request), convertPageable(requestPage));
         return convertApiResponse(socialSecurityEntityPage);
     }
+
+    @Override
+    public SocialSecurityEntity findByStaffId(Long staffId) {
+        return socialSecurityRepository.findByStaffId(staffId);
+    }
 }

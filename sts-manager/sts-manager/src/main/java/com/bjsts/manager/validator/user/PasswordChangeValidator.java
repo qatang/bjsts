@@ -2,9 +2,9 @@ package com.bjsts.manager.validator.user;
 
 import com.bjsts.manager.core.exception.ValidateFailedException;
 import com.bjsts.manager.core.validator.AbstractValidator;
-import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.form.user.UserForm;
-import com.bjsts.manager.service.user.UserService;
+import com.bjsts.manager.entity.system.UserEntity;
+import com.bjsts.manager.form.system.UserForm;
+import com.bjsts.manager.service.system.UserService;
 import com.bjsts.manager.shiro.authentication.PasswordHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;

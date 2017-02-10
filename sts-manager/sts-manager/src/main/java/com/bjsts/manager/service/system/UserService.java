@@ -1,9 +1,9 @@
-package com.bjsts.manager.service.user;
+package com.bjsts.manager.service.system;
 
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.IService;
-import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.query.user.UserSearchable;
+import com.bjsts.manager.entity.system.UserEntity;
+import com.bjsts.manager.query.system.UserSearchable;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

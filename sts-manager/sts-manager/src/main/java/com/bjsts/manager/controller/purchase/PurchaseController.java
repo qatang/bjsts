@@ -4,7 +4,7 @@ import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
 import com.bjsts.manager.form.purchase.PurchaseForm;
-import com.bjsts.manager.query.user.UserSearchable;
+import com.bjsts.manager.query.system.UserSearchable;
 import com.bjsts.manager.service.purchase.PurchaseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

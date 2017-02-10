@@ -20,11 +20,17 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">职员:</td>
                                     <td>
-                                        <select class="chosen-select form-control" name="attendance.userId" data-placeholder="请选择" style="">
-                                            [#list userList as data]
-                                                <option value="${data.id?c}" [#if attendanceForm.attendance.userId?has_content && data.id == attendanceForm.attendance.userId]selected[/#if]>${data.getRealName()!""}</option>
+                                    [#if attendanceForm.attendance.id??]
+                                        ${attendanceForm.attendance.realName!""}
+                                        <input type="hidden" name="attendance.id" value="${attendanceForm.attendance.staffId!''}"/>
+                                    [#else]
+                                        <select class="chosen-select form-control" name="attendance.staffId" data-placeholder="请选择" style="" onchange="queryStaff(this);" id="staffId">
+                                            <option value="0">请选择</option>
+                                            [#list staffList as data]
+                                                <option value="${data.id?c}" [#if attendanceForm.attendance.staffId?has_content && data.id == attendanceForm.attendance.staffId]selected[/#if]>${data.getRealName()!""}</option>
                                             [/#list]
                                         </select>
+                                    [/#if]
                                     </td>
                                 </tr>
                                 <tr>

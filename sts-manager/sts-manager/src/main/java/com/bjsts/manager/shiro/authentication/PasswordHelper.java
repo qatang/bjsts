@@ -1,6 +1,6 @@
 package com.bjsts.manager.shiro.authentication;
 
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 import com.bjsts.manager.utils.AuthenticatorUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

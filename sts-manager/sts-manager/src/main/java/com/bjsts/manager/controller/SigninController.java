@@ -1,8 +1,8 @@
 package com.bjsts.manager.controller;
 
 import com.bjsts.manager.core.controller.AbstractController;
-import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.form.user.UserForm;
+import com.bjsts.manager.entity.system.UserEntity;
+import com.bjsts.manager.form.system.UserForm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;

@@ -1,5 +1,7 @@
 package com.bjsts.manager.entity.user;
 
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -22,13 +24,13 @@ public class AttendanceEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name="user_id", updatable = false)
-    private Long userId;
+    @Column(name="staff_id", updatable = false, nullable = false)
+    private Long staffId;
 
-    @Column(name = "real_name", updatable = false)
+    @Column(name = "real_name", updatable = false, nullable = false)
     private String realName;
 
-    @Column(name = "department_id")
+    @Column(name = "department_id", nullable = false)
     private Long departmentId;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,6 +51,10 @@ public class AttendanceEntity extends AbstractEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
+    @Convert(converter = EnableDisableStatusConverter.class)
+    @Column(nullable = false)
+    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
+
     public Long getId() {
         return id;
     }
@@ -57,12 +63,12 @@ public class AttendanceEntity extends AbstractEntity {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getStaffId() {
+        return staffId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 
     public String getRealName() {
@@ -119,5 +125,13 @@ public class AttendanceEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public EnableDisableStatus getValid() {
+        return valid;
+    }
+
+    public void setValid(EnableDisableStatus valid) {
+        this.valid = valid;
     }
 }

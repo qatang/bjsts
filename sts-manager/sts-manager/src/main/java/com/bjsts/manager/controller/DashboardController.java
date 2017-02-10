@@ -1,7 +1,7 @@
 package com.bjsts.manager.controller;
 
 import com.bjsts.manager.core.controller.AbstractController;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

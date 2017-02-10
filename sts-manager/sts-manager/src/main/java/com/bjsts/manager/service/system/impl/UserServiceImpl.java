@@ -1,15 +1,15 @@
-package com.bjsts.manager.service.user.impl;
+package com.bjsts.manager.service.system.impl;
 
 import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.AbstractService;
-import com.bjsts.manager.entity.user.UserEntity;
-import com.bjsts.manager.entity.user.UserRoleEntity;
-import com.bjsts.manager.query.user.UserSearchable;
-import com.bjsts.manager.repository.user.UserRepository;
-import com.bjsts.manager.repository.user.UserRoleRepository;
-import com.bjsts.manager.service.user.UserService;
+import com.bjsts.manager.entity.system.UserEntity;
+import com.bjsts.manager.entity.system.UserRoleEntity;
+import com.bjsts.manager.query.system.UserSearchable;
+import com.bjsts.manager.repository.system.UserRepository;
+import com.bjsts.manager.repository.system.UserRoleRepository;
+import com.bjsts.manager.service.system.UserService;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

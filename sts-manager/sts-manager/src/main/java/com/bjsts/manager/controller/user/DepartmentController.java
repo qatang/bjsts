@@ -1,5 +1,10 @@
 package com.bjsts.manager.controller.user;
 
+import com.bjsts.core.api.component.request.ApiPageRequestHelper;
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.PageOrderType;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.DepartmentEntity;
@@ -21,8 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author jinsheng
- * @since 2016-04-26 16:56
+ * @author wangzhiliang
  */
 @Controller
 @RequestMapping("/department")
@@ -35,8 +39,14 @@ public class DepartmentController extends AbstractController {
     @RequiresPermissions("sts:department:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(DepartmentSearchable departmentSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        List<DepartmentEntity> departmentEntityList = departmentService.findAll();
-        modelMap.addAttribute("list", departmentEntityList);
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<DepartmentEntity> departmentEntities = ApiPageRequestHelper.request(apiRequest, apiRequestPage, departmentService::findAll);
+        modelMap.addAttribute("list", departmentEntities);
         return "user/department/list";
     }
 
@@ -74,7 +84,7 @@ public class DepartmentController extends AbstractController {
         DepartmentEntity departmentEntity = departmentService.get(id);
         if (Objects.isNull(departmentEntity)) {
             logger.error("修改部门,未查询[id={}]的部门信息", id);
-            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={}]的部门信息!");
             return "redirect:/error";
         }
         departmentForm.setDepartment(departmentEntity);
@@ -101,5 +111,19 @@ public class DepartmentController extends AbstractController {
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("department", departmentService.get(id));
         return "user/department/view";
+    }
+
+    @RequiresPermissions("sts:department:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        DepartmentEntity departmentEntity = departmentService.get(id);
+        if (Objects.isNull(departmentEntity)) {
+            logger.error("删除部门信息,未查询[id={}]的部门信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={}]的部门信息!");
+            return "redirect:/error";
+        }
+        departmentEntity.setValid(EnableDisableStatus.DISABLE);
+        departmentService.update(departmentEntity);
+        return "redirect:/department/list";
     }
 }

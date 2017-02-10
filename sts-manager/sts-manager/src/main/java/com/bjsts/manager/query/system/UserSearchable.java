@@ -1,4 +1,4 @@
-package com.bjsts.manager.query.user;
+package com.bjsts.manager.query.system;
 
 import com.bjsts.manager.core.query.CommonSearchable;
 

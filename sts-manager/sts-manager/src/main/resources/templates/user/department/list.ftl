@@ -38,9 +38,12 @@
                                             <td class="center">${department.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                             <td class="center">
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a class="green" onclick="diag('部门修改', '${ctx}/department/update/${department.id}');" style="cursor: pointer;text-decoration:none;">
-                                                        <i class="ace-icon fa fa-pencil bigger-130" title="编辑"></i>
+                                                    <a class="green" onclick="diag('部门修改', '${ctx}/department/update/${department.id}';" style="cursor: pointer;text-decoration:none;">
+                                                        编辑
                                                     </a>
+                                                </div>
+                                                <div class="hidden-sm hidden-xs btn-group">
+                                                    <a href="${ctx}/department/disable/${department.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
                                                 </div>
                                             </td>
                                         </tr>

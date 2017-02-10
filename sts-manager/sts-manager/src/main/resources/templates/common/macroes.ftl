@@ -250,9 +250,9 @@
     [/#if]
 [/#macro]
 
-[#macro inputText name value id="" type="text" maxLength="" placeholder="" pattern="" required=true displayPlaceholder=true style="width:98%;"]
+[#macro inputText name value id="" type="text" maxLength="" placeholder="" pattern="" required=true displayPlaceholder=true style="width:98%;" readonly=false]
     [#if !id?has_content][#local id=name][/#if]
-    <input id="${id}" type="${type}" name="${name}" value="${value}" [#if maxLength?has_content]maxlength="${maxLength}"[/#if] [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if pattern?has_content]pattern="${pattern}"[/#if] [#if required]required=""[/#if] style="${style}"/>
+    <input id="${id}" type="${type}" name="${name}" value="${value}" [#if maxLength?has_content]maxlength="${maxLength}"[/#if] [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if pattern?has_content]pattern="${pattern}"[/#if] [#if required]required=""[/#if] style="${style}" [#if readonly]readonly=""[/#if]/>
 [/#macro]
 
 [#macro inputMoney name value multiple=100 placeholder="" required=true displayPlaceholder=true pattern="^(\\d+|[1-9])(.\\d{0,2})?$"]

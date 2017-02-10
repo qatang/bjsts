@@ -1,7 +1,7 @@
-package com.bjsts.manager.form.user;
+package com.bjsts.manager.form.system;
 
 import com.bjsts.manager.core.form.AbstractForm;
-import com.bjsts.manager.entity.user.UserEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 
 import java.util.List;
 

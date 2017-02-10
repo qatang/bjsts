@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface AttendanceService extends IService<AttendanceEntity, Long> {
 
-    List<AttendanceEntity> findByUserId(Long userId);
+    List<AttendanceEntity> findByStaffId(Long staffId);
 
     ApiResponse<AttendanceEntity> findAll(AttendanceSearchable attendanceSearchable, Pageable pageable);
 }

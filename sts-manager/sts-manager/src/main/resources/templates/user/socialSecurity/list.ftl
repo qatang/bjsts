@@ -39,10 +39,11 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
                                     <thead>
                                     <tr>
-                                        <th class="center">编号</th>
+                                        <th class="center">职工编号</th>
                                         <th class="center">姓名</th>
                                         <th class="center">身份证号</th>
                                         <th class="center">联系电话</th>
+                                        <th class="center">操作</th>
                                     </tr>
                                     </thead>
 
@@ -50,10 +51,20 @@
                                     [#if page?? && page.content?has_content]
                                         [#list page.content as socialSecurity]
                                         <tr>
-                                            <td class="center">${socialSecurity.userId!""}</td>
+                                            <td class="center">${socialSecurity.staffId!""}</td>
                                             <td class="center">${socialSecurity.realName!""}</td>
                                             <td class="center">${socialSecurity.idCard!""}</td>
                                             <td class="center">${socialSecurity.mobile!""}</td>
+                                            <td class="center">
+                                                <div class="hidden-sm hidden-xs btn-group">
+                                                    <a class="green" onclick="diag('社保修改', '${ctx}/socialSecurity/update/${socialSecurity.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
+                                                        编辑
+                                                    </a>
+                                                </div>
+                                                <div class="hidden-sm hidden-xs btn-group">
+                                                    <a href="${ctx}/socialSecurity/disable/${socialSecurity.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
+                                                </div>
+                                            </td>
                                         </tr>
                                         [/#list]
                                     [/#if]

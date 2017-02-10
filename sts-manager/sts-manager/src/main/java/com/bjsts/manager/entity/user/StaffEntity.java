@@ -5,12 +5,12 @@ import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.user.EducationType;
-import com.bjsts.manager.enums.user.MaleType;
-import com.bjsts.manager.enums.user.PolityType;
 import com.bjsts.manager.enums.converter.EducationTypeConverter;
 import com.bjsts.manager.enums.converter.MaleTypeConverter;
 import com.bjsts.manager.enums.converter.PolityTypeConverter;
+import com.bjsts.manager.enums.user.EducationType;
+import com.bjsts.manager.enums.user.MaleType;
+import com.bjsts.manager.enums.user.PolityType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -18,48 +18,25 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author qatang
- * @since 2014-12-19 15:01
+ * 雇员
+ * @author wangzhiliang
  */
 @Entity
-@Table(name = "sts_user")
+@Table(name = "sts_staff")
 @DynamicInsert
 @DynamicUpdate
-public class UserEntity extends AbstractEntity {
-    private static final long serialVersionUID = 1494723713506838837L;
+public class StaffEntity extends AbstractEntity {
 
+    private static final long serialVersionUID = -5506202072645887173L;
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(updatable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, length = 64)
-    private String salt;
-
-    @Column(nullable = false, length = 128)
-    private String email;
-
-    @Column(length = 32)
-    private String mobile;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time", updatable = false, nullable = false)
-    private Date createdTime = new Date();
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_time")
-    private Date updatedTime;
-
-    @Column(name = "department_id")
-    private Long departmentId;
-
     @Column(name = "real_name", nullable = false)
     private String realName;
+
+    @Column(name = "department_id", nullable = false)
+    private Long departmentId;
 
     @Convert(converter = MaleTypeConverter.class)
     @Column(nullable = false, name = "male_type")
@@ -95,9 +72,29 @@ public class UserEntity extends AbstractEntity {
     @Column(nullable = false, name = "on_job")
     private YesNoStatus onJob;
 
+    @Column(length = 32)
+    private String mobile;
+
+    @Column(length = 128)
+    private String email;
+
+    @Column(length = 256)
+    private String memo;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time", updatable = false, nullable = false)
+    private Date createdTime = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_time")
+    private Date updatedTime;
+
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
+
+    @Transient
+    private String departmentName;
 
     public Long getId() {
         return id;
@@ -105,30 +102,6 @@ public class UserEntity extends AbstractEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     public String getEmail() {
@@ -257,5 +230,21 @@ public class UserEntity extends AbstractEntity {
 
     public void setValid(EnableDisableStatus valid) {
         this.valid = valid;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }

@@ -12,4 +12,6 @@ import org.springframework.data.domain.Pageable;
  */
 public interface SocialSecurityService extends IService<SocialSecurityEntity, Long> {
     ApiResponse<SocialSecurityEntity> findAll(SocialSecuritySearchable socialSecuritySearchable, Pageable pageable);
+
+    SocialSecurityEntity findByStaffId(Long staffId);
 }
