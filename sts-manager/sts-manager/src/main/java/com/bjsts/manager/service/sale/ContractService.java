@@ -14,4 +14,6 @@ public interface ContractService extends IService<ContractEntity, Long> {
     ApiResponse<ContractEntity> findAll(ContractSearchable contractSearchable, Pageable pageable);
 
     ContractEntity save(ContractEntity contractEntity, String contractFileUrl);
+
+    ContractEntity findByPlanNo(String planNo);
 }

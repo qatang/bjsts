@@ -3,6 +3,7 @@ package com.bjsts.manager.service.system.impl;
 import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.system.UserEntity;
 import com.bjsts.manager.entity.system.UserRoleEntity;
@@ -72,6 +73,8 @@ public class UserServiceImpl extends AbstractService<UserEntity, Long> implement
         if (userSearchable.getValid() != null && !Objects.equals(EnableDisableStatus.ALL, userSearchable.getValid())) {
             request.filterEqual(QUserInfo.valid, userSearchable.getValid());
         }*/
+
+       request.filterEqual("valid", EnableDisableStatus.ENABLE);
 
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         userSearchable.convertPageable(requestPage, pageable);

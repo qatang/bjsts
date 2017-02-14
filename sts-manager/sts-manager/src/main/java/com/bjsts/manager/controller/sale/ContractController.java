@@ -1,6 +1,12 @@
 package com.bjsts.manager.controller.sale;
 
+import com.bjsts.core.api.component.request.ApiPageRequestHelper;
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.PageOrderType;
+import com.bjsts.core.util.CoreMathUtils;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
@@ -28,6 +34,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -89,7 +96,16 @@ public class ContractController extends AbstractController {
             contractForm.setContract(new ContractEntity());
         }
 
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<PlanEntity> planEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, productOrderService::findAll);
+
         modelMap.put("action", "create");
+        modelMap.put("planList", planEntityList);
         return "sale/contract/edit";
     }
 
@@ -97,11 +113,27 @@ public class ContractController extends AbstractController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(ContractForm contractForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
+            contractForm.setAmount(CoreMathUtils.mul(contractForm.getAmount(),100));
             redirectAttributes.addFlashAttribute(contractForm);
             return "redirect:/contract/create";
         }
+
         ContractEntity contractEntity = contractForm.getContract();
+
+        String planNo = contractEntity.getPlanNo();
+        ContractEntity existContract = contractService.findByPlanNo(planNo);
+        if (existContract != null) {
+            contractForm.setAmount(CoreMathUtils.mul(contractForm.getAmount(),100));
+            result.addError(new ObjectError("planNo", "该项目已经创建合同"));
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+            redirectAttributes.addFlashAttribute(contractForm);
+            return "redirect:/contract/create";
+        }
+
         contractEntity.setContractNo(idGeneratorService.generateDateFormatted(ContractEntity.SEQ_ID_GENERATOR));
+
+        Double amount = CoreMathUtils.mul(contractForm.getAmount(), 100L);
+        contractEntity.setAmount(amount.longValue());
 
         String contractUrl = contractForm.getContractUrl();
         if (StringUtils.isEmpty(contractUrl)) {
@@ -125,6 +157,7 @@ public class ContractController extends AbstractController {
             return "redirect:/error";
         }
         contractForm.setContract(contractEntity);
+        contractForm.setAmount(Double.valueOf(contractEntity.getAmount()));
 
         Long documentId = contractEntity.getContractUrl();
         if (documentId != null) {
@@ -150,7 +183,8 @@ public class ContractController extends AbstractController {
         contractEntity.setChangeContent(contract.getChangeContent());
         contractEntity.setQualityTime(contract.getQualityTime());
         contractEntity.setSignTime(contract.getSignTime());
-        contractEntity.setAmount(contract.getAmount());
+        Double amount = CoreMathUtils.mul(contractForm.getAmount(), 100L);
+        contractEntity.setAmount(amount.longValue());
 
         String contractUrl = contractForm.getContractUrl();
         if (StringUtils.isEmpty(contractUrl)) {
@@ -225,5 +259,19 @@ public class ContractController extends AbstractController {
             map.put("message", "上传失败，文件为空.");
         }
         return map;
+    }
+
+    @RequiresPermissions("sts:contract:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        ContractEntity contractEntity = contractService.get(id);
+        if (Objects.isNull(contractEntity)) {
+            logger.error("删除合同信息,未查询[id={}]的合同信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={"+id+"}]的合同信息!");
+            return "redirect:/error";
+        }
+        contractEntity.setValid(EnableDisableStatus.DISABLE);
+        contractService.update(contractEntity);
+        return "redirect:/contract/list";
     }
 }

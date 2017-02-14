@@ -122,6 +122,15 @@ public class StaffController extends AbstractController {
             redirectAttributes.addFlashAttribute(staffForm);
             return "redirect:/staff/create";
         }
+
+        StaffEntity dbStaffEntity = staffService.get(staffEntity.getId());
+        if (dbStaffEntity != null) {
+         result.addError(new ObjectError("staffId", "职工编号已存在"));
+         redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+         redirectAttributes.addFlashAttribute(staffForm);
+         return "redirect:/staff/create";
+        }
+
         staffService.save(staffEntity);
         return "result";
     }

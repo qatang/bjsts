@@ -15,7 +15,6 @@
                         <form action="${ctx}/staff/${action}" name="staffForm" id="staffForm" method="post">
                             <div style="padding-top: 13px;"></div>
                             [@macro.errors /]
-                            <input type="hidden" name="staff.id" value="${staffForm.staff.id!''}"/>
                             <table id="table_report" class="table table-striped table-bordered table-hover">
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">部门:</td>
@@ -24,8 +23,21 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="width:79px;text-align: right;padding-top: 13px;">职工编号:</td>
+                                    <td>
+                                        [#if staffForm.staff.id?has_content && action = "update"]
+                                            <input type="hidden" name="staff.id" value="${staffForm.staff.id!''}"/>
+                                            ${staffForm.staff.id}
+                                        [#else]
+                                            [@macro.inputNumber name="staff.id" value=staffForm.staff.id!"" placeholder="职工编号"/]
+                                        [/#if]
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
-                                    <td><input type="text" name="staff.realName" id="name" value="${staffForm.staff.realName!''}" maxlength="32" placeholder="这里输入姓名" required="" style="width:98%;"/></td>
+                                    <td>
+                                        [@macro.inputText name="staff.realName" value=staffForm.staff.realName!"" placeholder="姓名"/]
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">性别:</td>
@@ -35,22 +47,26 @@
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">职位:</td>
-                                    <td><input type="text" name="staff.position" id="position"  value="${staffForm.staff.position!''}" maxlength="32" placeholder="这里输入职位" style="width:98%;"/></td>
+                                    <td>
+                                        [@macro.inputText name="staff.position" value=staffForm.staff.position!"" placeholder="职位"/]
+                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">身份证号:</td>
-                                    <td><input type="text" name="staff.idCard" id="idCard"  value="${staffForm.staff.idCard!''}" maxlength="32" placeholder="这里输入身份证号" style="width:98%;"/></td>
+                                    <td>
+                                        [@macro.inputText name="staff.idCard" value=staffForm.staff.idCard!"" placeholder="身份证号"/]
+                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">入职日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="staff.entryTime" value=staffForm.staff.entryTime placeholder="入职日期"/]
+                                    [@macro.datePicker name="staff.entryTime" value=staffForm.staff.entryTime placeholder="入职日期"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">离职日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="staff.departureTime" value=staffForm.staff.departureTime placeholder="离职日期"/]
+                                    [@macro.datePicker name="staff.departureTime" value=staffForm.staff.departureTime placeholder="离职日期"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -68,7 +84,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">生日:</td>
                                     <td>
-                                    [@macro.datetimePicker name="staff.birthday" value=staffForm.staff.birthday placeholder="生日"/]
+                                    [@macro.datePicker name="staff.birthday" value=staffForm.staff.birthday placeholder="生日"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -79,15 +95,21 @@
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">联系电话:</td>
-                                    <td><input type="number" name="staff.mobile" id="mobile"  value="${staffForm.staff.mobile!''}" maxlength="32" placeholder="这里输入手机号" style="width:98%;"/></td>
+                                    <td>
+                                        [@macro.inputText name="staff.mobile" value=staffForm.staff.mobile!"" placeholder="手机号" type="number" required=false/]
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">邮箱:</td>
-                                    <td><input type="email" name="staff.email" id="email" value="${staffForm.staff.email!''}" maxlength="32" placeholder="这里输入邮箱" style="width:98%;"/></td>
+                                    <td>
+                                        [@macro.inputText name="staff.email" value=staffForm.staff.email!"" placeholder="邮箱" type="email" required=false/]
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">备注:</td>
-                                    <td><input type="memo" name="staff.memo" id="email" value="${staffForm.staff.memo!''}" maxlength="32" placeholder="这里输入备注" style="width:98%;"/></td>
+                                    <td>
+                                        [@macro.inputText name="staff.memo" value=staffForm.staff.memo!"" placeholder="备注" required=false/]
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: center;" colspan="10">

@@ -32,6 +32,12 @@
             enabledDates: true
         });
 
+        $('.date-picker').datepicker({
+            autoclose:true,
+            clearBtn: true,
+            format: 'yyyy-mm-dd'
+        });
+
         //下拉框
         if(!ace.vars['touch']) {
             $('.chosen-select').chosen({allow_single_deselect:true});

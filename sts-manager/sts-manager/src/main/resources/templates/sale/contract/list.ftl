@@ -62,22 +62,17 @@
                                                     <td class="center">${contract.status.getName()}</td>
                                                     <td class="center">${contract.company}</td>
                                                     <td class="center">${contract.linkman}</td>
-                                                    <td class="center">
-                                                        [#if contract.signTime??]
-                                                            ${contract.signTime?string("yyyy-MM-dd HH:mm:ss")}
-                                                        [/#if]
-                                                    </td>
-                                                    <td class="center">
-                                                        [#if contract.qualityTime??]
-                                                            ${contract.qualityTime?string("yyyy-MM-dd HH:mm:ss")}
-                                                        [/#if]
-                                                    </td>
-                                                    <td class="center">${contract.amount?c}</td>
+                                                    <td class="center">[@macro.displayDate value=contract.signTime!""/]</td>
+                                                    <td class="center">[@macro.displayDate value=contract.qualityTime!""/]</td>
+                                                    <td class="center">[@macro.displayMoney value=contract.amount!''/]</td>
                                                     <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="customDiag('修改合同', '${ctx}/contract/update/${contract.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
                                                                 修改
                                                             </a>
+                                                        </div>
+                                                        <div class="hidden-sm hidden-xs btn-group">
+                                                            <a href="${ctx}/contract/disable/${contract.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -90,10 +90,24 @@
     </script>
 [/#macro]
 
-[#macro datetimePicker name id="" value="" placeholder="" style="" pattern="" classes="span10 datetime-picker" required=false readonly=true]
+[#macro datetimePicker name id="" value="" placeholder="" style="" pattern="" classes="form-control datetime-picker" required=false readonly=true]
     [#if !id?has_content][#local id=name][/#if]
-    [#if value?has_content][#local value = value?string("yyyy-MM-dd HH:mm:ss")][/#if]
+    [#if !pattern?has_content][#local pattern="yyyy-MM-dd HH:mm:ss"][/#if]
+    [#if value?has_content][#local value = value?string("${pattern}")][/#if]
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
+        <input class="${classes}" id="${id}" name="${name}" value="${value}" type="text" [#if readonly]readonly="readonly"[/#if] [#if pattern?has_content]pattern="${pattern}"[/#if] placeholder="这里输入${placeholder}" style="${style}" [#if required]required=""[/#if]/>
+    </div>
+[/#macro]
+
+[#macro datePicker name id="" value="" placeholder="" style="" pattern="" classes="form-control date-picker" required=false readonly=true]
+    [#if !id?has_content][#local id=name][/#if]
+    [#if !pattern?has_content][#local pattern="yyyy-MM-dd"][/#if]
+    [#if value?has_content][#local value = value?string("${pattern}")][/#if]
+<div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
     <input class="${classes}" id="${id}" name="${name}" value="${value}" type="text" [#if readonly]readonly="readonly"[/#if] [#if pattern?has_content]pattern="${pattern}"[/#if] placeholder="这里输入${placeholder}" style="${style}" [#if required]required=""[/#if]/>
+</div>
 [/#macro]
 
 [#macro dateRange fromName toName fromId="" toId="" fromValue="" toValue="" placeholder="" readonly=true required=false]
@@ -232,9 +246,15 @@
     [/#if]
 [/#macro]
 
-[#macro displayDate value]
+[#macro displayDateTime value]
     [#if value?has_content]
         ${value?string("yyyy-MM-dd HH:mm:ss")}
+    [/#if]
+[/#macro]
+
+[#macro displayDate value]
+    [#if value?has_content]
+    ${value?string("yyyy-MM-dd")}
     [/#if]
 [/#macro]
 
@@ -255,11 +275,11 @@
     <input id="${id}" type="${type}" name="${name}" value="${value}" [#if maxLength?has_content]maxlength="${maxLength}"[/#if] [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if pattern?has_content]pattern="${pattern}"[/#if] [#if required]required=""[/#if] style="${style}" [#if readonly]readonly=""[/#if]/>
 [/#macro]
 
-[#macro inputMoney name value multiple=100 placeholder="" required=true displayPlaceholder=true pattern="^(\\d+|[1-9])(.\\d{0,2})?$"]
+[#macro inputMoney name value id="" multiple=100 placeholder="" required=true displayPlaceholder=true pattern="^(\\d+|[1-9])(.\\d{0,2})?$" readonly=false]
     [#if value?has_content]
-        <input type="text" [#if pattern?has_content]pattern="${pattern}"[/#if] name="${name}" value="${(value/multiple)?string("0.##")}" [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if required]required=""[/#if] style="width:98%;"/>
+        <input id="${id}" type="text" [#if pattern?has_content]pattern="${pattern}"[/#if] name="${name}" value="${(value/multiple)?string("0.##")}" [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if required]required=""[/#if] [#if readonly]readonly=""[/#if] style="width:98%;"/>
     [#else]
-        <input type="text" [#if pattern?has_content]pattern="${pattern}"[/#if] name="${name}" [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if required]required=""[/#if] style="width:98%;"/>
+        <input id="${id}" type="text" [#if pattern?has_content]pattern="${pattern}"[/#if] name="${name}" [#if displayPlaceholder]placeholder="这里输入${placeholder}"[/#if] [#if required]required=""[/#if] [#if readonly]readonly=""[/#if] style="width:98%;"/>
     [/#if]
 [/#macro]
 

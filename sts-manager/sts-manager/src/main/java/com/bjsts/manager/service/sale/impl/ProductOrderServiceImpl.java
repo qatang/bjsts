@@ -3,6 +3,7 @@ package com.bjsts.manager.service.sale.impl;
 import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.document.DocumentEntity;
@@ -78,6 +79,8 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
     public ApiResponse<PlanEntity> findAll(ProductOrderSearchable productOrderSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
 
+        request.filterEqual("valid", EnableDisableStatus.ENABLE);
+
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         productOrderSearchable.convertPageable(requestPage, pageable);
 
@@ -88,6 +91,8 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
     @Override
     public ApiResponse<PlanEntity> findAll(QuoteSearchable quoteSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
+
+        request.filterEqual("valid", EnableDisableStatus.ENABLE);
 
 /*        PlanStatus planStatus = quoteSearchable.getPlanStatus();
         if (planStatus != null && planStatus != PlanStatus.ALL) {
@@ -110,6 +115,8 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
     public ApiResponse<PlanEntity> findAll(SaleItemSearchable saleItemSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
 
+        request.filterEqual("valid", EnableDisableStatus.ENABLE);
+
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         saleItemSearchable.convertPageable(requestPage, pageable);
 
@@ -120,5 +127,11 @@ public class ProductOrderServiceImpl extends AbstractService<PlanEntity, Long> i
     @Override
     public PlanEntity findByPlanNo(String planNo) {
         return productOrderRepository.findByPlanNo(planNo);
+    }
+
+    @Override
+    public ApiResponse<PlanEntity> findAll(ApiRequest request, ApiRequestPage requestPage) {
+        Page<PlanEntity> page = productOrderRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(page);
     }
 }

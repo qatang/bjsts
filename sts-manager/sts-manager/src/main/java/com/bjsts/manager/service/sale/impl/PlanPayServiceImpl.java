@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author wangzhiliang
@@ -37,7 +38,7 @@ public class PlanPayServiceImpl extends AbstractService<PlanPayEntity, Long> imp
     }
 
     @Override
-    public PlanPayEntity findByPlanNo(String planNo) {
+    public List<PlanPayEntity> findByPlanNo(String planNo) {
         return planPayRepository.findByPlanNo(planNo);
     }
 }

@@ -1,19 +1,20 @@
 package com.bjsts.manager.controller.system;
 
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.core.exception.ValidateFailedException;
-import com.bjsts.manager.entity.user.DepartmentEntity;
 import com.bjsts.manager.entity.system.UserEntity;
+import com.bjsts.manager.entity.user.DepartmentEntity;
 import com.bjsts.manager.enums.user.EducationType;
 import com.bjsts.manager.enums.user.MaleType;
 import com.bjsts.manager.enums.user.PolityType;
 import com.bjsts.manager.form.system.UserForm;
 import com.bjsts.manager.query.system.UserSearchable;
 import com.bjsts.manager.service.system.RoleService;
-import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.service.system.UserService;
+import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.shiro.authentication.PasswordHelper;
 import com.bjsts.manager.validator.user.PasswordChangeValidator;
 import com.bjsts.manager.validator.user.PasswordResetValidator;
@@ -144,6 +145,8 @@ public class UserController extends AbstractController {
         UserEntity user = userForm.getUserInfo();
         UserEntity userEntity = userService.get(user.getId());
         userEntity.setRealName(user.getRealName());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setMobile(user.getMobile());
         userService.update(userEntity);
         return "result";
     }
@@ -266,4 +269,17 @@ public class UserController extends AbstractController {
         return "result";
     }
 
+    @RequiresPermissions("sts:user:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        UserEntity userEntity = userService.get(id);
+        if (Objects.isNull(userEntity)) {
+            logger.error("删除项目信息,未查询[id={}]的用户信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={"+id+"}]的用户信息!");
+            return "redirect:/error";
+        }
+        userEntity.setValid(EnableDisableStatus.DISABLE);
+        userService.update(userEntity);
+        return "redirect:/user/list";
+    }
 }

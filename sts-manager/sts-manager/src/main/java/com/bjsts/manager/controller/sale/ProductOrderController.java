@@ -1,6 +1,7 @@
 package com.bjsts.manager.controller.sale;
 
 import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
@@ -214,5 +215,19 @@ public class ProductOrderController extends AbstractController {
             map.put("message", "上传失败，文件为空.");
         }
         return map;
+    }
+
+    @RequiresPermissions("sts:productOrder:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        PlanEntity planEntity = productOrderService.get(id);
+        if (Objects.isNull(planEntity)) {
+            logger.error("删除项目信息,未查询[id={}]的项目信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={"+id+"}]的项目信息!");
+            return "redirect:/error";
+        }
+        planEntity.setValid(EnableDisableStatus.DISABLE);
+        productOrderService.update(planEntity);
+        return "redirect:/productOrder/list";
     }
 }

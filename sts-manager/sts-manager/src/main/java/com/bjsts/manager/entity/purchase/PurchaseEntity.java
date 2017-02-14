@@ -3,8 +3,8 @@ package com.bjsts.manager.entity.purchase;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.purchase.PurchaseReceiptTypeConverter;
-import com.bjsts.manager.enums.purchase.PurchaseReceiptType;
+import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
+import com.bjsts.manager.enums.invoice.InvoiceStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -13,8 +13,7 @@ import java.util.Date;
 
 /**
  * 采购单
- * @author jinsheng
- * @since 2016-04-28 13:48
+ * @author wangzhiliang
  */
 @Entity
 @Table(name = "sts_purchase")
@@ -24,59 +23,100 @@ public class PurchaseEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -299721038872026718L;
 
+    public static final String SEQ_ID_GENERATOR = "purchase";
+
     @Id
     @GeneratedValue
     private Long id;
 
+    /**
+     * 采购单编号
+     */
+    @Column(name = "purchase_no", nullable = false)
+    private String purchaseNo;
+
+    /**
+     * 产品名称
+     */
     @Column(nullable = false, name = "product_name")
     private String productName;
 
+    /**
+     * 规格型号
+     */
     @Column(nullable = false, name = "product_model")
     private String productModel;
 
+    /**
+     * 采购数量
+     */
     private Long quantity;
 
-    @Column(nullable = false, name = "single_amount")
-    private Long singleAmount;
-
-    @Column(nullable = false, name = "total_amount")
-    private Long totalAmount;
-
-    @Column(name = "payed_amount")
-    private Long payedAmount;
-
-    @Column(name = "un_payed_amount")
-    private Long unPayedAmount;
-
+    /**
+     * 采购负责人
+     */
     private String operator;
 
+    /**
+     * 供应商
+     */
     private String supplier;
 
+    /**
+     * 供应商联系人
+     */
+    @Column(name = "supplier_linkman")
+    private String supplierLinkman;
+
+    /**
+     * 供应商电话
+     */
     @Column(name = "supplier_mobile")
     private String supplierMobile;
 
+    /**
+     * 采购日期
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "purchase_time")
     private Date purchaseTime;
 
-    @Convert(converter = PurchaseReceiptTypeConverter.class)
-    @Column(name = "purchase_receipt_type", nullable = false)
-    private PurchaseReceiptType purchaseReceiptType;
+    /**
+     * 采购金额
+     */
+    @Column(nullable = false, name = "total_amount")
+    private Long totalAmount;
+
+    /**
+     * 已付金额
+     */
+    @Column(name = "payed_amount")
+    private Long payedAmount;
+
+    /**
+     * 未付金额
+     */
+    @Column(name = "un_payed_amount")
+    private Long unPayedAmount;
+
+    @Convert(converter = InvoiceStatusConverter.class)
+    @Column(name = "invoice_status", nullable = false)
+    private InvoiceStatus invoiceStatus;
 
     @Column(name = "purchase_contract_url")
-    private String purchaseContractUrl;
-
-    @Convert(converter = EnableDisableStatusConverter.class)
-    @Column(nullable = false)
-    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
+    private Long purchaseContractUrl;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
     private Date createdTime = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_time")
+    @Column(name = "updated_time", nullable = false)
     private Date updatedTime;
+
+    @Convert(converter = EnableDisableStatusConverter.class)
+    @Column(nullable = false)
+    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
     public Long getId() {
         return id;
@@ -108,14 +148,6 @@ public class PurchaseEntity extends AbstractEntity {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
-    }
-
-    public Long getSingleAmount() {
-        return singleAmount;
-    }
-
-    public void setSingleAmount(Long singleAmount) {
-        this.singleAmount = singleAmount;
     }
 
     public Long getTotalAmount() {
@@ -198,19 +230,35 @@ public class PurchaseEntity extends AbstractEntity {
         this.purchaseTime = purchaseTime;
     }
 
-    public PurchaseReceiptType getPurchaseReceiptType() {
-        return purchaseReceiptType;
-    }
-
-    public void setPurchaseReceiptType(PurchaseReceiptType purchaseReceiptType) {
-        this.purchaseReceiptType = purchaseReceiptType;
-    }
-
-    public String getPurchaseContractUrl() {
+    public Long getPurchaseContractUrl() {
         return purchaseContractUrl;
     }
 
-    public void setPurchaseContractUrl(String purchaseContractUrl) {
+    public void setPurchaseContractUrl(Long purchaseContractUrl) {
         this.purchaseContractUrl = purchaseContractUrl;
+    }
+
+    public String getPurchaseNo() {
+        return purchaseNo;
+    }
+
+    public void setPurchaseNo(String purchaseNo) {
+        this.purchaseNo = purchaseNo;
+    }
+
+    public InvoiceStatus getInvoiceStatus() {
+        return invoiceStatus;
+    }
+
+    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
+    }
+
+    public String getSupplierLinkman() {
+        return supplierLinkman;
+    }
+
+    public void setSupplierLinkman(String supplierLinkman) {
+        this.supplierLinkman = supplierLinkman;
     }
 }

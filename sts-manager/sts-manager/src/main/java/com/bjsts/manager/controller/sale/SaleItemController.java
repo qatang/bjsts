@@ -160,4 +160,17 @@ public class SaleItemController extends AbstractController {
         saleItemService.update(planTraceEntity);
         return "result";
     }*/
+
+    @RequiresPermissions("sts:saleItem:disable")
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.GET)
+    public String disable(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        PlanTraceEntity planTraceEntity = saleItemService.get(id);
+        if (Objects.isNull(planTraceEntity)) {
+            logger.error("删除销售跟踪信息,未查询[id={}]的销售跟踪信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={"+id+"}]的销售跟踪信息!");
+            return "redirect:/error";
+        }
+        saleItemService.delete(id);
+        return "redirect:/saleItem/list/" + planTraceEntity.getPlanNo();
+    }
 }

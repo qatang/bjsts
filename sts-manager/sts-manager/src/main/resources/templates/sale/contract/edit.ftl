@@ -23,10 +23,16 @@
                                     <td>
                                         [#if contractForm.contract.id??]
                                             ${contractForm.contract.planNo}
+                                            <input type="hidden" name="contract.id" value="${contractForm.contract.planNo!''}"/>
                                         [#else]
-                                            <input type="text" name="contract.planNo" id="planNo" placeholder="请输入项目编号" onchange="queryPlan(this);"/>
+                                            <select class="chosen-select form-control" name="contract.planNo" data-placeholder="请选择" style="" onchange="queryPlan(this);" id="planNo">
+                                                <option value="0">请选择</option>
+                                                [#list planList as data]
+                                                    <option value="${data.planNo!""}" [#if contractForm.contract.planNo?has_content && data.planNo == contractForm.contract.planNo]selected[/#if]>${data.getName()!""}</option>
+                                                [/#list]
+                                            </select>
                                         [/#if]
-                                        </td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">项目名称:</td>
@@ -77,24 +83,19 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">签订日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="contract.signTime" value=contractForm.contract.signTime placeholder="签订日期"/]
+                                    [@macro.datetimePicker name="contract.signTime" value=contractForm.contract.signTime!"" placeholder="签订日期"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">质保日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="contract.qualityTime" value=contractForm.contract.qualityTime placeholder="质保日期"/]
+                                    [@macro.datetimePicker name="contract.qualityTime" value=contractForm.contract.qualityTime!"" placeholder="质保日期"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">合同金额:</td>
                                     <td>
-                                        [#if contractForm.contract.amount??]
-                                            [@macro.inputText name="contract.amount" value=contractForm.contract.amount?c placeholder="合同金额"/]
-                                        [#else]
-                                            [@macro.inputText name="contract.amount" value='' placeholder="合同金额"/]
-                                        [/#if]
-
+                                        [@macro.inputMoney name="amount" value=contractForm.amount!'' placeholder="合同金额"/]
                                     </td>
                                 </tr>
                                  <tr>
@@ -141,7 +142,7 @@
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
-        allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
+        //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
             contractUrl
         ]

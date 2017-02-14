@@ -52,7 +52,7 @@
                                                 <tr>
                                                     <td class="center"><a onclick="diag('查看项目', '${ctx}/quote/view/${plan.id}');">${plan.planNo}</a></td>
                                                     <td class="center">${plan.name!''}</td>
-                                                    <td class="center">${plan.priceTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                                    <td class="center">[@macro.displayDate value=plan.priceTime!""/]</td>
                                                     <td class="center">${plan.linkman}</td>
                                                     <td class="center">${plan.mobile}</td>
                                                     <td class="center">${plan.company}</td>

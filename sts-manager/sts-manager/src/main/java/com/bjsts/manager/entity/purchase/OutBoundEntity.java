@@ -15,7 +15,7 @@ import java.util.Date;
  * @since 2016-04-28 13:48
  */
 @Entity
-@Table(name = "sts_purchase")
+@Table(name = "sts_out_bound")
 @DynamicInsert
 @DynamicUpdate
 public class OutBoundEntity extends AbstractEntity {

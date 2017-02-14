@@ -4,7 +4,7 @@
 
     <appender name="file"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/ucenter-manager.log</file>
+        <file>logs/sts-manager.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>logs/sts-manager-%d{yyyy-MM-dd}.log</FileNamePattern>
             <maxHistory>60</maxHistory>

@@ -55,4 +55,11 @@ public class GlobalConstants {
      * 合同文件夹
      */
     public static final String CONTRACT_FILE = "contract";
+
+    /**
+     * 采购合同文件夹
+     */
+    public static final String PURCHASE_FILE = "purchase";
+
+
 }

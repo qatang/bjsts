@@ -47,7 +47,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">询价日期:</td>
                                     <td>
-                                        [@macro.datetimePicker name="productOrder.priceTime" value=productOrderForm.productOrder.priceTime placeholder="询价时间"/]
+                                        [@macro.datetimePicker name="productOrder.priceTime" value=productOrderForm.productOrder.priceTime!"" placeholder="询价时间"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -71,7 +71,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">联系人单位:</td>
                                     <td>
-                                    [@macro.inputText name="productOrder.company" value=productOrderForm.productOrder.company!'' placeholder="联系人单位"/]
+                                    [@macro.inputText name="productOrder.company" value=productOrderForm.productOrder.company!'' placeholder="联系人单位" required = false/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -127,7 +127,7 @@
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
-        allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
+        //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
             customerFileUrl
         ]

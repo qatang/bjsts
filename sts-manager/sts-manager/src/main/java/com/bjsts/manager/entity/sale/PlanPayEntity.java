@@ -1,8 +1,8 @@
 package com.bjsts.manager.entity.sale;
 
-import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
+import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
+import com.bjsts.manager.enums.invoice.InvoiceStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -11,8 +11,7 @@ import java.util.Date;
 
 /**
  * 方案付款记录
- * @author jinsheng
- * @since 2016-04-28 13:48
+ * @author wangzhiliang
  */
 @Entity
 @Table(name = "sts_plan_pay")
@@ -33,37 +32,38 @@ public class PlanPayEntity extends AbstractEntity {
     private String planNo;
 
     /**
-     * 付款信息说明
+     * 合同编号，格式：sts20161016001
      */
-    private String description;
+    @Column(name = "contract_no", nullable = false)
+    private String contractNo;
+
+    @Convert(converter = InvoiceStatusConverter.class)
+    @Column(name = "invoice_status", nullable = false)
+    private InvoiceStatus invoiceStatus;
 
     /**
-     * 付款金额
+     * 本次付款金额
      */
+    @Column(nullable = false)
     private Long amount;
-
-    /**
-     * 质保金额
-     */
-    @Column(name = "quality_amount")
-    private Long qualityAmount;
 
     /**
      * 本次付款方式
      */
-    @Column(name = "pay_model")
+    @Column(name = "pay_model", nullable = false)
     private String payModel;
 
     /**
      * 本次付款时间
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "pay_time")
+    @Column(name = "pay_time", nullable = false)
     private Date payTime;
 
     /**
      * 经办人
      */
+    @Column(nullable = false)
     private String operator;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -74,9 +74,17 @@ public class PlanPayEntity extends AbstractEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
-    @Convert(converter = EnableDisableStatusConverter.class)
-    @Column(nullable = false)
-    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
+    @Transient
+    private String planName;
+
+    @Transient
+    private String company;
+
+    @Transient
+    private Long contractAmount;
+
+    @Transient
+    private Long payedAmount;
 
     public Long getId() {
         return id;
@@ -94,28 +102,12 @@ public class PlanPayEntity extends AbstractEntity {
         this.planNo = planNo;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Long getAmount() {
         return amount;
     }
 
     public void setAmount(Long amount) {
         this.amount = amount;
-    }
-
-    public Long getQualityAmount() {
-        return qualityAmount;
-    }
-
-    public void setQualityAmount(Long qualityAmount) {
-        this.qualityAmount = qualityAmount;
     }
 
     public String getPayModel() {
@@ -158,11 +150,51 @@ public class PlanPayEntity extends AbstractEntity {
         this.updatedTime = updatedTime;
     }
 
-    public EnableDisableStatus getValid() {
-        return valid;
+    public String getContractNo() {
+        return contractNo;
     }
 
-    public void setValid(EnableDisableStatus valid) {
-        this.valid = valid;
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public InvoiceStatus getInvoiceStatus() {
+        return invoiceStatus;
+    }
+
+    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
+    }
+
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public Long getContractAmount() {
+        return contractAmount;
+    }
+
+    public void setContractAmount(Long contractAmount) {
+        this.contractAmount = contractAmount;
+    }
+
+    public Long getPayedAmount() {
+        return payedAmount;
+    }
+
+    public void setPayedAmount(Long payedAmount) {
+        this.payedAmount = payedAmount;
     }
 }

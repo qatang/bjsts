@@ -1,5 +1,7 @@
 package com.bjsts.manager.entity.sale;
 
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import com.bjsts.manager.enums.converter.sale.ContractStatusConverter;
 import com.bjsts.manager.enums.sale.ContractStatus;
@@ -101,6 +103,10 @@ public class ContractEntity extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_time")
     private Date updatedTime;
+
+    @Convert(converter = EnableDisableStatusConverter.class)
+    @Column(nullable = false)
+    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
     public Long getId() {
         return id;
@@ -220,5 +226,13 @@ public class ContractEntity extends AbstractEntity {
 
     public void setContractUrl(Long contractUrl) {
         this.contractUrl = contractUrl;
+    }
+
+    public EnableDisableStatus getValid() {
+        return valid;
+    }
+
+    public void setValid(EnableDisableStatus valid) {
+        this.valid = valid;
     }
 }

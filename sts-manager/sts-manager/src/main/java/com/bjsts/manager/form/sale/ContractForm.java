@@ -15,6 +15,8 @@ public class ContractForm extends AbstractForm {
 
     private String contractUrl;
 
+    private Double amount;
+
     public ContractEntity getContract() {
         return contract;
     }
@@ -29,5 +31,13 @@ public class ContractForm extends AbstractForm {
 
     public void setContractUrl(String contractUrl) {
         this.contractUrl = contractUrl;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

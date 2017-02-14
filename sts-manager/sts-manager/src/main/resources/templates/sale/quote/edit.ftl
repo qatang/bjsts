@@ -45,7 +45,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">询价日期:</td>
                                     <td>
-                                    ${quoteForm.productOrder.priceTime?string("yyyy-MM-dd HH:mm:ss")}
+                                    [@macro.displayDate value=quoteForm.productOrder.priceTime!""/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -89,14 +89,14 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">报价日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="productOrder.quoteTime" value=quoteForm.productOrder.quoteTime placeholder="报价日期"/]
+                                    [@macro.datetimePicker name="productOrder.quoteTime" value=quoteForm.productOrder.quoteTime!"" placeholder="报价日期"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">报价单:</td>
                                     <td>
                                         <input id="input-quoteFileUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                    [@macro.inputText name="quoteFileUrl" id="quoteFileUrl" value=quoteForm.quoteFileUrl!'' placeholder="文件地址"/]
+                                        [@macro.inputText name="quoteFileUrl" id="quoteFileUrl" value=quoteForm.quoteFileUrl!'' placeholder="文件地址"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -133,7 +133,7 @@
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
-        allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
+        //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
             quoteFileUrl
         ]

@@ -43,7 +43,7 @@
                                             <th class="center">记录人</th>
                                             <th class="center">追踪时间</th>
                                             <th class="center">描述</th>
-                                            [#--<th class="center" colspan="2">操作</th>--]
+                                            <th class="center">操作</th>
                                         </tr>
                                     </thead>
 
@@ -53,15 +53,13 @@
                                                 <tr>
                                                     <td class="center">${planTrace.planNo}</td>
                                                     <td class="center">${planTrace.realName}</td>
-                                                    <td class="center">${planTrace.traceTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                                    <td class="center">[@macro.displayDate value=planTrace.traceTime!""/]</td>
                                                     <td class="center">${planTrace.description}</td>
-                                                    [#--<td class="center">
+                                                    <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" onclick="diag('xiang', '${ctx}/saleItem/update/${planTrace.id}');" style="cursor: pointer;text-decoration:none;">
-                                                                修改
-                                                            </a>
+                                                            <a href="${ctx}/saleItem/disable/${planTrace.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
                                                         </div>
-                                                    </td>--]
+                                                    </td>
                                                 </tr>
                                             [/#list]
                                         [/#if]

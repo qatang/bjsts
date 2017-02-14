@@ -38,7 +38,7 @@
                                             <td class="center">${department.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                             <td class="center">
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a class="green" onclick="diag('部门修改', '${ctx}/department/update/${department.id}';" style="cursor: pointer;text-decoration:none;">
+                                                    <a class="green" onclick="diag('部门修改', '${ctx}/department/update/${department.id}');" style="cursor: pointer;text-decoration:none;">
                                                         编辑
                                                     </a>
                                                 </div>

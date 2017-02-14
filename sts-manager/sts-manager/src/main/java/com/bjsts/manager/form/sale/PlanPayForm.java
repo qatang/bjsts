@@ -12,11 +12,21 @@ public class PlanPayForm extends AbstractForm {
 
     private PlanPayEntity planPay;
 
+    private Double amount;
+
     public PlanPayEntity getPlanPay() {
         return planPay;
     }
 
     public void setPlanPay(PlanPayEntity planPay) {
         this.planPay = planPay;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

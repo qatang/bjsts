@@ -7,11 +7,13 @@ import com.bjsts.manager.entity.sale.PlanPayEntity;
 import com.bjsts.manager.query.sale.PlanPaySearchable;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @author wangzhiliang
  */
 public interface PlanPayService extends IService<PlanPayEntity, Long> {
     ApiResponse<PlanPayEntity> findAll(PlanPaySearchable planPaySearchable, Pageable pageable);
 
-    PlanPayEntity findByPlanNo(String planNo);
+    List<PlanPayEntity> findByPlanNo(String planNo);
 }

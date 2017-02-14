@@ -1,12 +1,12 @@
 package com.bjsts.manager.controller.system;
 
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.manager.core.constants.GlobalConstants;
+import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.system.ResourceEntity;
 import com.bjsts.manager.enums.system.ResourceType;
 import com.bjsts.manager.form.system.ResourceForm;
 import com.bjsts.manager.service.system.ResourceService;
-import com.bjsts.manager.core.constants.GlobalConstants;
-import com.bjsts.manager.core.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,5 @@
 [#ftl strip_whitespace=true]
+[#import "${ctx}/common/macroes.ftl" as macro]
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,7 +39,7 @@
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">询价日期:</td>
                                         <td>
-                                        ${productOrder.priceTime?string("yyyy-MM-dd HH:mm:ss")}
+                                            [@macro.displayDate value=productOrder.priceTime!""/]
                                         </td>
                                     </tr>
                                     <tr>
@@ -67,7 +68,11 @@
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
-                                        <td><a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a></td>
+                                        <td>
+                                            [#if customerFileUrl??]
+                                                <a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a>
+                                            [/#if]
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

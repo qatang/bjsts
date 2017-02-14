@@ -1,10 +1,20 @@
 package com.bjsts.manager.service.purchase.impl;
 
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
+import com.bjsts.core.api.response.ApiResponse;
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.service.AbstractService;
+import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
+import com.bjsts.manager.query.purchase.PurchaseSearchable;
+import com.bjsts.manager.repository.document.DocumentRepository;
 import com.bjsts.manager.repository.purchase.PurchaseRepository;
 import com.bjsts.manager.service.purchase.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,5 +30,39 @@ public class PurchaseServiceImpl extends AbstractService<PurchaseEntity, Long> i
     @Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private DocumentRepository documentRepository;
 
+    @Override
+    public ApiResponse<PurchaseEntity> findAll(PurchaseSearchable purchaseSearchable, Pageable pageable) {
+        ApiRequest request = ApiRequest.newInstance();
+
+        request.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage requestPage = ApiRequestPage.newInstance();
+        purchaseSearchable.convertPageable(requestPage, pageable);
+
+        Page<PurchaseEntity> purchaseEntityPage = purchaseRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(purchaseEntityPage);
+    }
+
+    @Override
+    public PurchaseEntity save(PurchaseEntity purchaseEntity, String purchaseFileUrl) {
+        PurchaseEntity db = purchaseRepository.save(purchaseEntity);
+        DocumentEntity existDocumentEntity = documentRepository.findByGroupKeyAndObjectId(GlobalConstants.CONTRACT_FILE, db.getPurchaseNo());
+
+        if (existDocumentEntity == null) {
+            existDocumentEntity = new DocumentEntity();
+            existDocumentEntity.setName(purchaseEntity.getPurchaseNo());
+            existDocumentEntity.setGroupKey(GlobalConstants.CONTRACT_FILE);
+            existDocumentEntity.setUrl(purchaseFileUrl);
+            existDocumentEntity.setObjectId(purchaseEntity.getPurchaseNo());
+        } else {
+            existDocumentEntity.setUrl(purchaseFileUrl);
+        }
+        DocumentEntity dbDocumentEntity = documentRepository.save(existDocumentEntity);
+
+        db.setPurchaseContractUrl(dbDocumentEntity.getId());
+        return db;
+    }
 }

@@ -1,5 +1,7 @@
 package com.bjsts.manager.service.sale;
 
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.IService;
 import com.bjsts.manager.entity.sale.PlanEntity;
@@ -24,4 +26,6 @@ public interface ProductOrderService extends IService<PlanEntity, Long> {
     ApiResponse<PlanEntity> findAll(SaleItemSearchable saleItemSearchable, Pageable pageable);
 
     PlanEntity findByPlanNo(String planNo);
+
+    ApiResponse<PlanEntity> findAll(ApiRequest request, ApiRequestPage requestPage);
 }

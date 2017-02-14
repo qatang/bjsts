@@ -13,84 +13,91 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="${ctx}/productOrder/${action}" name="productOrderForm" id="productOrderForm" method="post">
+                        <form action="${ctx}/planPay/${action}" name="planPayForm" id="planPayForm" method="post">
                             <div style="padding-top: 13px;"></div>
                         [@macro.errors /]
-                            <input type="hidden" name="productOrder.id" value="${productOrderForm.productOrder.id!''}"/>
+                            <input type="hidden" name="planPay.id" value="${planPayForm.planPay.id!''}"/>
                             <table id="table_report" class="table table-striped table-bordered table-hover">
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目编码:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目编号:</td>
                                     <td>
-                                        [#if productOrderForm.productOrder.id??]
-                                            ${productOrderForm.productOrder.planNo}
+                                        [#if planPayForm.planPay.id??]
+                                            ${planPayForm.planPay.planNo}
+                                            <input type="hidden" id="planNo" value="${planPayForm.planPay.planNo!''}"/>
+                                        [#else]
+                                            <select class="chosen-select form-control" name="planPay.planNo" data-placeholder="请选择" style="" onchange="queryPlan(this);" id="planNo">
+                                                <option value="0">请选择</option>
+                                                [#list planList as data]
+                                                    <option value="${data.planNo!""}" [#if planPayForm.planPay.planNo?has_content && data.planNo == planPayForm.planPay.planNo]selected[/#if]>${data.getName()!""}</option>
+                                                [/#list]
+                                            </select>
                                         [/#if]
                                         </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">项目名称:</td>
                                     <td>
-                                        [@macro.inputText name="productOrder.name" value=productOrderForm.productOrder.name!'' placeholder="项目名称"/]
+                                        <input type="text" id="planName" value="${planPayForm.planPay.planName!''}" readonly required/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">询价类型:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">合同编号:</td>
                                     <td>
-                                        [@macro.selectEnum name="productOrder.planType" enumObj=productOrderForm.productOrder.planType!planTypeList[0] dataList=planTypeList /]
+                                        <input type="text" name="planPay.contractNo" id="contractNo" value="${planPayForm.planPay.contractNo!''}" readonly required/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目来源:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">客户名称:</td>
                                     <td>
-                                         [@macro.selectEnum name="productOrder.sourceType" enumObj=productOrderForm.productOrder.sourceType!sourceTypeList[0] dataList=sourceTypeList /]
+                                        <input type="text" name="planPay.company" id="company" value="${planPayForm.planPay.company!''}" readonly required/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">询价日期:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">合同总额:</td>
                                     <td>
-                                        [@macro.datetimePicker name="productOrder.priceTime" value=productOrderForm.productOrder.priceTime placeholder="询价时间"/]
+                                        <input type="text" name="planPay.contractAmount" id="contractAmount" value="${planPayForm.planPay.contractAmount!''}" readonly required/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目地点:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">开票信息:</td>
                                     <td>
-                                        [@macro.inputText name="productOrder.location" value=productOrderForm.productOrder.location!'' placeholder="项目地点"/]
+                                        [@macro.selectEnum name="planPay.invoiceStatus" enumObj=planPayForm.planPay.invoiceStatus!invoiceStatusList[0] dataList=invoiceStatusList /]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">联系人姓名:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">已付金额:</td>
                                     <td>
-                                    [@macro.inputText name="productOrder.linkman" value=productOrderForm.productOrder.linkman!'' placeholder="联系人姓名"/]
+                                        <input type="text" id="payedAmount" value="${planPayForm.planPay.payedAmount!''}" readonly required/>
+                                    </td>
+                                </tr>
+[#--                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">质保金额:</td>
+                                    <td>
+                                    --][#-- [@macro.inputText name="planPay.name" value=planPayForm.planPay.name!'' placeholder="项目名称"/]--][#--
+                                    </td>
+                                </tr>--]
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">本次付款金额:</td>
+                                    <td>
+                                        [@macro.inputMoney name="amount" value=planPayForm.amount!'' placeholder="本次付款金额"/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">联系人电话:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">本次付款方式:</td>
                                     <td>
-                                    [@macro.inputText name="productOrder.mobile" value=productOrderForm.productOrder.mobile!'' placeholder="联系人电话"/]
+                                    [@macro.inputText name="planPay.payModel" value=planPayForm.planPay.payModel!'' placeholder="本次付款方式"/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">联系人单位:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">本次付款日期:</td>
                                     <td>
-                                    [@macro.inputText name="productOrder.company" value=productOrderForm.productOrder.company!'' placeholder="联系人单位"/]
+                                        [@macro.datetimePicker name="planPay.payTime" value=planPayForm.planPay.payTime placeholder="本次付款日期"/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">联系人邮箱:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">经办人:</td>
                                     <td>
-                                    [@macro.inputText name="productOrder.email" value=productOrderForm.productOrder.email!'' placeholder="联系人邮箱"/]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目说明:</td>
-                                    <td>
-                                    [@macro.inputText name="productOrder.description" value=productOrderForm.productOrder.description!"" required=false/]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
-                                    <td>
-                                        <input id="input-customerFileUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                        [@macro.inputText name="customerFileUrl" id="customerFileUrl" value=productOrderForm.customerFileUrl!'' placeholder="文件地址"/]
+                                    [@macro.inputText name="planPay.operator" value=planPayForm.planPay.operator!'' placeholder="经办人"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -111,32 +118,45 @@
 
 [#include "${ctx}/common/footer.ftl"/]
 
-<link href="/plugins/bootstrap-fileinput-master/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-<script src="/plugins/bootstrap-fileinput-master/js/fileinput.min.js"></script>
-<script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
-
 <script>
-    var customerFileUrl = null;
-    if ('${productOrderForm.customerFileUrl!''}' != "") {
-        customerFileUrl = "${productOrderForm.customerFileUrl!''}";
+    /**
+     *
+     * @param url
+     */
+    function queryPlan() {
+        planNo = $('#planNo').val();
+
+        if (planNo != null && planNo != "" && planNo != "0") {
+            $.ajax({
+                type: "get",
+                url: "${ctx}/planPay/findPlan/" + planNo,
+                data: {},
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    if (data.code != "0") {
+                        alert(data.message);
+                        $('#planName').val("");
+                        $('#contractNo').val("");
+                        $('#company').val("");
+                        $('#contractAmount').val("");
+                        $('#payedAmount').val("");
+                    } else {
+                        $('#planName').val(data.planName);
+                        $('#contractNo').val(data.contractNo);
+                        $('#company').val(data.company);
+                        $('#contractAmount').val(data.contractAmount);
+                        $('#payedAmount').val(data.payedAmount/100);
+                    }
+                },
+                error: function (xmlHttpRequest,error) {
+                },
+                complete: function(xmlHttpRequest) {
+                }
+            });
+        }
     }
 
-    $("#input-customerFileUrl").fileinput({
-        language: "zh",
-        uploadUrl: "/productOrder/upload",
-        autoReplace: true,
-        uploadAsync: true,
-        maxFileCount: 1,
-        allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
-        initialPreview: [
-            customerFileUrl
-        ]
-    }).on("filebatchselected", function(event, files) {
-        $(this).fileinput("upload");
-    }).on("fileuploaded", function(event, data) {
-        if (data.response) {
-            $("#customerFileUrl").val(data.response.path);
-        }
-    });
+    queryPlan();
 </script>
 </html>

@@ -57,7 +57,7 @@
                                                     <td class="center">${plan.name!''}</td>
                                                     <td class="center">${plan.planType.getName()}</td>
                                                     <td class="center">${plan.sourceType.getName()}</td>
-                                                    <td class="center">${plan.priceTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                                    <td class="center">[@macro.displayDate value=plan.priceTime!""/]</td>
                                                     <td class="center">${plan.location}</td>
                                                     <td class="center">${plan.linkman}</td>
                                                     <td class="center">${plan.mobile}</td>

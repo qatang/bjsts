@@ -19,7 +19,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">部门名称:</td>
-                                        <td style="padding-top: 13px;">${department.username}</td>
+                                        <td style="padding-top: 13px;">${department.name}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">创建时间:</td>

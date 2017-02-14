@@ -223,17 +223,41 @@ CREATE TABLE `sts_contract` (
   `contract_url` bigint(20) DEFAULT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_plan_no` (`plan_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_plan_pay` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `contract_no` varchar(255) NOT NULL,
+  `invoice_status` int(11) NOT NULL,
+  `amount` bigint(20) NOT NULL,
+  `pay_model` VARCHAR(20) NOT NULL DEFAULT '',
+  `pay_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `operator` varchar(255) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sts_purchase` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `purchase_no` varchar(255) NOT NULL,
   `product_name` VARCHAR(128) NOT NULL,
   `product_model` VARCHAR(128) NOT NULL,
   `quantity` bigint(20) NOT NULL DEFAULT 0,
-  `amount` bigint(20) NOT NULL DEFAULT 0,
-  `single_amount` bigint(20) NOT NULL DEFAULT 0,
+  `operator` VARCHAR(128) NOT NULL,
+  `supplier` VARCHAR(128) NOT NULL,
+  `supplier_linkman` VARCHAR(128) NOT NULL,
+  `supplier_mobile` VARCHAR(128) NOT NULL,
+  `purchase_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `total_amount` bigint(20) NOT NULL DEFAULT 0,
+  `payed_amount` bigint(20) NOT NULL DEFAULT 0,
+  `un_payed_amount` bigint(20) NOT NULL DEFAULT 0,
+  `invoice_status` int(11) NOT NULL,
+  `purchase_contract_url` bigint(20) DEFAULT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,

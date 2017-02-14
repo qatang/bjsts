@@ -80,6 +80,9 @@
                                                             重置密码
                                                         </a>
                                                     </div>
+                                                    <div class="hidden-sm hidden-xs btn-group">
+                                                        <a href="${ctx}/user/disable/${userInfo.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             [/#list]

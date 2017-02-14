@@ -1,4 +1,5 @@
 [#ftl strip_whitespace=true]
+[#import "${ctx}/common/macroes.ftl" as macro]
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,12 +39,12 @@
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">询价日期:</td>
                                         <td>
-                                        ${quote.priceTime?string("yyyy-MM-dd HH:mm:ss")}
+                                            [@macro.displayDate value=quote.priceTime!""/]
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目地点:</td>
-                                        <td>${quote.location}</td>
+                                        <td>${quote.location!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">联系人姓名:</td>
@@ -63,23 +64,30 @@
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目说明:</td>
-                                        <td>${quote.description}</td>
+                                        <td>${quote.description!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
-                                        <td><a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a></td>
+                                        <td>
+                                        [#if customerFileUrl??]
+                                            <a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a>
+                                        [/#if]
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">报价员:</td>
-                                        <td>${quote.quoter}</td>
+                                        <td>${quote.quoter!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">报价时间:</td>
-                                        <td>${quote.quoteTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                        <td>[@macro.displayDate value=quote.quoteTime!""/]</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
-                                        <td><a href="${ctx}/file${quoteFileUrl}" target="_blank">${ctx}/file${quoteFileUrl}</a></td>
+                                        <td>
+                                        [#if quoteFileUrl??]
+                                            <a href="${ctx}/file${quoteFileUrl}" target="_blank">${ctx}/file${quoteFileUrl}</a>
+                                        [/#if]
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

@@ -39,6 +39,7 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
                                     <thead>
                                         <tr>
+                                            <th class="center">付款编码</th>
                                             <th class="center">项目编码</th>
                                             <th class="center">项目名称</th>
                                             <th class="center">合同编码</th>
@@ -46,7 +47,7 @@
                                             <th class="center">合同总额</th>
                                             <th class="center">开票信息</th>
                                             <th class="center">已付金额</th>
-                                            <th class="center">质保金额</th>
+                                            [#--<th class="center">质保金额</th>--]
                                             <th class="center">本次付款信息</th>
                                             <th class="center">本次付款方式</th>
                                             <th class="center">本次付款日期</th>
@@ -59,16 +60,19 @@
                                         [#if page?? && page.content?has_content]
                                             [#list page.content as planPay]
                                                 <tr>
-                                                    <td class="center"><a onclick="diag('查看项目付款', '${ctx}/planPay/view/${planPay.id}');">${planPay.planNo}</a></td>
-                                                    <td class="center">${planPay.name!''}</td>
-                                                    <td class="center">${planPay.planPayType.getName()}</td>
-                                                    <td class="center">${planPay.sourceType.getName()}</td>
-                                                    <td class="center">${planPay.priceTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                                                    <td class="center">${planPay.location}</td>
-                                                    <td class="center">${planPay.linkman}</td>
-                                                    <td class="center">${planPay.mobile}</td>
-                                                    <td class="center">${planPay.company}</td>
-                                                    <td class="center">${planPay.email}</td>
+                                                    <td class="center"><a onclick="diag('查看项目付款', '${ctx}/planPay/view/${planPay.id}');">${planPay.id}</a></td>
+                                                    <td class="center">${planPay.planNo}</td>
+                                                    <td class="center">${planPay.planName!""}</td>
+                                                    <td class="center">${planPay.contractNo}</td>
+                                                    <td class="center">${planPay.company!""}</td>
+                                                    <td class="center">[@macro.displayMoney value=planPay.contractAmount!''/]</td>
+                                                    <td class="center">${planPay.invoiceStatus.getName()}</td>
+                                                    <td class="center">[@macro.displayMoney value=planPay.payedAmount!''/]</td>
+                                                    [#--<td class="center"></td>--]
+                                                    <td class="center">[@macro.displayMoney value=planPay.amount!''/]</td>
+                                                    <td class="center">${planPay.payModel}</td>
+                                                    <td class="center">${planPay.payTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                                    <td class="center">${planPay.operator}</td>
                                                     <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="diag('项目修改', '${ctx}/planPay/update/${planPay.id}');" style="cursor: pointer;text-decoration:none;">
