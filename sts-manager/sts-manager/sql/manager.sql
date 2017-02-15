@@ -90,6 +90,7 @@ CREATE TABLE `sts_log` (
 
 CREATE TABLE `sts_staff` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `staff_no` varchar(255) NOT NULL,
   `department_id` bigint(20) NOT NULL,
   `real_name` VARCHAR(32) NOT NULL DEFAULT '',
   `male_type` TINYINT(2) NOT NULL,
@@ -99,7 +100,7 @@ CREATE TABLE `sts_staff` (
   `departure_time` TIMESTAMP NULL DEFAULT NULL,
   `education_type` TINYINT(3) NOT NULL,
   `polity_type` TINYINT(3) NOT NULL,
-  `birthday` TIMESTAMP NULL DEFAULT NULL,
+  `birthday` DATETIME NULL DEFAULT NULL,
   `on_job` TINYINT(2) NOT NULL DEFAULT 0,
   `mobile` VARCHAR(32) NOT NULL DEFAULT '',
   `email` VARCHAR(128) NOT NULL DEFAULT '',

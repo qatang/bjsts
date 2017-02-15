@@ -141,6 +141,8 @@ public class AttendanceController extends AbstractController {
         StaffEntity staffEntity = staffService.get(attendanceEntity.getStaffId());
         attendanceEntity.setRealName(staffEntity.getRealName());
         attendanceEntity.setDepartmentId(staffEntity.getDepartmentId());
+        attendanceEntity.setStartTime(attendance.getStartTime());
+        attendanceEntity.setEndTime(attendance.getEndTime());
         attendanceService.update(attendanceEntity);
         return "result";
     }

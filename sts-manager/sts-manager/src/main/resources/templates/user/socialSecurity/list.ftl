@@ -51,7 +51,7 @@
                                     [#if page?? && page.content?has_content]
                                         [#list page.content as socialSecurity]
                                         <tr>
-                                            <td class="center">${socialSecurity.staffId!""}</td>
+                                            <td class="center">${socialSecurity.staffNo!""}</td>
                                             <td class="center">${socialSecurity.realName!""}</td>
                                             <td class="center">${socialSecurity.idCard!""}</td>
                                             <td class="center">${socialSecurity.mobile!""}</td>

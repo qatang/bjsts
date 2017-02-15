@@ -52,7 +52,14 @@ public class SocialSecurityController extends AbstractController {
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(SocialSecuritySearchable socialSecuritySearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         ApiResponse<SocialSecurityEntity> apiResponse = socialSecurityService.findAll(socialSecuritySearchable, pageable);
-        Page<SocialSecurityEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+
+        List<SocialSecurityEntity> socialSecurityEntities = Lists.newArrayList(apiResponse.getPagedData());
+
+        socialSecurityEntities.forEach(socialSecurityEntity -> {
+            socialSecurityEntity.setStaffNo(staffService.get(socialSecurityEntity.getStaffId()).getStaffNo());
+        });
+
+        Page<SocialSecurityEntity> page = new PageImpl<>(socialSecurityEntities, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
         return "user/socialSecurity/list";
     }
@@ -124,6 +131,7 @@ public class SocialSecurityController extends AbstractController {
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id=" +id+ "]的社保信息!");
             return "redirect:/error";
         }
+        socialSecurityEntity.setStaffNo(staffService.get(socialSecurityEntity.getStaffId()).getStaffNo());
         socialSecurityForm.setSocialSecurity(socialSecurityEntity);
 
         ApiRequest apiRequest = ApiRequest.newInstance();
@@ -172,6 +180,8 @@ public class SocialSecurityController extends AbstractController {
             StaffEntity staffEntity = staffService.get(staffId);
             if (staffEntity != null) {
                 result.put("realName", staffEntity.getRealName());
+                result.put("idCard", staffEntity.getIdCard());
+                result.put("mobile", staffEntity.getMobile());
             }
         } catch (Exception e) {
             logger.error("调用UserService获取用户信息接口出错！");

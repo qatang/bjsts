@@ -42,6 +42,10 @@ public class GlobalConstants {
     public static final int DEFAULT_TREE_LEVEL = 3;
 
     /**
+     * 发号器前缀
+     */
+    public static final String ID_GENERATOR_PREFIX = "STS";
+    /**
      * 客户资料文件夹
      */
     public static final String CUSTOMER_FILE = "customer";

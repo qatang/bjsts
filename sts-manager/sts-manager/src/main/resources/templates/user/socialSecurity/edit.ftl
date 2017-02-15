@@ -21,7 +21,7 @@
                                     <td style="width:79px;text-align: right;padding-top: 13px;">职员:</td>
                                     <td>
                                         [#if socialSecurityForm.socialSecurity.id??]
-                                            ${socialSecurityForm.socialSecurity.staffId}
+                                            ${socialSecurityForm.socialSecurity.staffNo}
                                             <input type="hidden" name="socialSecurity.id" value="${socialSecurityForm.socialSecurity.staffId!''}"/>
                                         [#else]
                                             <select class="chosen-select form-control" name="socialSecurity.staffId" data-placeholder="请选择" style="" onchange="queryStaff(this);" id="staffId">
@@ -46,13 +46,13 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">身份证号:</td>
                                     <td>
-                                        [@macro.inputText name="socialSecurity.idCard" value=socialSecurityForm.socialSecurity.idCard!""/]
+                                        [@macro.inputText name="socialSecurity.idCard" value=socialSecurityForm.socialSecurity.idCard!"" id="idCard" readonly=true/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">联系电话:</td>
                                     <td>
-                                        [@macro.inputText name="socialSecurity.mobile" value=socialSecurityForm.socialSecurity.mobile!""/]
+                                        [@macro.inputText name="socialSecurity.mobile" value=socialSecurityForm.socialSecurity.mobile!"" id="mobile" readonly=true/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -98,6 +98,8 @@
             async: false,
             success: function (data) {
                 $('#realName').val(data.realName);
+                $('#idCard').val(data.idCard);
+                $('#mobile').val(data.mobil);
             },
             error: function (xmlHttpRequest,error) {
             },

@@ -54,6 +54,9 @@ public class SocialSecurityEntity extends AbstractEntity {
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
+    @Transient
+    private String staffNo;
+
     public Long getId() {
         return id;
     }
@@ -132,5 +135,13 @@ public class SocialSecurityEntity extends AbstractEntity {
 
     public void setValid(EnableDisableStatus valid) {
         this.valid = valid;
+    }
+
+    public String getStaffNo() {
+        return staffNo;
+    }
+
+    public void setStaffNo(String staffNo) {
+        this.staffNo = staffNo;
     }
 }
