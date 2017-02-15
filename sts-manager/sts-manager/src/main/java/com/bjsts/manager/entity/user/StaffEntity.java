@@ -5,13 +5,11 @@ import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.user.EducationTypeConverter;
-import com.bjsts.manager.enums.converter.user.MaleTypeConverter;
-import com.bjsts.manager.enums.converter.user.OnJobStatusConverter;
-import com.bjsts.manager.enums.converter.user.PolityTypeConverter;
+import com.bjsts.manager.enums.converter.EducationTypeConverter;
+import com.bjsts.manager.enums.converter.MaleTypeConverter;
+import com.bjsts.manager.enums.converter.PolityTypeConverter;
 import com.bjsts.manager.enums.user.EducationType;
 import com.bjsts.manager.enums.user.MaleType;
-import com.bjsts.manager.enums.user.OnJobStatus;
 import com.bjsts.manager.enums.user.PolityType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -30,13 +28,9 @@ import java.util.Date;
 public class StaffEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -5506202072645887173L;
-
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(name = "staff_no", nullable = false)
-    private String staffNo;
 
     @Column(name = "real_name", nullable = false)
     private String realName;
@@ -74,9 +68,9 @@ public class StaffEntity extends AbstractEntity {
     @Column(name = "birthday")
     private Date birthday;
 
-    @Convert(converter = OnJobStatusConverter.class)
+    @Convert(converter = YesNoStatusConverter.class)
     @Column(nullable = false, name = "on_job")
-    private OnJobStatus onJob;
+    private YesNoStatus onJob;
 
     @Column(length = 32)
     private String mobile;
@@ -115,14 +109,6 @@ public class StaffEntity extends AbstractEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getStaffNo() {
-        return staffNo;
-    }
-
-    public void setStaffNo(String staffNo) {
-        this.staffNo = staffNo;
     }
 
     public String getEmail() {
@@ -237,11 +223,11 @@ public class StaffEntity extends AbstractEntity {
         this.birthday = birthday;
     }
 
-    public OnJobStatus getOnJob() {
+    public YesNoStatus getOnJob() {
         return onJob;
     }
 
-    public void setOnJob(OnJobStatus onJob) {
+    public void setOnJob(YesNoStatus onJob) {
         this.onJob = onJob;
     }
 

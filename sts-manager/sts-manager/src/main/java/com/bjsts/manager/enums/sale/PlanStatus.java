@@ -20,11 +20,10 @@ public enum PlanStatus {
     ASK_PRICE(1, "询价"),
     ABANDON(2, "弃单"),
     CONTINUE(3, "持续跟进"),
-    QUOTE_FOR_SALE(4, "提交报价单至销售"),
-    QUOTE_FOR_CUSTOMER(5, "提交报价单至甲方"),
-    UN_COMPLETE(6, "无法完成"),
-    COMPLETE(7, "成单"),
-    OTHERS(8, "其他"),
+    QUOTE(4, "已提交报价单"),
+    UN_COMPLETE(5, "无法完成"),
+    COMPLETE(6, "成单"),
+    OTHERS(7, "其他"),
     ;
 
     private static Logger logger = LoggerFactory.getLogger(PlanStatus.class);

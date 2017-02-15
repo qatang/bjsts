@@ -1,7 +1,6 @@
 package com.bjsts.manager.service.idgenerator.impl.idgenerator;
 
 import com.bjsts.core.util.CoreDateUtils;
-import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.idgenerator.IdGeneratorEntity;
 import com.bjsts.manager.repository.idgenerator.IdGeneratorRepository;
@@ -87,7 +86,7 @@ public class IdGeneratorServiceImpl extends AbstractService<IdGeneratorEntity, S
         Long nextValue = generate(sequence, count);
 
         String date = CoreDateUtils.formatDate(new Date(), "yyMMdd");
-        String str = String.format(GlobalConstants.ID_GENERATOR_PREFIX + "%s%01d%05d", date, prefix % 10, nextValue % 100000);
+        String str = String.format("STS%s%01d%05d", date, prefix % 10, nextValue % 100000);
 
         return str;
     }

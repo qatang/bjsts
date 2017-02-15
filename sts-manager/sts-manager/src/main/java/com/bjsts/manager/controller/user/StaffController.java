@@ -13,11 +13,9 @@ import com.bjsts.manager.entity.user.DepartmentEntity;
 import com.bjsts.manager.entity.user.StaffEntity;
 import com.bjsts.manager.enums.user.EducationType;
 import com.bjsts.manager.enums.user.MaleType;
-import com.bjsts.manager.enums.user.OnJobStatus;
 import com.bjsts.manager.enums.user.PolityType;
 import com.bjsts.manager.form.user.StaffForm;
 import com.bjsts.manager.query.user.StaffSearchable;
-import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.service.user.StaffService;
 import com.google.common.collect.Lists;
@@ -52,9 +50,6 @@ public class StaffController extends AbstractController {
     @Autowired
     private DepartmentService departmentService;
 
-    @Autowired
-    private IdGeneratorService idGeneratorService;
-
     @ModelAttribute("maleTypeList")
     public List<MaleType> getMaleTypeList() {
         return MaleType.list();
@@ -71,8 +66,8 @@ public class StaffController extends AbstractController {
     }
 
     @ModelAttribute("onJobList")
-    public List<OnJobStatus> getOnJobList() {
-        return OnJobStatus.list();
+    public List<YesNoStatus> getOnJobList() {
+        return YesNoStatus.list();
     }
 
     @ModelAttribute("socialSecurityList")
@@ -131,6 +126,14 @@ public class StaffController extends AbstractController {
             redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
             redirectAttributes.addFlashAttribute(staffForm);
             return "redirect:/staff/create";
+        }
+
+        StaffEntity dbStaffEntity = staffService.get(staffEntity.getId());
+        if (dbStaffEntity != null) {
+         result.addError(new ObjectError("staffId", "职工编号已存在"));
+         redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+         redirectAttributes.addFlashAttribute(staffForm);
+         return "redirect:/staff/create";
         }
 
         staffService.save(staffEntity);

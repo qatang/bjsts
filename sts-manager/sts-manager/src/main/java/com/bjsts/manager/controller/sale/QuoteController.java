@@ -74,6 +74,7 @@ public class QuoteController extends AbstractController {
     public String list(QuoteSearchable quoteSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         List<PlanStatus> planStatuses = Lists.newArrayList();
         planStatuses.add(PlanStatus.ASK_PRICE);
+        planStatuses.add(PlanStatus.QUOTE);
         quoteSearchable.setPlanStatusList(planStatuses);
         ApiResponse<PlanEntity> apiResponse = productOrderService.findAll(quoteSearchable, pageable);
         Page<PlanEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
@@ -121,7 +122,7 @@ public class QuoteController extends AbstractController {
         PlanEntity planEntity = productOrderService.get(quote.getId());
         planEntity.setQuoter(quote.getQuoter());
         planEntity.setQuoteTime(quote.getQuoteTime());
-        planEntity.setPlanStatus(PlanStatus.QUOTE_FOR_SALE);
+        planEntity.setPlanStatus(PlanStatus.QUOTE);
 
         String quoteFileUrl = quoteForm.getQuoteFileUrl();
         if (StringUtils.isEmpty(quoteFileUrl)) {

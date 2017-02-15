@@ -2,10 +2,9 @@ package com.bjsts.manager.config;
 
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
-import com.bjsts.manager.enums.converter.user.EducationTypeConverter;
-import com.bjsts.manager.enums.converter.user.MaleTypeConverter;
-import com.bjsts.manager.enums.converter.user.OnJobStatusConverter;
-import com.bjsts.manager.enums.converter.user.PolityTypeConverter;
+import com.bjsts.manager.enums.converter.EducationTypeConverter;
+import com.bjsts.manager.enums.converter.MaleTypeConverter;
+import com.bjsts.manager.enums.converter.PolityTypeConverter;
 import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
 import com.bjsts.manager.enums.converter.resource.ResourceTypeConverter;
 import com.bjsts.manager.enums.converter.sale.*;
@@ -126,7 +125,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new PlanStatusConverter());
         registry.addConverter(new ContractStatusConverter());
         registry.addConverter(new InvoiceStatusConverter());
-        registry.addConverter(new OnJobStatusConverter());
 
         DateFormatter dateTimeFormatter = new DateFormatter("yyyy-MM-dd HH:mm:ss");
         dateTimeFormatter.setLenient(true);

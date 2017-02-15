@@ -45,7 +45,7 @@
                                         <thead>
                                         <tr>
                                             <th class="center">部门</th>
-                                            <th class="center">职工编号</th>
+                                            <th class="center">职工编码</th>
                                             <th class="center">姓名</th>
                                             <th class="center">性别</th>
                                             <th class="center">职位</th>
@@ -68,7 +68,7 @@
                                             [#list page.content as staff]
                                             <tr>
                                                 <td class='center'>${staff.departmentName}</td>
-                                                <td class='center'>${staff.staffNo}</td>
+                                                <td class='center'>${staff.id}</td>
                                                 <td class="center"><a onclick="diag('员工信息查看', '${ctx}/staff/view/${staff.id}')" style="cursor:pointer;">${staff.realName}</a></td>
                                                 <td class="center">${staff.maleType.getName()}</td>
                                                 <td class="center">${staff.position!''}</td>
