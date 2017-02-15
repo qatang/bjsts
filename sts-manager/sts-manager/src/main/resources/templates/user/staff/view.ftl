@@ -1,5 +1,4 @@
 [#ftl strip_whitespace=true]
-[#import "${ctx}/common/macroes.ftl" as macro]
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,11 +15,11 @@
                                 <table id="table_report" class="table table-striped table-bordered table-hover">
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">职工编号:</td>
-                                        <td style="padding-top: 13px;">${staff.staffNo}</td>
+                                        <td style="padding-top: 13px;">${staff.id}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">部门:</td>
-                                        <td style="padding-top: 13px;">${staff.departmentName!""}</td>
+                                        <td style="padding-top: 13px;">${staff.departmentName}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
@@ -40,11 +39,11 @@
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">入职时间:</td>
-                                        <td style="padding-top: 13px;">[@macro.displayDate value=staff.entryTime!""/]</td>
+                                        <td style="padding-top: 13px;">[@macro.displayDate value=staff.entryTime/]</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">离职时间:</td>
-                                        <td style="padding-top: 13px;">[@macro.displayDate value=staff.departureTime!""/]</td>
+                                        <td style="padding-top: 13px;">[@macro.displayDate value=staff.departureTime/]</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">文化程度:</td>
@@ -56,7 +55,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">生日:</td>
-                                        <td style="padding-top: 13px;">[@macro.displayDate value=staff.birthday!""/]</td>
+                                        <td style="padding-top: 13px;">[@macro.displayDate value=staff.birthday/]</td>
                                     </tr>
                                     <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">在离职:</td>
