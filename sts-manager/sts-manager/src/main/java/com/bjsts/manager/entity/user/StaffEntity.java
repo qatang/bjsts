@@ -1,7 +1,9 @@
 package com.bjsts.manager.entity.user;
 
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
+import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import com.bjsts.manager.enums.converter.user.EducationTypeConverter;
 import com.bjsts.manager.enums.converter.user.MaleTypeConverter;
@@ -84,6 +86,13 @@ public class StaffEntity extends AbstractEntity {
 
     @Column(length = 256)
     private String memo;
+
+    /**
+     * 是否参加社保
+     */
+    @Convert(converter = YesNoStatusConverter.class)
+    @Column(name = "social_security", nullable = false)
+    private YesNoStatus socialSecurity = YesNoStatus.YES;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -258,5 +267,13 @@ public class StaffEntity extends AbstractEntity {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public YesNoStatus getSocialSecurity() {
+        return socialSecurity;
+    }
+
+    public void setSocialSecurity(YesNoStatus socialSecurity) {
+        this.socialSecurity = socialSecurity;
     }
 }

@@ -51,7 +51,6 @@
                                     <td style="width:79px;text-align: right;padding-top: 13px;">身份证号:</td>
                                     <td>
                                         [@macro.inputText id="idCard" name="staff.idCard" value=staffForm.staff.idCard!"" placeholder="身份证号" pattern="^([1-9][0-9]{5}(18|19|([23][0-9]))[0-9]{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)[0-9]{3}[0-9Xx])|([1-9][0-9]{5}[0-9]{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)[0-9]{3})$" /]
-                                        [#--<input type="text" id="idCard" name="staff.idCard" value="${staffForm.staff.idCard!""}" placeholder="这里输入身份证号" onchange="calBirthday();" pattern="/^[1-9][0-9]{7}((0[0-9])|(1[0-2]))(([0|1|2][0-9])|3[0-1])[0-9]{3}$|^[1-9][0-9]{5}[1-9][0-9]{3}((0[0-9])|(1[0-2]))(([0|1|2][0-9])|3[0-1])[0-9]{3}([0-9]|X)$/"/>--]
                                     </td>
                                 </tr>
                                 <tr>
@@ -88,6 +87,12 @@
                                     <td style="width:79px;text-align: right;padding-top: 13px;">在离职:</td>
                                     <td>
                                     [@macro.selectEnum name="staff.onJob" enumObj=staffForm.staff.onJob!onJobList[0] dataList=onJobList /]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:79px;text-align: right;padding-top: 13px;">社保:</td>
+                                    <td>
+                                    [@macro.selectEnum name="staff.socialSecurity" enumObj=staffForm.staff.socialSecurity!socialSecurityList[0] dataList=socialSecurityList /]
                                     </td>
                                 </tr>
                                 <tr>

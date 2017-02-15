@@ -56,6 +56,7 @@
                                             <th class="center">政治面貌</th>
                                             <th class="center">生日</th>
                                             <th class="center">在离职</th>
+                                            <th class="center">社保</th>
                                             <th class="center">联系电话</th>
                                             <th class="center"><i class="ace-icon fa fa-envelope-o"></i>邮箱</th>
                                             <th class="center">操作</th>
@@ -78,6 +79,7 @@
                                                 <td class="center">${staff.polityType.getName()}</td>
                                                 <td class="center">[@macro.displayDate value=staff.birthday!""/]</td>
                                                 <td class="center">${staff.onJob.getName()}</td>
+                                                <td class="center">${staff.socialSecurity.getName()}</td>
                                                 <td class="center">${staff.mobile}</td>
                                                 <td class="center">${staff.email}</td>
                                                 <td class="center">

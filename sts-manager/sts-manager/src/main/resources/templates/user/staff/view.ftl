@@ -63,6 +63,10 @@
                                         <td style="padding-top: 13px;">${staff.onJob.getName()}</td>
                                     </tr>
                                     <tr>
+                                        <td style="width:79px;text-align: right;padding-top: 13px;">社保:</td>
+                                        <td style="padding-top: 13px;">${staff.socialSecurity.getName()}</td>
+                                    </tr>
+                                    <tr>
                                         <td style="width:79px;text-align: right;padding-top: 13px;">联系电话:</td>
                                         <td style="padding-top: 13px;">${staff.mobile!""}</td>
                                     </tr>

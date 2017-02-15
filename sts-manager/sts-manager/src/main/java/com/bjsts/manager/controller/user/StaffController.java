@@ -6,6 +6,7 @@ import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.PageOrderType;
+import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.DepartmentEntity;
@@ -72,6 +73,11 @@ public class StaffController extends AbstractController {
     @ModelAttribute("onJobList")
     public List<OnJobStatus> getOnJobList() {
         return OnJobStatus.list();
+    }
+
+    @ModelAttribute("socialSecurityList")
+    public List<YesNoStatus> getSocialSecurityList() {
+        return YesNoStatus.list();
     }
 
     @RequiresPermissions("sts:staff:list")
@@ -190,6 +196,7 @@ public class StaffController extends AbstractController {
         staffEntity.setOnJob(staff.getOnJob());
         staffEntity.setMobile(staff.getMobile());
         staffEntity.setEmail(staff.getEmail());
+        staffEntity.setSocialSecurity(staff.getSocialSecurity());
         staffService.update(staffEntity);
         return "result";
     }
