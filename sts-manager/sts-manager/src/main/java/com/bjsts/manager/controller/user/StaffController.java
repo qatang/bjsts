@@ -177,6 +177,7 @@ public class StaffController extends AbstractController {
 
         StaffEntity staffEntity = staffService.get(staff.getId());
         staffEntity.setDepartmentId(staff.getDepartmentId());
+        staffEntity.setStaffNo(staff.getStaffNo());
         staffEntity.setRealName(staff.getRealName());
         staffEntity.setMaleType(staff.getMaleType());
         staffEntity.setPosition(staff.getPosition());
@@ -196,7 +197,9 @@ public class StaffController extends AbstractController {
     @RequiresPermissions("sts:staff:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
-        modelMap.put("staffInfo", staffService.get(id));
+        StaffEntity staffEntity = staffService.get(id);
+        staffEntity.setDepartmentName(departmentService.get(staffEntity.getDepartmentId()).getName());
+        modelMap.put("staff", staffEntity);
         return "user/staff/view";
     }
 
