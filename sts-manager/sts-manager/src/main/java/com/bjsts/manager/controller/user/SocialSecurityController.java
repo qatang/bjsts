@@ -26,7 +26,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -89,25 +88,6 @@ public class SocialSecurityController extends AbstractController {
         }
 
         SocialSecurityEntity socialSecurityEntity = socialSecurityForm.getSocialSecurity();
-        Long staffId = socialSecurityEntity.getStaffId();
-        if (staffId == null) {
-            result.addError(new ObjectError("staffId", "请选择职工"));
-            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
-            redirectAttributes.addFlashAttribute(socialSecurityForm);
-            return "redirect:/socialSecurity/create";
-        }
-
-        StaffEntity staffEntity = staffService.get(staffId);
-
-        SocialSecurityEntity db = socialSecurityService.findByStaffId(socialSecurityEntity.getStaffId());
-        if (db != null) {
-            result.addError(new ObjectError("staffId", "职工已存在"));
-            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
-            redirectAttributes.addFlashAttribute(socialSecurityForm);
-            return "redirect:/socialSecurity/create";
-        }
-        socialSecurityEntity.setRealName(staffEntity.getRealName());
-        socialSecurityEntity.setDepartmentId(staffEntity.getDepartmentId());
         socialSecurityService.save(socialSecurityEntity);
         return "result";
     }

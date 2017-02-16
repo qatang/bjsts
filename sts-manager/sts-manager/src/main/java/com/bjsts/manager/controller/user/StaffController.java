@@ -6,13 +6,13 @@ import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.PageOrderType;
-import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.DepartmentEntity;
 import com.bjsts.manager.entity.user.StaffEntity;
 import com.bjsts.manager.enums.user.EducationType;
 import com.bjsts.manager.enums.user.MaleType;
+import com.bjsts.manager.enums.user.OnJobStatus;
 import com.bjsts.manager.enums.user.PolityType;
 import com.bjsts.manager.form.user.StaffForm;
 import com.bjsts.manager.query.user.StaffSearchable;
@@ -66,13 +66,8 @@ public class StaffController extends AbstractController {
     }
 
     @ModelAttribute("onJobList")
-    public List<YesNoStatus> getOnJobList() {
-        return YesNoStatus.list();
-    }
-
-    @ModelAttribute("socialSecurityList")
-    public List<YesNoStatus> getSocialSecurityList() {
-        return YesNoStatus.list();
+    public List<OnJobStatus> getOnJobList() {
+        return OnJobStatus.list();
     }
 
     @RequiresPermissions("sts:staff:list")
@@ -186,6 +181,7 @@ public class StaffController extends AbstractController {
 
         StaffEntity staffEntity = staffService.get(staff.getId());
         staffEntity.setDepartmentId(staff.getDepartmentId());
+        staffEntity.setStaffNo(staff.getStaffNo());
         staffEntity.setRealName(staff.getRealName());
         staffEntity.setMaleType(staff.getMaleType());
         staffEntity.setPosition(staff.getPosition());
@@ -198,7 +194,6 @@ public class StaffController extends AbstractController {
         staffEntity.setOnJob(staff.getOnJob());
         staffEntity.setMobile(staff.getMobile());
         staffEntity.setEmail(staff.getEmail());
-        staffEntity.setSocialSecurity(staff.getSocialSecurity());
         staffService.update(staffEntity);
         return "result";
     }
@@ -206,7 +201,9 @@ public class StaffController extends AbstractController {
     @RequiresPermissions("sts:staff:view")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
-        modelMap.put("staffInfo", staffService.get(id));
+        StaffEntity staffEntity = staffService.get(id);
+        staffEntity.setDepartmentName(departmentService.get(staffEntity.getDepartmentId()).getName());
+        modelMap.put("staff", staffEntity);
         return "user/staff/view";
     }
 

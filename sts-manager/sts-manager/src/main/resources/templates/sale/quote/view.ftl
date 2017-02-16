@@ -82,7 +82,7 @@
                                         <td>[@macro.displayDate value=quote.quoteTime!""/]</td>
                                     </tr>
                                     <tr>
-                                        <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">报价单:</td>
                                         <td>
                                         [#if quoteFileUrl??]
                                             <a href="${ctx}/file${quoteFileUrl}" target="_blank">${ctx}/file${quoteFileUrl}</a>

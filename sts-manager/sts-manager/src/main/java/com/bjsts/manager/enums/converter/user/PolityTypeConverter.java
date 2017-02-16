@@ -1,4 +1,4 @@
-package com.bjsts.manager.enums.converter;
+package com.bjsts.manager.enums.converter.user;
 
 
 import com.bjsts.core.enums.converter.BaseEnumConverter;

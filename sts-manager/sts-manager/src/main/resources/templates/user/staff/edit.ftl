@@ -15,6 +15,7 @@
                         <form action="${ctx}/staff/${action}" name="staffForm" id="staffForm" method="post">
                             <div style="padding-top: 13px;"></div>
                             [@macro.errors /]
+                            <input type="hidden" name="staff.id" value="${staffForm.staff.id!''}"/>
                             <table id="table_report" class="table table-striped table-bordered table-hover">
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">部门:</td>
@@ -25,12 +26,7 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">职工编号:</td>
                                     <td>
-                                        [#if staffForm.staff.id?has_content && action = "update"]
-                                            <input type="hidden" name="staff.id" value="${staffForm.staff.id!''}"/>
-                                            ${staffForm.staff.id}
-                                        [#else]
-                                            [@macro.inputNumber name="staff.id" value=staffForm.staff.id!"" placeholder="职工编号"/]
-                                        [/#if]
+                                        [@macro.inputText name="staff.staffNo" value=staffForm.staff.staffNo!"" placeholder="职工编号"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -54,13 +50,8 @@
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">身份证号:</td>
                                     <td>
-<<<<<<< HEAD
                                         [@macro.inputText id="idCard" name="staff.idCard" value=staffForm.staff.idCard!"" placeholder="身份证号" pattern="^([1-9][0-9]{5}(18|19|([23][0-9]))[0-9]{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)[0-9]{3}[0-9Xx])|([1-9][0-9]{5}[0-9]{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)[0-9]{3})$" /]
                                     </td>
-=======
-                                        [@macro.inputText name="staff.idCard" value=staffForm.staff.idCard!"" placeholder="身份证号"/]
-                                     </td>
->>>>>>> parent of b7704cf... 修复bug
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">入职日期:</td>
@@ -89,19 +80,13 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">生日:</td>
                                     <td>
-                                    [@macro.datePicker name="staff.birthday" value=staffForm.staff.birthday placeholder="生日"/]
+                                        [@macro.datePicker id="birthday" name="staff.birthday" value=staffForm.staff.birthday placeholder="生日"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">在离职:</td>
                                     <td>
                                     [@macro.selectEnum name="staff.onJob" enumObj=staffForm.staff.onJob!onJobList[0] dataList=onJobList /]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">社保:</td>
-                                    <td>
-                                    [@macro.selectEnum name="staff.socialSecurity" enumObj=staffForm.staff.socialSecurity!socialSecurityList[0] dataList=socialSecurityList /]
                                     </td>
                                 </tr>
                                 <tr>
@@ -139,4 +124,28 @@
 </body>
 
 [#include "${ctx}/common/footer.ftl"/]
+
+<script>
+    $(function() {
+        $("#idCard").bind("blur", function () {
+            var idCard = $(this).val();
+
+            if (idCard && (idCard.length == 15 || idCard.length == 18)) {
+                var year, month, day, birthday;
+                if (idCard.length == 15) {
+                    year = idCard.substring(6,8);
+                    month = idCard.substring(8,10);
+                    day = idCard.substring(10,12);
+                    birthday = "19" + year + "-" + month + "-" + day;
+                } else {
+                    year = idCard.substring(6,10);
+                    month = idCard.substring(10,12);
+                    day = idCard.substring(12,14);
+                    birthday = year + "-" + month + "-" + day;
+                }
+                $("#birthday").val(birthday);
+            }
+        })
+    });
+</script>
 </html>

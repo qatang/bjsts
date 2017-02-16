@@ -25,16 +25,10 @@ public class SocialSecurityEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name="staff_id", updatable = false, nullable = false)
-    private Long staffId;
-
-    @Column(name = "real_name", updatable = false, nullable = false)
+    @Column(name = "real_name", nullable = false)
     private String realName;
 
-    @Column(name = "department_id", nullable = false)
-    private Long departmentId;
-
-    @Column(name = "id_card")
+    @Column(name = "id_card", nullable = false)
     private String idCard;
 
     @Column(length = 32)
@@ -62,28 +56,12 @@ public class SocialSecurityEntity extends AbstractEntity {
         this.id = id;
     }
 
-    public Long getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Long staffId) {
-        this.staffId = staffId;
-    }
-
     public String getRealName() {
         return realName;
     }
 
     public void setRealName(String realName) {
         this.realName = realName;
-    }
-
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
     }
 
     public String getIdCard() {

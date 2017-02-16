@@ -18,29 +18,9 @@
                             <input type="hidden" name="socialSecurity.id" value="${socialSecurityForm.socialSecurity.id!''}"/>
                             <table id="table_report" class="table table-striped table-bordered table-hover">
                                 <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">职员:</td>
-                                    <td>
-                                        [#if socialSecurityForm.socialSecurity.id??]
-                                            ${socialSecurityForm.socialSecurity.staffId}
-                                            <input type="hidden" name="socialSecurity.id" value="${socialSecurityForm.socialSecurity.staffId!''}"/>
-                                        [#else]
-                                            <select class="chosen-select form-control" name="socialSecurity.staffId" data-placeholder="请选择" style="" onchange="queryStaff(this);" id="staffId">
-                                                <option value="0">请选择</option>
-                                                [#list staffList as data]
-                                                    <option value="${data.id?c}" [#if socialSecurityForm.socialSecurity.staffId?has_content && data.id == socialSecurityForm.socialSecurity.staffId]selected[/#if]>${data.getRealName()!""}</option>
-                                                [/#list]
-                                            </select>
-                                        [/#if]
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
                                     <td>
-                                        [#if socialSecurityForm.socialSecurity.id??]
-                                            ${socialSecurityForm.socialSecurity.realName}
-                                        [#else]
-                                            [@macro.inputText name="socialSecurity.realName" value=socialSecurityForm.socialSecurity.realName!"" id="realName" readonly=true/]
-                                        [/#if]
+                                        [@macro.inputText name="socialSecurity.realName" value=socialSecurityForm.socialSecurity.realName!""/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -78,32 +58,4 @@
 </body>
 
 [#include "${ctx}/common/footer.ftl"/]
-
-<script>
-    /**
-     *
-     * @param url
-     */
-    function queryStaff() {
-        staffId = $('#staffId').val();
-        if (staffId == 0) {
-            $('#realName').val("");
-            return;
-        }
-        $.ajax({
-            type: "get",
-            url: "${ctx}/socialSecurity/findStaff/" + staffId,
-            data: {},
-            dataType: "json",
-            async: false,
-            success: function (data) {
-                $('#realName').val(data.realName);
-            },
-            error: function (xmlHttpRequest,error) {
-            },
-            complete: function(xmlHttpRequest) {
-            }
-        });
-    }
-</script>
 </html>

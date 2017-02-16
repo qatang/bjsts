@@ -39,7 +39,7 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
                                     <thead>
                                     <tr>
-                                        <th class="center">职工编号</th>
+                                        <th class="center">序号</th>
                                         <th class="center">姓名</th>
                                         <th class="center">身份证号</th>
                                         <th class="center">联系电话</th>
@@ -51,7 +51,7 @@
                                     [#if page?? && page.content?has_content]
                                         [#list page.content as socialSecurity]
                                         <tr>
-                                            <td class="center">${socialSecurity.staffId!""}</td>
+                                            <td class="center">${socialSecurity.id}</td>
                                             <td class="center">${socialSecurity.realName!""}</td>
                                             <td class="center">${socialSecurity.idCard!""}</td>
                                             <td class="center">${socialSecurity.mobile!""}</td>
