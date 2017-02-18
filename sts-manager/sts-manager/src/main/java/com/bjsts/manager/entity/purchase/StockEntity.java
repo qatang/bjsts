@@ -11,8 +11,7 @@ import java.util.Date;
 
 /**
  * 库存
- * @author jinsheng
- * @since 2016-04-28 13:48
+ * @author wangzhiliang
  */
 @Entity
 @Table(name = "sts_stock")
@@ -26,22 +25,16 @@ public class StockEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "user_id ")
-    private Long userId;
-
     @Column(nullable = false, name = "product_name")
     private String productName;
 
     @Column(nullable = false, name = "product_model")
     private String productModel;
 
-    private String quantity;
+    @Column(nullable = false)
+    private Long quantity;
 
-    @Column(nullable = false, name = "single_amount")
-    private Long singleAmount;
-
-    @Column(nullable = false, name = "total_amount")
-    private Long totalAmount;
+    private String memo;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -79,28 +72,12 @@ public class StockEntity extends AbstractEntity {
         this.productModel = productModel;
     }
 
-    public String getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
-    }
-
-    public Long getSingleAmount() {
-        return singleAmount;
-    }
-
-    public void setSingleAmount(Long singleAmount) {
-        this.singleAmount = singleAmount;
-    }
-
-    public Long getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Long totalAmount) {
-        this.totalAmount = totalAmount;
     }
 
     public EnableDisableStatus getValid() {
@@ -125,5 +102,13 @@ public class StockEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }

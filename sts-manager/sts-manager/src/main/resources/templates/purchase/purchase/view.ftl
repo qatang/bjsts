@@ -73,16 +73,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">采购合同附件:</td>
                                 <td>
                                 [#if purchaseContractUrl??]
                                     <a href="${ctx}/file${purchaseContractUrl}" target="_blank">${ctx}/file${purchaseContractUrl}</a>
                                 [/#if]
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    <a class="btn btn-mini btn-primary" href="${ctx}/purchase/list">返回</a>
                                 </td>
                             </tr>
                         </table>

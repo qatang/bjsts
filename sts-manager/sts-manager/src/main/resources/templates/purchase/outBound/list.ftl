@@ -10,7 +10,6 @@
             <div class="main-content">
                 <div class="main-content-inner">
                     <div class="page-content">
-                        [@macro.errorMsg/]
                         <div class="row">
                             <div class="col-xs-11">
                             [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
@@ -31,7 +30,7 @@
                             </div>
                             <div class="col-xs-1">
                                 <div style="float:right;margin-top:5px;">
-                                    <a class="btn btn-xs btn-success" onclick="customDiag('新增采购单', '${ctx}/purchase/create', 800, 600);">新增采购单</a>
+                                    <a class="btn btn-xs btn-success" onclick="diag('新增物料出库', '${ctx}/outBound/create');">新增物料出库</a>
                                 </div>
                             </div>
                         </div>
@@ -40,52 +39,53 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
                                     <thead>
                                         <tr>
-                                            <th class="center">采购单编号</th>
+                                            <th class="center">编号</th>
+                                            <th class="center">项目编号</th>
+                                            <th class="center">项目名称</th>
+                                            <th class="center">询价日期</th>
+                                            <th class="center">联系人姓名</th>
+                                            <th class="center">联系电话</th>
+                                            <th class="center">联系单位</th>
+                                            <th class="center">电子邮箱</th>
                                             <th class="center">产品名称</th>
                                             <th class="center">规格型号</th>
-                                            <th class="center">采购数量</th>
-                                            <th class="center">采购负责人</th>
-                                            <th class="center">供应商名称</th>
-                                            <th class="center">供应商联系人</th>
-                                            <th class="center">供应商电话</th>
-                                            <th class="center">采购日期</th>
-                                            <th class="center">采购金额</th>
-                                            <th class="center">已付款金额</th>
-                                            <th class="center">未付款金额</th>
-                                            <th class="center">发票状态</th>
-                                            <th class="center">入库状态</th>
+                                            <th class="center">数量</th>
+                                            <th class="center">出库日期</th>
+                                            <th class="center">领取人</th>
+                                            <th class="center">状态</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         [#if page?? && page.content?has_content]
-                                            [#list page.content as purchase]
+                                            [#list page.content as outBound]
                                                 <tr>
-                                                    <td class="center"><a onclick="diag('采购单查看', '${ctx}/purchase/view/${purchase.id}');">${purchase.purchaseNo}</a></td>
-                                                    <td class="center">${purchase.productName!""}</td>
-                                                    <td class="center">${purchase.productModel!""}</td>
-                                                    <td class="center">${purchase.quantity}</td>
-                                                    <td class="center">${purchase.operator}</td>
-                                                    <td class="center">${purchase.supplier}</td>
-                                                    <td class="center">${purchase.supplierLinkman}</td>
-                                                    <td class="center">${purchase.supplierMobile}</td>
-                                                    <td class="center">[@macro.displayDate value=purchase.purchaseTime!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.totalAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.payedAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.unPayedAmount!""/]</td>
-                                                    <td class="center">${purchase.invoiceStatus.getName()}</td>
-                                                    <td class="center">${purchase.inBound.getName()}</td>
+                                                    <td class="center"><a onclick="diag('库存查看', '${ctx}/outBound/view/${outBound.id}')" style="cursor:pointer;">${outBound.id}</a></td>
+                                                    <td class="center">${outBound.plan.planNo!""}</td>
+                                                    <td class="center">${outBound.plan.name!""}</td>
+                                                    <td class="center">[@macro.displayDate value=outBound.plan.priceTime!""/]</td>
+                                                    <td class="center">${outBound.plan.linkman}</td>
+                                                    <td class="center">${outBound.plan.mobile}</td>
+                                                    <td class="center">${outBound.plan.company}</td>
+                                                    <td class="center">${outBound.plan.email}</td>
+                                                    <td class="center">${outBound.stock.productName!""}</td>
+                                                    <td class="center">${outBound.stock.productModel!""}</td>
+                                                    <td class="center">${outBound.quantity}</td>
+                                                    <td class="center">[@macro.displayDate value=outBound.outBoundTime!""/]</td>
+                                                    <td class="center">${outBound.receiptor!""}</td>
                                                     <td class="center">
+                                                        [#if outBound.valid.getValue() == disableStatus.getValue()]
+                                                            已撤销
+                                                        [#else ]
+                                                            正常
+                                                        [/#if]
+                                                    </td>
+                                                    <td class="center">
+                                                        [#if outBound.valid.getValue() != disableStatus.getValue()]
                                                         <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" onclick="customDiag('修改采购合同', '${ctx}/purchase/update/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
-                                                                修改
-                                                            </a>
+                                                            <a href="${ctx}/outBound/disable/${outBound.id?c}" onclick="return confirm('确定要撤销吗?');">撤销</a>
                                                         </div>
-                                                        [#if purchase.inBound.getValue() == noStatus.getValue()]
-                                                            <div class="hidden-sm hidden-xs btn-group">
-                                                                <a href="${ctx}/purchase/disable/${purchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                                            </div>
                                                         [/#if]
                                                     </td>
                                                 </tr>

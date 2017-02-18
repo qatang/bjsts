@@ -14,4 +14,6 @@ public interface PurchaseService extends IService<PurchaseEntity, Long> {
     ApiResponse<PurchaseEntity> findAll(PurchaseSearchable purchaseSearchable, Pageable pageable);
 
     PurchaseEntity save(PurchaseEntity purchaseEntity, String purchaseFileUrl);
+
+    PurchaseEntity findByPurchaseNo(String purchaseNo);
 }

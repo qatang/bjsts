@@ -15,7 +15,7 @@
                     <div class="col-xs-12">
                         <form action="${ctx}/purchase/${action}" name="purchaseForm" id="purchaseForm" method="post">
                             <div style="padding-top: 13px;"></div>
-                        [@macro.errors /]
+                            [@macro.errors /]
                             <input type="hidden" name="purchase.id" value="${purchaseForm.purchase.id!''}"/>
                             <table id="table_report" class="table table-striped table-bordered table-hover">
                                 <tr>
@@ -29,67 +29,99 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">产品名称:</td>
                                     <td>
-                                        [@macro.inputText name="purchase.productName" value=purchaseForm.purchase.productName!'' placeholder="产品名称"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputText name="purchase.productName" value=purchaseForm.purchase.productName!'' placeholder="产品名称"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.productName!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">规格型号:</td>
                                     <td>
-                                    [@macro.inputText name="purchase.productModel" value=purchaseForm.purchase.productModel!'' placeholder="规格型号"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputText name="purchase.productModel" value=purchaseForm.purchase.productModel!'' placeholder="规格型号"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.productModel!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">采购数量:</td>
                                     <td>
-                                    [@macro.inputNumber name="purchase.quantity" value=purchaseForm.purchase.quantity!'' placeholder="采购数量"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputNumber name="purchase.quantity" value=purchaseForm.purchase.quantity!'' placeholder="采购数量"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.quantity!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">采购负责人:</td>
                                     <td>
-                                    [@macro.inputText name="purchase.operator" value=purchaseForm.purchase.operator!'' placeholder="采购负责人"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputText name="purchase.operator" value=purchaseForm.purchase.operator!'' placeholder="采购负责人"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.operator!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">供应商名称:</td>
                                     <td>
-                                    [@macro.inputText name="purchase.supplier" value=purchaseForm.purchase.supplier!'' placeholder="供应商名称"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputText name="purchase.supplier" value=purchaseForm.purchase.supplier!'' placeholder="供应商名称"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.supplier!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">供应商联系人:</td>
                                     <td>
-                                    [@macro.inputText name="purchase.supplierLinkman" value=purchaseForm.purchase.supplierLinkman!'' placeholder="供应商联系人"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputText name="purchase.supplierLinkman" value=purchaseForm.purchase.supplierLinkman!'' placeholder="供应商联系人"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.supplierLinkman!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">供应商联系电话:</td>
                                     <td>
-                                    [@macro.inputText name="purchase.supplierMobile" value=purchaseForm.purchase.supplierMobile!'' placeholder="供应商联系电话"/]
+                                        [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                            [@macro.inputText name="purchase.supplierMobile" value=purchaseForm.purchase.supplierMobile!'' placeholder="供应商联系电话"/]
+                                        [#else]
+                                            ${purchaseForm.purchase.supplierMobile!''}
+                                        [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">采购日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="purchase.purchaseTime" value=purchaseForm.purchase.purchaseTime!"" placeholder="采购日期"/]
+                                    [#if purchaseForm.purchase.inBound.getValue() == noStatus.getValue()]
+                                        [@macro.datetimePicker name="purchase.purchaseTime" value=purchaseForm.purchase.purchaseTime!"" placeholder="采购日期"/]
+                                    [#else]
+                                        [@macro.displayDate value=purchaseForm.purchase.purchaseTime!''/]
+                                    [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">采购金额:</td>
                                     <td>
-                                    [@macro.inputMoney name="totalAmount" value=purchaseForm.totalAmount!'' placeholder="采购金额"/]
+                                        [@macro.inputMoney name="totalAmount" value=purchaseForm.totalAmount!'' placeholder="采购金额"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">已付款金额:</td>
                                     <td>
-                                    [@macro.inputMoney name="payedAmount" value=purchaseForm.payedAmount!'' placeholder="已付款金额"/]
+                                        [@macro.inputMoney name="payedAmount" value=purchaseForm.payedAmount!'' placeholder="已付款金额"/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">未付款金额:</td>
                                     <td>
-                                    [@macro.inputMoney name="unPayedAmount" value=purchaseForm.unPayedAmount!'' placeholder="未付款金额"/]
+                                        [@macro.inputMoney name="unPayedAmount" value=purchaseForm.unPayedAmount!'' placeholder="未付款金额"/]
                                     </td>
                                 </tr>
                                 <tr>

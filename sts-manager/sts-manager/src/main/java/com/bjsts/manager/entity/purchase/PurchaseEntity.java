@@ -1,7 +1,9 @@
 package com.bjsts.manager.entity.purchase;
 
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
+import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
 import com.bjsts.manager.enums.invoice.InvoiceStatus;
@@ -117,6 +119,16 @@ public class PurchaseEntity extends AbstractEntity {
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
+
+    /**
+     * 是否已入库
+     */
+    @Convert(converter = YesNoStatusConverter.class)
+    @Column(name = "in_bound", nullable = false)
+    private YesNoStatus inBound = YesNoStatus.NO;
+
+    @Transient
+    private InBoundEntity inBoundEntity;
 
     public Long getId() {
         return id;
@@ -260,5 +272,21 @@ public class PurchaseEntity extends AbstractEntity {
 
     public void setSupplierLinkman(String supplierLinkman) {
         this.supplierLinkman = supplierLinkman;
+    }
+
+    public YesNoStatus getInBound() {
+        return inBound;
+    }
+
+    public void setInBound(YesNoStatus inBound) {
+        this.inBound = inBound;
+    }
+
+    public InBoundEntity getInBoundEntity() {
+        return inBoundEntity;
+    }
+
+    public void setInBoundEntity(InBoundEntity inBoundEntity) {
+        this.inBoundEntity = inBoundEntity;
     }
 }

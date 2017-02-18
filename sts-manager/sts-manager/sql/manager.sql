@@ -258,6 +258,7 @@ CREATE TABLE `sts_purchase` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
+  `in_bound` TINYINT(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -266,9 +267,68 @@ CREATE TABLE `sts_stock` (
   `product_name` VARCHAR(128) NOT NULL,
   `product_model` VARCHAR(128) NOT NULL,
   `quantity` bigint(20) NOT NULL DEFAULT 0,
+  `receiptor` VARCHAR(128) NOT NULL DEFAULT '',
+  `memo` VARCHAR (200) NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_product_name_model` (`product_name`, `product_model`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_out_bound` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `stock_id` bigint(20) NOT NULL DEFAULT 0,
+  `quantity` bigint(20) NOT NULL DEFAULT 0,
+  `out_bound_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `receiptor` VARCHAR(128) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_in_bound` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `purchase_no` varchar(255) NOT NULL,
+  `verify` TINYINT(2) NOT NULL,
+  `sendee` VARCHAR(128) NOT NULL,
+  `sendee_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `memo` VARCHAR (200) NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_purchase_no` (`purchase_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_express` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `shipper` varchar(255) NOT NULL,
+  `payer` varchar(255) NOT NULL,
+  `cost` bigint(20) NOT NULL,
+  `content` varchar(255) NOT NULL DEFAULT '',
+  `receiver` varchar(255) NOT NULL DEFAULT '',
+  `mobile` varchar(255) NOT NULL DEFAULT '',
+  `address` varchar(255) NOT NULL DEFAULT '',
+  `company` varchar(255) NOT NULL DEFAULT '',
+  `deliver_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_normal_purchase` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `buyer` VARCHAR(128) NOT NULL,
+  `quantity` bigint(20) NOT NULL DEFAULT 0,
   `amount` bigint(20) NOT NULL DEFAULT 0,
-  `single_amount` bigint(20) NOT NULL DEFAULT 0,
-  `total_amount` bigint(20) NOT NULL DEFAULT 0,
+  `description` varchar(255) NOT NULL,
+  `company` varchar(255) NOT NULL,
+  `purchase_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,

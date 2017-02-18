@@ -2,6 +2,7 @@ package com.bjsts.manager.controller.purchase;
 
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.util.CoreMathUtils;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
@@ -108,6 +109,8 @@ public class PurchaseController extends AbstractController {
 
         Double unpayedAmount = CoreMathUtils.mul(purchaseForm.getUnPayedAmount(), 100L);
         purchaseEntity.setUnPayedAmount(unpayedAmount.longValue());
+
+        purchaseEntity.setInBound(YesNoStatus.NO);
         
         String purchaseUrl = purchaseForm.getPurchaseContractUrl();
         if (StringUtils.isEmpty(purchaseUrl)) {
@@ -155,13 +158,15 @@ public class PurchaseController extends AbstractController {
         }
         PurchaseEntity purchase = purchaseForm.getPurchase();
         PurchaseEntity purchaseEntity = purchaseService.get(purchase.getId());
-        purchaseEntity.setProductName(purchase.getProductName());
-        purchaseEntity.setProductModel(purchase.getProductModel());
-        purchaseEntity.setQuantity(purchase.getQuantity());
-        purchaseEntity.setOperator(purchase.getOperator());
-        purchaseEntity.setSupplier(purchase.getSupplier());
-        purchaseEntity.setSupplierLinkman(purchase.getSupplierLinkman());
-        purchaseEntity.setSupplierMobile(purchase.getSupplierMobile());
+        if (purchaseEntity.getInBound() == YesNoStatus.NO) {
+            purchaseEntity.setProductName(purchase.getProductName());
+            purchaseEntity.setProductModel(purchase.getProductModel());
+            purchaseEntity.setQuantity(purchase.getQuantity());
+            purchaseEntity.setOperator(purchase.getOperator());
+            purchaseEntity.setSupplier(purchase.getSupplier());
+            purchaseEntity.setSupplierLinkman(purchase.getSupplierLinkman());
+            purchaseEntity.setSupplierMobile(purchase.getSupplierMobile());
+        }
         purchaseEntity.setPurchaseTime(purchase.getPurchaseTime());
         Double totalAmount = CoreMathUtils.mul(purchaseForm.getTotalAmount(), 100L);
         purchaseEntity.setTotalAmount(totalAmount.longValue());
@@ -240,6 +245,11 @@ public class PurchaseController extends AbstractController {
             logger.error("删除采购合同信息,未查询[id={}]的采购合同信息", id);
             redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={"+id+"}]的采购合同信息!");
             return "redirect:/error";
+        }
+
+        if (purchaseEntity.getInBound() == YesNoStatus.YES) {
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "[id={"+id+"}]的采购合同信息已入库，无法删除!");
+            return "redirect:/purchase/list";
         }
         purchaseEntity.setValid(EnableDisableStatus.DISABLE);
         purchaseService.update(purchaseEntity);

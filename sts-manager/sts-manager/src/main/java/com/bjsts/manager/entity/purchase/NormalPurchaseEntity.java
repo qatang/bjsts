@@ -26,28 +26,21 @@ public class NormalPurchaseEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, name = "product_name")
-    private String productName;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(nullable = false, name = "product_model")
-    private String productModel;
+    @Column(nullable = false)
+    private String buyer;
 
+    @Column(nullable = false)
     private Long quantity;
 
-    @Column(nullable = false, name = "single_amount")
-    private Long singleAmount;
-
-    @Column(nullable = false, name = "total_amount")
-    private Long totalAmount;
-
-    private String operator;
-
-    private String supplier;
+    @Column(nullable = false)
+    private Long amount;
 
     private String description;
 
-    @Column(name = "supplier_mobile")
-    private String supplierMobile;
+    private String company;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "purchase_time")
@@ -73,20 +66,20 @@ public class NormalPurchaseEntity extends AbstractEntity {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProductModel() {
-        return productModel;
+    public String getBuyer() {
+        return buyer;
     }
 
-    public void setProductModel(String productModel) {
-        this.productModel = productModel;
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public Long getQuantity() {
@@ -97,36 +90,12 @@ public class NormalPurchaseEntity extends AbstractEntity {
         this.quantity = quantity;
     }
 
-    public Long getSingleAmount() {
-        return singleAmount;
+    public Long getAmount() {
+        return amount;
     }
 
-    public void setSingleAmount(Long singleAmount) {
-        this.singleAmount = singleAmount;
-    }
-
-    public Long getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Long totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 
     public String getDescription() {
@@ -137,12 +106,12 @@ public class NormalPurchaseEntity extends AbstractEntity {
         this.description = description;
     }
 
-    public String getSupplierMobile() {
-        return supplierMobile;
+    public String getCompany() {
+        return company;
     }
 
-    public void setSupplierMobile(String supplierMobile) {
-        this.supplierMobile = supplierMobile;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public Date getPurchaseTime() {

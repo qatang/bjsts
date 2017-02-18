@@ -4,6 +4,7 @@ import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.document.DocumentEntity;
@@ -39,6 +40,11 @@ public class PurchaseServiceImpl extends AbstractService<PurchaseEntity, Long> i
 
         request.filterEqual("valid", EnableDisableStatus.ENABLE);
 
+        YesNoStatus inBound = purchaseSearchable.getInBound();
+        if (inBound != null) {
+            request.filterEqual("inBound", inBound);
+        }
+
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         purchaseSearchable.convertPageable(requestPage, pageable);
 
@@ -65,4 +71,10 @@ public class PurchaseServiceImpl extends AbstractService<PurchaseEntity, Long> i
         db.setPurchaseContractUrl(dbDocumentEntity.getId());
         return db;
     }
+
+    @Override
+    public PurchaseEntity findByPurchaseNo(String purchaseNo) {
+        return purchaseRepository.findByPurchaseNo(purchaseNo);
+    }
+
 }

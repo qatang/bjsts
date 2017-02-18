@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-xs-1">
                                 <div style="float:right;margin-top:5px;">
-                                    <a class="btn btn-xs btn-success" onclick="customDiag('新增采购单', '${ctx}/purchase/create', 800, 600);">新增采购单</a>
+                                    <a class="btn btn-xs btn-success" onclick="customDiag('新增日常采购单', '${ctx}/normalPurchase/create', 800, 600);">新增日常采购单</a>
                                 </div>
                             </div>
                         </div>
@@ -40,53 +40,39 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
                                     <thead>
                                         <tr>
-                                            <th class="center">采购单编号</th>
-                                            <th class="center">产品名称</th>
-                                            <th class="center">规格型号</th>
-                                            <th class="center">采购数量</th>
-                                            <th class="center">采购负责人</th>
-                                            <th class="center">供应商名称</th>
-                                            <th class="center">供应商联系人</th>
-                                            <th class="center">供应商电话</th>
+                                            <th class="center">编号</th>
+                                            <th class="center">物品名称</th>
+                                            <th class="center">购买人</th>
+                                            <th class="center">数量</th>
+                                            <th class="center">金额</th>
+                                            <th class="center">用途</th>
+                                            <th class="center">购货单位名称</th>
                                             <th class="center">采购日期</th>
-                                            <th class="center">采购金额</th>
-                                            <th class="center">已付款金额</th>
-                                            <th class="center">未付款金额</th>
-                                            <th class="center">发票状态</th>
-                                            <th class="center">入库状态</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         [#if page?? && page.content?has_content]
-                                            [#list page.content as purchase]
+                                            [#list page.content as normalPurchase]
                                                 <tr>
-                                                    <td class="center"><a onclick="diag('采购单查看', '${ctx}/purchase/view/${purchase.id}');">${purchase.purchaseNo}</a></td>
-                                                    <td class="center">${purchase.productName!""}</td>
-                                                    <td class="center">${purchase.productModel!""}</td>
-                                                    <td class="center">${purchase.quantity}</td>
-                                                    <td class="center">${purchase.operator}</td>
-                                                    <td class="center">${purchase.supplier}</td>
-                                                    <td class="center">${purchase.supplierLinkman}</td>
-                                                    <td class="center">${purchase.supplierMobile}</td>
-                                                    <td class="center">[@macro.displayDate value=purchase.purchaseTime!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.totalAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.payedAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.unPayedAmount!""/]</td>
-                                                    <td class="center">${purchase.invoiceStatus.getName()}</td>
-                                                    <td class="center">${purchase.inBound.getName()}</td>
+                                                    <td class="center"><a onclick="diag('日常采购单查看', '${ctx}/normalPurchase/view/${normalPurchase.id}');">${normalPurchase.id}</a></td>
+                                                    <td class="center">${normalPurchase.name!""}</td>
+                                                    <td class="center">${normalPurchase.buyer!""}</td>
+                                                    <td class="center">${normalPurchase.quantity}</td>
+                                                    <td class="center">[@macro.displayMoney value=normalPurchase.amount!""/]</td>
+                                                    <td class="center">${normalPurchase.description}</td>
+                                                    <td class="center">${normalPurchase.company}</td>
+                                                    <td class="center">[@macro.displayDate value=normalPurchase.purchaseTime!""/]</td>
                                                     <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" onclick="customDiag('修改采购合同', '${ctx}/purchase/update/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
+                                                            <a class="green" onclick="diag('修改日常采购单', '${ctx}/normalPurchase/update/${normalPurchase.id?c}');" style="cursor: pointer;text-decoration:none;">
                                                                 修改
                                                             </a>
                                                         </div>
-                                                        [#if purchase.inBound.getValue() == noStatus.getValue()]
-                                                            <div class="hidden-sm hidden-xs btn-group">
-                                                                <a href="${ctx}/purchase/disable/${purchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                                            </div>
-                                                        [/#if]
+                                                        <div class="hidden-sm hidden-xs btn-group">
+                                                            <a href="${ctx}/normalPurchase/disable/${normalPurchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             [/#list]

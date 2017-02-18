@@ -3,6 +3,7 @@ package com.bjsts.manager.entity.purchase;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
+import com.bjsts.manager.entity.sale.PlanEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -10,9 +11,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 出库单
- * @author jinsheng
- * @since 2016-04-28 13:48
+ * 物料出库单
+ * @author wangzhiliang
  */
 @Entity
 @Table(name = "sts_out_bound")
@@ -26,41 +26,28 @@ public class OutBoundEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, name = "product_name")
-    private String productName;
+    /**
+     * 项目编码，格式：sts20161016001
+     */
+    @Column(name = "plan_no", nullable = false)
+    private String planNo;
 
-    @Column(nullable = false, name = "product_model")
-    private String productModel;
+    /**
+     * 库存编码
+     */
+    @Column(name = "stock_id", nullable = false)
+    private Long stockId;
 
     private Long quantity;
 
-    @Column(nullable = false, name = "single_amount")
-    private Long singleAmount;
-
-    @Column(nullable = false, name = "total_amount")
-    private Long totalAmount;
-
-    private String company;
-
-    private String operator;
-
-    private String mobile;
+    /**
+     * 领取人
+     */
+    private String receiptor;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "out_bound_time")
     private Date outBoundTime;
-
-    private String receiver;
-
-    @Column(name = "receiver_mobile")
-    private String receiverMobile;
-
-    @Column(name = "receiver_company")
-    private String receiverCompany;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "receive_time")
-    private Date receiveTime;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -74,6 +61,12 @@ public class OutBoundEntity extends AbstractEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
+    @Transient
+    private PlanEntity plan;
+
+    @Transient
+    private StockEntity stock;
+
     public Long getId() {
         return id;
     }
@@ -82,20 +75,20 @@ public class OutBoundEntity extends AbstractEntity {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getPlanNo() {
+        return planNo;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setPlanNo(String planNo) {
+        this.planNo = planNo;
     }
 
-    public String getProductModel() {
-        return productModel;
+    public Long getStockId() {
+        return stockId;
     }
 
-    public void setProductModel(String productModel) {
-        this.productModel = productModel;
+    public void setStockId(Long stockId) {
+        this.stockId = stockId;
     }
 
     public Long getQuantity() {
@@ -106,44 +99,12 @@ public class OutBoundEntity extends AbstractEntity {
         this.quantity = quantity;
     }
 
-    public Long getSingleAmount() {
-        return singleAmount;
+    public String getReceiptor() {
+        return receiptor;
     }
 
-    public void setSingleAmount(Long singleAmount) {
-        this.singleAmount = singleAmount;
-    }
-
-    public Long getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Long totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setReceiptor(String receiptor) {
+        this.receiptor = receiptor;
     }
 
     public Date getOutBoundTime() {
@@ -154,36 +115,12 @@ public class OutBoundEntity extends AbstractEntity {
         this.outBoundTime = outBoundTime;
     }
 
-    public String getReceiver() {
-        return receiver;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getReceiverMobile() {
-        return receiverMobile;
-    }
-
-    public void setReceiverMobile(String receiverMobile) {
-        this.receiverMobile = receiverMobile;
-    }
-
-    public String getReceiverCompany() {
-        return receiverCompany;
-    }
-
-    public void setReceiverCompany(String receiverCompany) {
-        this.receiverCompany = receiverCompany;
-    }
-
-    public Date getReceiveTime() {
-        return receiveTime;
-    }
-
-    public void setReceiveTime(Date receiveTime) {
-        this.receiveTime = receiveTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public EnableDisableStatus getValid() {
@@ -194,19 +131,27 @@ public class OutBoundEntity extends AbstractEntity {
         this.valid = valid;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
     public Date getUpdatedTime() {
         return updatedTime;
     }
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public PlanEntity getPlan() {
+        return plan;
+    }
+
+    public void setPlan(PlanEntity plan) {
+        this.plan = plan;
+    }
+
+    public StockEntity getStock() {
+        return stock;
+    }
+
+    public void setStock(StockEntity stock) {
+        this.stock = stock;
     }
 }

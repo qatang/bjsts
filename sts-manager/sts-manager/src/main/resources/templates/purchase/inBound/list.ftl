@@ -10,7 +10,6 @@
             <div class="main-content">
                 <div class="main-content-inner">
                     <div class="page-content">
-                        [@macro.errorMsg/]
                         <div class="row">
                             <div class="col-xs-11">
                             [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
@@ -45,15 +44,9 @@
                                             <th class="center">规格型号</th>
                                             <th class="center">采购数量</th>
                                             <th class="center">采购负责人</th>
-                                            <th class="center">供应商名称</th>
-                                            <th class="center">供应商联系人</th>
-                                            <th class="center">供应商电话</th>
-                                            <th class="center">采购日期</th>
-                                            <th class="center">采购金额</th>
-                                            <th class="center">已付款金额</th>
-                                            <th class="center">未付款金额</th>
-                                            <th class="center">发票状态</th>
-                                            <th class="center">入库状态</th>
+                                            <th class="center">到货商品核对</th>
+                                            <th class="center">物料接收人</th>
+                                            <th class="center">接收日期</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
@@ -67,24 +60,38 @@
                                                     <td class="center">${purchase.productModel!""}</td>
                                                     <td class="center">${purchase.quantity}</td>
                                                     <td class="center">${purchase.operator}</td>
-                                                    <td class="center">${purchase.supplier}</td>
-                                                    <td class="center">${purchase.supplierLinkman}</td>
-                                                    <td class="center">${purchase.supplierMobile}</td>
-                                                    <td class="center">[@macro.displayDate value=purchase.purchaseTime!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.totalAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.payedAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.unPayedAmount!""/]</td>
-                                                    <td class="center">${purchase.invoiceStatus.getName()}</td>
-                                                    <td class="center">${purchase.inBound.getName()}</td>
                                                     <td class="center">
+                                                        [#if purchase.inBound.getValue() != noStatus.getValue()]
+                                                            ${purchase.inBoundEntity.verify.getName()}
+                                                        [/#if]
+                                                    </td>
+                                                    <td class="center">
+                                                        [#if purchase.inBound.getValue() != noStatus.getValue()]
+                                                            ${purchase.inBoundEntity.sendee}
+                                                        [/#if]
+                                                    </td>
+                                                    <td class="center">
+                                                        [#if purchase.inBound.getValue() != noStatus.getValue()]
+                                                            [@macro.displayDate value=purchase.inBoundEntity.sendeeTime!""/]
+                                                        [/#if]
+                                                    </td>
+                                                    <td class="center">
+                                                        [#if purchase.inBound.getValue() == noStatus.getValue()]
                                                         <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" onclick="customDiag('修改采购合同', '${ctx}/purchase/update/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
-                                                                修改
+                                                            <a class="green" onclick="diag('入库', '${ctx}/inBound/create/${purchase.purchaseNo}');" style="cursor: pointer;text-decoration:none;">
+                                                                入库
                                                             </a>
                                                         </div>
-                                                        [#if purchase.inBound.getValue() == noStatus.getValue()]
+                                                        [#else]
                                                             <div class="hidden-sm hidden-xs btn-group">
-                                                                <a href="${ctx}/purchase/disable/${purchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
+                                                                <a class="green" onclick="diag('入库', '${ctx}/inBound/update/${purchase.purchaseNo}');" style="cursor: pointer;text-decoration:none;">
+                                                                    修改
+                                                                </a>
+                                                            </div>
+                                                            <div class="hidden-sm hidden-xs btn-group">
+                                                                <a class="green" onclick="diag('入库', '${ctx}/inBound/view/${purchase.purchaseNo}');" style="cursor: pointer;text-decoration:none;">
+                                                                    查看
+                                                                </a>
                                                             </div>
                                                         [/#if]
                                                     </td>
