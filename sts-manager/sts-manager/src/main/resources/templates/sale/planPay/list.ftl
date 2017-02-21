@@ -66,7 +66,7 @@
                                                     <td class="center">${planPay.contractNo}</td>
                                                     <td class="center">${planPay.company!""}</td>
                                                     <td class="center">[@macro.displayMoney value=planPay.contractAmount!''/]</td>
-                                                    <td class="center">${planPay.invoiceStatus.getName()}</td>
+                                                    <td class="center">${planPay.makeOutInvoiceStatus.getName()}</td>
                                                     <td class="center">[@macro.displayMoney value=planPay.payedAmount!''/]</td>
                                                     [#--<td class="center"></td>--]
                                                     <td class="center">[@macro.displayMoney value=planPay.amount!''/]</td>

@@ -1,8 +1,8 @@
 package com.bjsts.manager.entity.sale;
 
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
+import com.bjsts.manager.enums.converter.invoice.MakeOutInvoiceStatusConverter;
+import com.bjsts.manager.enums.invoice.MakeOutInvoiceStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -37,9 +37,9 @@ public class PlanPayEntity extends AbstractEntity {
     @Column(name = "contract_no", nullable = false)
     private String contractNo;
 
-    @Convert(converter = InvoiceStatusConverter.class)
+    @Convert(converter = MakeOutInvoiceStatusConverter.class)
     @Column(name = "invoice_status", nullable = false)
-    private InvoiceStatus invoiceStatus;
+    private MakeOutInvoiceStatus makeOutInvoiceStatus;
 
     /**
      * 本次付款金额
@@ -158,12 +158,12 @@ public class PlanPayEntity extends AbstractEntity {
         this.contractNo = contractNo;
     }
 
-    public InvoiceStatus getInvoiceStatus() {
-        return invoiceStatus;
+    public MakeOutInvoiceStatus getMakeOutInvoiceStatus() {
+        return makeOutInvoiceStatus;
     }
 
-    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
-        this.invoiceStatus = invoiceStatus;
+    public void setMakeOutInvoiceStatus(MakeOutInvoiceStatus makeOutInvoiceStatus) {
+        this.makeOutInvoiceStatus = makeOutInvoiceStatus;
     }
 
     public String getPlanName() {

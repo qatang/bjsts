@@ -44,27 +44,33 @@
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目地点:</td>
-                                        <td>${productOrder.location}</td>
+                                        <td>${productOrder.location!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">联系人姓名:</td>
-                                        <td>${productOrder.linkman}</td>
+                                        <td>${productOrder.linkman!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">联系人电话:</td>
-                                        <td>${productOrder.mobile}</td>
+                                        <td>${productOrder.mobile!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">联系人单位:</td>
-                                        <td>${productOrder.company}</td>
+                                        <td>${productOrder.company!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">联系人邮箱:</td>
-                                        <td>${productOrder.email}</td>
+                                        <td>${productOrder.email!""}</td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目说明:</td>
-                                        <td>${productOrder.description}</td>
+                                        <td>${productOrder.description!""}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">备案登记人:</td>
+                                        <td>
+                                            ${productOrder.booker!""}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>

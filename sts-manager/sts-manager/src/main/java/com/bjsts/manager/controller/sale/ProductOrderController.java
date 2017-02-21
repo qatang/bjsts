@@ -33,10 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,6 +154,7 @@ public class ProductOrderController extends AbstractController {
         planEntity.setCompany(productOrder.getCompany());
         planEntity.setEmail(productOrder.getEmail());
         planEntity.setDescription(productOrder.getDescription());
+        planEntity.setBooker(productOrder.getBooker());
 
         String customFileUrl = productOrderForm.getCustomerFileUrl();
         if (StringUtils.isEmpty(customFileUrl)) {
@@ -179,6 +177,12 @@ public class ProductOrderController extends AbstractController {
         }
         modelMap.put("productOrder", planEntity);
         return "sale/productOrder/view";
+
+
+
+
+
+
     }
 
     @RequiresPermissions("sts:productOrder:upload")
@@ -193,6 +197,15 @@ public class ProductOrderController extends AbstractController {
                 String fullFileDir = fileExternalUrl + File.separator + GlobalConstants.CUSTOMER_FILE + File.separator;
                 if (!FileUtils.createDirectory(fullFileDir)) {
                     String message = "创建文件夹失败，请重试!";
+                    map.put("message", message);
+                    return map;
+                }
+
+                String originalFilename = file.getOriginalFilename();
+                try {
+                    originalFilename = new String(originalFilename.getBytes(), "UTF-8");
+                } catch (UnsupportedEncodingException e1) {
+                    String message = "获取文件，请重试!";
                     map.put("message", message);
                     return map;
                 }

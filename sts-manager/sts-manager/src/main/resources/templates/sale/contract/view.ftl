@@ -35,18 +35,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">合同内容:</td>
-                                <td>
-                                ${contract.content}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">变更内容:</td>
-                                <td>
-                                ${contract.changeContent}
-                                </td>
-                            </tr>
-                            <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">客户名称:</td>
                                 <td>
                                 ${contract.company}

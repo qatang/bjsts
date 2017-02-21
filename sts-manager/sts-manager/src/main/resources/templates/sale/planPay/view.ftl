@@ -44,7 +44,7 @@
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">开票信息:</td>
                                 <td>
-                                ${planPay.invoiceStatus.getName()}
+                                ${planPay.makeOutInvoiceStatus.getName()}
                                 </td>
                             </tr>
                             <tr>

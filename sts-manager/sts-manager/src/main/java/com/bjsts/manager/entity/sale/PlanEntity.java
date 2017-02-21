@@ -110,6 +110,11 @@ public class PlanEntity extends AbstractEntity {
     @Column(name = "plan_status", nullable = false)
     private PlanStatus planStatus;
 
+    /**
+     * 备案登记人
+     */
+    private String booker;
+
     /************************************************************************************
      *
      * 报价相关
@@ -184,7 +189,6 @@ public class PlanEntity extends AbstractEntity {
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
-
 
     public Long getId() {
         return id;
@@ -392,5 +396,13 @@ public class PlanEntity extends AbstractEntity {
 
     public void setQuoteFileId(Long quoteFileId) {
         this.quoteFileId = quoteFileId;
+    }
+
+    public String getBooker() {
+        return booker;
+    }
+
+    public void setBooker(String booker) {
+        this.booker = booker;
     }
 }

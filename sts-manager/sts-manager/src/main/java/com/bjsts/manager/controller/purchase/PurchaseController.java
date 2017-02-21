@@ -8,7 +8,7 @@ import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
+import com.bjsts.manager.enums.invoice.MakeOutInvoiceStatus;
 import com.bjsts.manager.form.purchase.PurchaseForm;
 import com.bjsts.manager.query.purchase.PurchaseSearchable;
 import com.bjsts.manager.service.document.DocumentService;
@@ -64,8 +64,8 @@ public class PurchaseController extends AbstractController {
     private String fileExternalUrl;
 
     @ModelAttribute("invoiceStatusList")
-    public List<InvoiceStatus> getInvoiceStatusList() {
-        return InvoiceStatus.list();
+    public List<MakeOutInvoiceStatus> getInvoiceStatusList() {
+        return MakeOutInvoiceStatus.list();
     }
 
     @RequiresPermissions("sts:purchase:list")
@@ -174,7 +174,7 @@ public class PurchaseController extends AbstractController {
         purchaseEntity.setPayedAmount(payedAmount.longValue());
         Double unPayedAmount = CoreMathUtils.mul(purchaseForm.getUnPayedAmount(), 100L);
         purchaseEntity.setUnPayedAmount(unPayedAmount.longValue());
-        purchaseEntity.setInvoiceStatus(purchase.getInvoiceStatus());
+        purchaseEntity.setMakeOutInvoiceStatus(purchase.getMakeOutInvoiceStatus());
 
         String purchaseUrl = purchaseForm.getPurchaseContractUrl();
         if (StringUtils.isEmpty(purchaseUrl)) {

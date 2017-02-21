@@ -61,5 +61,8 @@ public class GlobalConstants {
      */
     public static final String PURCHASE_FILE = "purchase";
 
-
+    /**
+     * 发票文件夹
+     */
+    public static final String INVOICE_FILE = "invoice";
 }

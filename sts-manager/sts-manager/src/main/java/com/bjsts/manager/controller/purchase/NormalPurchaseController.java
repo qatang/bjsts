@@ -2,25 +2,16 @@ package com.bjsts.manager.controller.normalPurchase;
 
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.util.CoreMathUtils;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
-import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.NormalPurchaseEntity;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
 import com.bjsts.manager.form.purchase.NormalPurchaseForm;
 import com.bjsts.manager.query.purchase.NormalPurchaseSearchable;
-import com.bjsts.manager.service.document.DocumentService;
-import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.purchase.NormalPurchaseService;
-import com.bjsts.manager.utils.FileUtils;
 import com.google.common.collect.Lists;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -30,16 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**

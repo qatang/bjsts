@@ -50,18 +50,6 @@ public class ContractEntity extends AbstractEntity {
     private ContractStatus status;
 
     /**
-     * 合同内容
-     */
-    @Column(name = "content", nullable = false)
-    private String content;
-
-    /**
-     * 变更内容
-     */
-    @Column(name = "change_content")
-    private String changeContent;
-
-    /**
      * 客户名称
      */
     @Column(nullable = false)
@@ -156,14 +144,6 @@ public class ContractEntity extends AbstractEntity {
         this.updatedTime = updatedTime;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public Long getAmount() {
         return amount;
     }
@@ -194,14 +174,6 @@ public class ContractEntity extends AbstractEntity {
 
     public void setPlanName(String planName) {
         this.planName = planName;
-    }
-
-    public String getChangeContent() {
-        return changeContent;
-    }
-
-    public void setChangeContent(String changeContent) {
-        this.changeContent = changeContent;
     }
 
     public String getCompany() {

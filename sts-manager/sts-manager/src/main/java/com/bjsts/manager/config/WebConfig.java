@@ -2,7 +2,12 @@ package com.bjsts.manager.config;
 
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
+import com.bjsts.manager.enums.converter.customer.CustomerTypeConverter;
+import com.bjsts.manager.enums.converter.invoice.InvoiceCategoryConverter;
 import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
+import com.bjsts.manager.enums.converter.invoice.InvoiceTypeConverter;
+import com.bjsts.manager.enums.converter.invoice.MakeOutInvoiceStatusConverter;
+import com.bjsts.manager.enums.converter.produce.PlanExecuteStatusConverter;
 import com.bjsts.manager.enums.converter.resource.ResourceTypeConverter;
 import com.bjsts.manager.enums.converter.sale.ContractStatusConverter;
 import com.bjsts.manager.enums.converter.sale.PlanStatusConverter;
@@ -128,8 +133,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new SourceTypeConverter());
         registry.addConverter(new PlanStatusConverter());
         registry.addConverter(new ContractStatusConverter());
-        registry.addConverter(new InvoiceStatusConverter());
+        registry.addConverter(new MakeOutInvoiceStatusConverter());
         registry.addConverter(new OnJobStatusConverter());
+        registry.addConverter(new InvoiceTypeConverter());
+        registry.addConverter(new InvoiceCategoryConverter());
+        registry.addConverter(new InvoiceStatusConverter());
+        registry.addConverter(new PlanExecuteStatusConverter());
+        registry.addConverter(new CustomerTypeConverter());
 
         DateFormatter dateTimeFormatter = new DateFormatter("yyyy-MM-dd HH:mm:ss");
         dateTimeFormatter.setLenient(true);

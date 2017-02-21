@@ -69,7 +69,7 @@
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">发票状态:</td>
                                 <td>
-                                ${purchase.invoiceStatus.getName()}
+                                ${purchase.makeOutInvoiceStatus.getName()}
                                 </td>
                             </tr>
                             <tr>

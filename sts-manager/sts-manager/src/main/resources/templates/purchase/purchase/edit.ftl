@@ -127,7 +127,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">发票状态:</td>
                                     <td>
-                                        [@macro.selectEnum name="purchase.invoiceStatus" enumObj=purchaseForm.purchase.invoiceStatus!invoiceStatusList[0] dataList=invoiceStatusList /]
+                                        [@macro.selectEnum name="purchase.makeOutInvoiceStatus" enumObj=purchaseForm.purchase.makeOutInvoiceStatus!invoiceStatusList[0] dataList=invoiceStatusList /]
                                     </td>
                                 </tr>
                                  <tr>

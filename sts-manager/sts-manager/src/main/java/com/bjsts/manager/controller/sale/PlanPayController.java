@@ -12,7 +12,7 @@ import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.sale.ContractEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.entity.sale.PlanPayEntity;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
+import com.bjsts.manager.enums.invoice.MakeOutInvoiceStatus;
 import com.bjsts.manager.form.sale.PlanPayForm;
 import com.bjsts.manager.query.sale.PlanPaySearchable;
 import com.bjsts.manager.service.sale.ContractService;
@@ -56,8 +56,8 @@ public class PlanPayController extends AbstractController {
     private ContractService contractService;
 
     @ModelAttribute("invoiceStatusList")
-    public List<InvoiceStatus> getInvoiceStatusList() {
-        return InvoiceStatus.list();
+    public List<MakeOutInvoiceStatus> getInvoiceStatusList() {
+        return MakeOutInvoiceStatus.list();
     }
 
     @RequiresPermissions("sts:planPay:list")

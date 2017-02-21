@@ -49,6 +49,7 @@
                                             <th class="center">联系人电话</th>
                                             <th class="center">联系人单位</th>
                                             <th class="center">电子邮箱</th>
+                                            <th class="center">备案登记人</th>
                                             <th class="center" colspan="2">操作</th>
                                         </tr>
                                     </thead>
@@ -67,6 +68,7 @@
                                                     <td class="center">${plan.mobile}</td>
                                                     <td class="center">${plan.company}</td>
                                                     <td class="center">${plan.email}</td>
+                                                    <td class="center">${plan.booker!""}</td>
                                                     <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="diag('项目修改', '${ctx}/productOrder/update/${plan.id}');" style="cursor: pointer;text-decoration:none;">

@@ -23,7 +23,7 @@
                                     <td>
                                         [#if contractForm.contract.id??]
                                             ${contractForm.contract.planNo}
-                                            <input type="hidden" name="contract.id" value="${contractForm.contract.planNo!''}"/>
+                                            <input type="hidden" name="contract.planNo" value="${contractForm.contract.planNo!''}"/>
                                         [#else]
                                             <select class="chosen-select form-control" name="contract.planNo" data-placeholder="请选择" style="" onchange="queryPlan(this);" id="planNo">
                                                 <option value="0">请选择</option>
@@ -52,20 +52,6 @@
                                     <td style="width:100px;text-align: right;padding-top: 13px;">合同状态:</td>
                                     <td>
                                         [@macro.selectEnum name="contract.status" enumObj=contractForm.contract.status!contractStatusList[0] dataList=contractStatusList /]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:10%;text-align: right;padding-top: 13px;">合同内容:</td>
-                                    <td>
-                                        <input type="hidden" name="contract.content" id="content" placeholder="这里输入合同内容" style="width:98%;" required="required"/>
-                                        <script id="editor" type="text/plain" style="width:100%;height:100px;"></script>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:10%;text-align: right;padding-top: 13px;">变更内容:</td>
-                                    <td>
-                                        <input type="hidden" name="contract.changeContent" id="changeContent" placeholder="这里输入变更内容" style="width:98%;"/>
-                                        <script id="changeEditor" type="text/plain" style="width:100%;height:100px;"></script>
                                     </td>
                                 </tr>
                                 <tr>
@@ -107,7 +93,7 @@
                                  </tr>
                                 <tr>
                                     <td style="text-align: center;" colspan="10">
-                                        <button class="btn btn-mini btn-primary" type="button" id="submitForm" onclick="sumbitContract()">保存</button>
+                                        <button class="btn btn-mini btn-primary" type="submit" id="submitForm">保存</button>
                                         <button class="btn btn-mini btn-danger" type="button" onclick="top.Dialog.close();">取消</button>
                                     </td>
                                 </tr>
@@ -126,9 +112,6 @@
 <link href="/plugins/bootstrap-fileinput-master/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 <script src="/plugins/bootstrap-fileinput-master/js/fileinput.min.js"></script>
 <script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
-<script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="/plugins/ueditor/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="/plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <script>
     var contractUrl = null;
@@ -176,41 +159,6 @@
             complete: function(xmlHttpRequest) {
             }
         });
-    }
-
-    //初始化ueditor
-    //UE.getEditor('editor', {
-      //  autoHeightEnabled: false
-    //});
-
-    //设置内容
-    UE.getEditor('editor').ready(function() {
-        UE.getEditor('editor').setContent('${contractForm.contract.content!''}');
-    });
-
-    //设置内容
-    UE.getEditor('changeEditor').ready(function() {
-        UE.getEditor('changeEditor').setContent('${contractForm.contract.changeContent!''}');
-    });
-
-    //初始化ueditor
-    //UE.getEditor('changeEditor', {
-      //  autoHeightEnabled: false
-    //});
-
-    function sumbitContract() {
-
-        var content = UE.getEditor('editor').getContent();
-        if (!content) {
-            alert("合同内容未输入！")
-            return false;
-        }
-        $("#content").val(content);
-
-        var changeContent = UE.getEditor('changeEditor').getContent();
-        $("#changeContent").val(changeContent);
-
-        $("#contractForm").submit();
     }
 </script>
 </html>

@@ -150,12 +150,10 @@ CREATE TABLE `sts_social_security` (
 
 CREATE TABLE `sts_customer` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `company_name` VARCHAR(64) NOT NULL,
-  `description` VARCHAR(512) NOT NULL,
-  `linkman` VARCHAR(32) NOT NULL,
-  `email` VARCHAR(128) NOT NULL,
-  `mobile` VARCHAR(32) NOT NULL,
-  `tel` VARCHAR(32) NOT NULL,
+  `customer_type` TINYINT(2) NOT NULL,
+  `company_name` VARCHAR(255) NOT NULL DEFAULT '',
+  `contract` VARCHAR(255) NOT NULL DEFAULT '',
+  `address` VARCHAR(255) NOT NULL DEFAULT '',
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
@@ -189,6 +187,7 @@ CREATE TABLE `sts_plan` (
   `quoter` VARCHAR(32) DEFAULT NULL,
   `quote_time` TIMESTAMP NULL DEFAULT NULL,
   `quote_file_id` bigint(20) DEFAULT NULL,
+  `booker` VARCHAR(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -210,8 +209,6 @@ CREATE TABLE `sts_contract` (
   `plan_name` varchar(255) NOT NULL,
   `contract_no` VARCHAR(255) NOT NULL,
   `status` int(11) NOT NULL,
-  `content` text NOT NULL,
-  `change_content` text NULL DEFAULT NULL,
   `company` varchar(255) DEFAULT NULL,
   `linkman` varchar(255) DEFAULT NULL,
   `sign_time` TIMESTAMP NULL DEFAULT NULL,
@@ -352,6 +349,100 @@ CREATE TABLE `sts_document` (
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_group_object_id` (`group_key`, `object_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_invoice` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `plan_content` VARCHAR(255) NULL DEFAULT NULL,
+  `invoice_type` TINYINT(2) NOT NULL,
+  `invoice_category` TINYINT(2) NOT NULL,
+  `invoice_no` varchar(255) NOT NULL,
+  `customer` VARCHAR(128) NOT NULL DEFAULT '',
+  `invoice_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `amount` bigint(20) NOT NULL DEFAULT 0,
+  `content` VARCHAR(255) NOT NULL DEFAULT '',
+  `invoice_status` TINYINT(2) NOT NULL,
+  `invoice_url` bigint(20) NOT NULL DEFAULT 0,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_plan_manage` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `expect_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `plan_execute_status` TINYINT(2) NOT NULL,
+  `actual_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_customer` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `customer_type` TINYINT(2) NOT NULL,
+  `company_name` VARCHAR(255) NOT NULL DEFAULT '',
+  `linkman` VARCHAR(255) NOT NULL DEFAULT '',
+  `contact` VARCHAR(255) NOT NULL DEFAULT '',
+  `address` VARCHAR(255) NOT NULL DEFAULT '',
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_supplier` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `company` VARCHAR(255) NULL DEFAULT NULL,
+  `linkman` VARCHAR(255) NOT NULL DEFAULT '',
+  `contact` VARCHAR(255) NOT NULL DEFAULT '',
+  `product` VARCHAR(255) NULL DEFAULT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_product_in_bound` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `plan_no` varchar(255) NOT NULL,
+  `plan_name` varchar(255) NOT NULL DEFAULT '',
+  `company` varchar(255) NOT NULL DEFAULT '',
+  `contact_no` varchar(255) NOT NULL DEFAULT '',
+  `quantity` bigint(20) NOT NULL DEFAULT 0,
+  `unit` varchar(255) NOT NULL DEFAULT '',
+  `in_bound_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_product_out_bound` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_out_bound_no` varchar(255) NOT NULL,
+  `plan_name` varchar(255) NOT NULL,
+  `company` varchar(255) NOT NULL,
+  `linkman` varchar(255) NOT NULL,
+  `mobile` varchar(255) NOT NULL,
+  `delivery_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `product_name` varchar(255) NOT NULL,
+  `product_model` varchar(255) NOT NULL,
+  `quantity` bigint(20) NOT NULL DEFAULT 0,
+  `unit` varchar(255) NOT NULL,
+  `single_amount` bigint(20) NOT NULL DEFAULT 0,
+  `total_amount` bigint(20) NOT NULL DEFAULT 0,
+   `operator` VARCHAR(128) NOT NULL,
+   `shipper` VARCHAR(128) NOT NULL,
+   `memo` VARCHAR(255) NOT NULL DEFAULT '',
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `sts_user` VALUES ('1', 'admin', '9dcffaac6b711a1dba34ce5a4c49ac9a', 'ab41738cd16e16552c11ab79a2a0486a', 'admin@admin.com', '', '2016-12-08 16:23:22', '2016-12-08 16:23:21', '', '1');

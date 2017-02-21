@@ -74,7 +74,7 @@
                                                     <td class="center">[@macro.displayMoney value=purchase.totalAmount!""/]</td>
                                                     <td class="center">[@macro.displayMoney value=purchase.payedAmount!""/]</td>
                                                     <td class="center">[@macro.displayMoney value=purchase.unPayedAmount!""/]</td>
-                                                    <td class="center">${purchase.invoiceStatus.getName()}</td>
+                                                    <td class="center">${purchase.makeOutInvoiceStatus.getName()}</td>
                                                     <td class="center">${purchase.inBound.getName()}</td>
                                                     <td class="center">
                                                         <div class="hidden-sm hidden-xs btn-group">

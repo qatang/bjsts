@@ -5,8 +5,9 @@ import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
+import com.bjsts.manager.entity.stock.InBoundEntity;
+import com.bjsts.manager.enums.converter.invoice.MakeOutInvoiceStatusConverter;
+import com.bjsts.manager.enums.invoice.MakeOutInvoiceStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -101,9 +102,9 @@ public class PurchaseEntity extends AbstractEntity {
     @Column(name = "un_payed_amount")
     private Long unPayedAmount;
 
-    @Convert(converter = InvoiceStatusConverter.class)
+    @Convert(converter = MakeOutInvoiceStatusConverter.class)
     @Column(name = "invoice_status", nullable = false)
-    private InvoiceStatus invoiceStatus;
+    private MakeOutInvoiceStatus makeOutInvoiceStatus;
 
     @Column(name = "purchase_contract_url")
     private Long purchaseContractUrl;
@@ -258,12 +259,12 @@ public class PurchaseEntity extends AbstractEntity {
         this.purchaseNo = purchaseNo;
     }
 
-    public InvoiceStatus getInvoiceStatus() {
-        return invoiceStatus;
+    public MakeOutInvoiceStatus getMakeOutInvoiceStatus() {
+        return makeOutInvoiceStatus;
     }
 
-    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
-        this.invoiceStatus = invoiceStatus;
+    public void setMakeOutInvoiceStatus(MakeOutInvoiceStatus makeOutInvoiceStatus) {
+        this.makeOutInvoiceStatus = makeOutInvoiceStatus;
     }
 
     public String getSupplierLinkman() {

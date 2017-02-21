@@ -87,6 +87,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">备案登记人:</td>
+                                    <td>
+                                    [@macro.inputText name="productOrder.booker" value=productOrderForm.productOrder.booker!'' placeholder="备案登记人" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
                                     <td>
                                         <input id="input-customerFileUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">

@@ -61,7 +61,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">开票信息:</td>
                                     <td>
-                                        [@macro.selectEnum name="planPay.invoiceStatus" enumObj=planPayForm.planPay.invoiceStatus!invoiceStatusList[0] dataList=invoiceStatusList /]
+                                        [@macro.selectEnum name="planPay.makeOutInvoiceStatus" enumObj=planPayForm.planPay.makeOutInvoiceStatus!invoiceStatusList[0] dataList=invoiceStatusList /]
                                     </td>
                                 </tr>
                                 <tr>

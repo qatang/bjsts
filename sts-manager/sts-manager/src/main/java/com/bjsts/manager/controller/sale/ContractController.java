@@ -179,8 +179,6 @@ public class ContractController extends AbstractController {
         ContractEntity contract = contractForm.getContract();
         ContractEntity contractEntity = contractService.get(contract.getId());
         contractEntity.setStatus(contract.getStatus());
-        contractEntity.setContent(contract.getContent());
-        contractEntity.setChangeContent(contract.getChangeContent());
         contractEntity.setQualityTime(contract.getQualityTime());
         contractEntity.setSignTime(contract.getSignTime());
         Double amount = CoreMathUtils.mul(contractForm.getAmount(), 100L);

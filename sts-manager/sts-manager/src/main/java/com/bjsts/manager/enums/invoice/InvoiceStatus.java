@@ -16,11 +16,11 @@ import java.util.Map;
  */
 public enum InvoiceStatus {
     ALL(-1, "全部"),
-    SPECIAL_INVOICE(1, "已开具增值税专用发票"),
-    NO_SPECIAL_INVOICE(2, "未开具增值税专用发票"),
-    PLAIN_INVOICE(3, "已开具增值税普通发票"),
-    NO_PLAIN_INVOICE(4, "未开具增值税普通发票"),
-    NO_INVOICE(5, "无发票"),
+    ZC(1, "正常"),
+    ZF(2, "作废"),
+    HC(2, "红冲"),
+    YDK(2, "已抵扣"),
+    WDK(2, "未抵扣"),
     ;
 
     private static Logger logger = LoggerFactory.getLogger(InvoiceStatus.class);
