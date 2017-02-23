@@ -1,5 +1,7 @@
 package com.bjsts.manager.service.sale;
 
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.IService;
 import com.bjsts.manager.entity.sale.ContractEntity;
@@ -16,4 +18,6 @@ public interface ContractService extends IService<ContractEntity, Long> {
     ContractEntity save(ContractEntity contractEntity, String contractFileUrl);
 
     ContractEntity findByPlanNo(String planNo);
+
+    ApiResponse<ContractEntity> findAll(ApiRequest request, ApiRequestPage requestPage);
 }

@@ -12,11 +12,21 @@ public class ProductOutBoundForm extends AbstractForm {
 
     private ProductOutBoundEntity productOutBound;
 
+    private Double singleAmount;
+
     public ProductOutBoundEntity getProductOutBound() {
         return productOutBound;
     }
 
     public void setProductOutBound(ProductOutBoundEntity productOutBound) {
         this.productOutBound = productOutBound;
+    }
+
+    public Double getSingleAmount() {
+        return singleAmount;
+    }
+
+    public void setSingleAmount(Double singleAmount) {
+        this.singleAmount = singleAmount;
     }
 }

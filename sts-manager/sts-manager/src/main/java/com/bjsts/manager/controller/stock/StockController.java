@@ -42,7 +42,7 @@ public class StockController extends AbstractController {
         ApiResponse<StockEntity> apiResponse = stockService.findAll(stockSearchable, pageable);
         Page<StockEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
-        return "purchase/stock/list";
+        return "stock/stock/list";
     }
 
     @RequiresPermissions("sts:stock:create")
@@ -55,7 +55,7 @@ public class StockController extends AbstractController {
             stockForm.setStock(new StockEntity());
         }
         modelMap.put("action", "create");
-        return "purchase/stock/edit";
+        return "stock/stock/edit";
     }
 
     @RequiresPermissions("sts:stock:create")
@@ -84,7 +84,7 @@ public class StockController extends AbstractController {
         }
         stockForm.setStock(stockEntity);
         modelMap.put("action", "update");
-        return "purchase/stock/edit";
+        return "stock/stock/edit";
     }
 
     @RequiresPermissions("sts:stock:update")
@@ -107,7 +107,7 @@ public class StockController extends AbstractController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("stock", stockService.get(id));
-        return "purchase/stock/view";
+        return "stock/stock/view";
     }
 
     @RequiresPermissions("sts:stock:disable")

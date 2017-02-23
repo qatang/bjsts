@@ -35,8 +35,8 @@ public class ProductInBoundEntity extends AbstractEntity {
      */
     private String company;
 
-    @Column(nullable = false, name = "contact_no")
-    private String contactNo;
+    @Column(nullable = false, name = "contract_no")
+    private String contractNo;
 
     @Column(nullable = false, name = "product_name")
     private String productName;
@@ -93,12 +93,12 @@ public class ProductInBoundEntity extends AbstractEntity {
         this.company = company;
     }
 
-    public String getContactNo() {
-        return contactNo;
+    public String getContractNo() {
+        return contractNo;
     }
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 
     public String getProductName() {

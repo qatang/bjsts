@@ -17,7 +17,7 @@
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">编号:</td>
                                 <td>
-                                    ${planManageForm.planManage.id?c}
+                                    ${planManage.id?c}
                                 </td>
                             </tr>
                             <tr>

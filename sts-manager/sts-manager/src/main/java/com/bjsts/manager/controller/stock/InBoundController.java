@@ -56,7 +56,7 @@ public class InBoundController extends AbstractController {
         purchaseList.forEach(purchaseEntity -> purchaseEntity.setInBoundEntity(inBoundService.findByPurchaseNo(purchaseEntity.getPurchaseNo())));
         Page<PurchaseEntity> page = new PageImpl<>(purchaseList, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
-        return "purchase/inBound/list";
+        return "stock/inBound/list";
     }
 
     @RequiresPermissions("sts:inBound:create")
@@ -78,7 +78,7 @@ public class InBoundController extends AbstractController {
         inBoundForm.setInBound(inBoundEntity);
 
         modelMap.put("action", "create");
-        return "purchase/inBound/edit";
+        return "stock/inBound/edit";
     }
 
     @RequiresPermissions("sts:inBound:create")
@@ -112,7 +112,7 @@ public class InBoundController extends AbstractController {
         inBoundForm.setInBound(inBoundEntity);
 
         modelMap.put("action", "update");
-        return "purchase/inBound/edit";
+        return "stock/inBound/edit";
     }
 
     @RequiresPermissions("sts:inBound:update")
@@ -139,7 +139,7 @@ public class InBoundController extends AbstractController {
         PurchaseEntity purchaseEntity = purchaseService.findByPurchaseNo(inBoundEntity.getPurchaseNo());
         inBoundEntity.setPurchase(purchaseEntity);
         modelMap.put("inBound", inBoundEntity);
-        return "purchase/inBound/view";
+        return "stock/inBound/view";
     }
 
     @RequiresPermissions("sts:inBound:disable")

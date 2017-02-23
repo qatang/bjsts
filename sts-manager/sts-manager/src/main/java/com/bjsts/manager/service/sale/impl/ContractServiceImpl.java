@@ -70,4 +70,10 @@ public class ContractServiceImpl extends AbstractService<ContractEntity, Long> i
     public ContractEntity findByPlanNo(String planNo) {
         return contractRepository.findByPlanNo(planNo);
     }
+
+    @Override
+    public ApiResponse<ContractEntity> findAll(ApiRequest request, ApiRequestPage requestPage) {
+        Page<ContractEntity> page = contractRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(page);
+    }
 }

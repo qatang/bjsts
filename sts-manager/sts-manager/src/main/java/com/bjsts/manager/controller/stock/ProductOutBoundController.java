@@ -2,11 +2,13 @@ package com.bjsts.manager.controller.stock;
 
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.util.CoreMathUtils;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.stock.ProductOutBoundEntity;
 import com.bjsts.manager.form.stock.ProductOutBoundForm;
 import com.bjsts.manager.query.stock.ProductOutBoundSearchable;
+import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.stock.ProductOutBoundService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,13 +38,16 @@ public class ProductOutBoundController extends AbstractController {
     @Autowired
     private ProductOutBoundService productOutBoundService;
 
+    @Autowired
+    private IdGeneratorService idGeneratorService;
+
     @RequiresPermissions("sts:productOutBound:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ProductOutBoundSearchable productOutBoundSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         ApiResponse<ProductOutBoundEntity> apiResponse = productOutBoundService.findAll(productOutBoundSearchable, pageable);
         Page<ProductOutBoundEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
-        return "purchase/productOutBound/list";
+        return "stock/productOutBound/list";
     }
 
     @RequiresPermissions("sts:productOutBound:create")
@@ -55,7 +60,7 @@ public class ProductOutBoundController extends AbstractController {
             productOutBoundForm.setProductOutBound(new ProductOutBoundEntity());
         }
         modelMap.put("action", "create");
-        return "purchase/productOutBound/edit";
+        return "stock/productOutBound/edit";
     }
 
     @RequiresPermissions("sts:productOutBound:create")
@@ -67,8 +72,15 @@ public class ProductOutBoundController extends AbstractController {
         }
         ProductOutBoundEntity productOutBoundEntity = productOutBoundForm.getProductOutBound();
 
-        //Double cost = CoreMathUtils.mul(productOutBoundForm.getCost(), 100L);
-        //productOutBoundEntity.setCost(cost.longValue());
+        productOutBoundEntity.setProductOutBoundNo(idGeneratorService.generateDateFormatted(ProductOutBoundEntity.SEQ_ID_GENERATOR));
+
+        Double singleAmount = CoreMathUtils.mul(productOutBoundForm.getSingleAmount(), 100L);
+        Long longSingleAmount = singleAmount.longValue();
+        productOutBoundEntity.setSingleAmount(longSingleAmount);
+
+        Long quantity = productOutBoundEntity.getQuantity();
+        Long totalAmount = CoreMathUtils.mul(longSingleAmount, quantity);
+        productOutBoundEntity.setTotalAmount(totalAmount);
 
         productOutBoundService.save(productOutBoundEntity);
         return "result";
@@ -87,11 +99,11 @@ public class ProductOutBoundController extends AbstractController {
             return "redirect:/error";
         }
 
-        //productOutBoundForm.setCost(Double.valueOf(productOutBoundEntity.getCost()));
+        productOutBoundForm.setSingleAmount(Double.valueOf(productOutBoundEntity.getSingleAmount()));
 
         productOutBoundForm.setProductOutBound(productOutBoundEntity);
         modelMap.put("action", "update");
-        return "purchase/productOutBound/edit";
+        return "stock/productOutBound/edit";
     }
 
     @RequiresPermissions("sts:productOutBound:update")
@@ -103,16 +115,26 @@ public class ProductOutBoundController extends AbstractController {
         }
         ProductOutBoundEntity productOutBound = productOutBoundForm.getProductOutBound();
         ProductOutBoundEntity productOutBoundEntity = productOutBoundService.get(productOutBound.getId());
-       /* productOutBoundEntity.setShipper(productOutBound.getShipper());
-        productOutBoundEntity.setPayer(productOutBound.getPayer());
-        Double cost = CoreMathUtils.mul(productOutBoundForm.getCost(), 100L);
-        productOutBoundEntity.setCost(cost.longValue());
-        productOutBoundEntity.setContent(productOutBound.getContent());
-        productOutBoundEntity.setReceiver(productOutBound.getReceiver());
-        productOutBoundEntity.setMobile(productOutBound.getMobile());
-        productOutBoundEntity.setAddress(productOutBound.getAddress());
         productOutBoundEntity.setCompany(productOutBound.getCompany());
-        productOutBoundEntity.setDeliverDate(productOutBound.getDeliverDate());*/
+        productOutBoundEntity.setLinkman(productOutBound.getLinkman());
+        productOutBoundEntity.setMobile(productOutBound.getMobile());
+        productOutBoundEntity.setDeliveryDate(productOutBound.getDeliveryDate());
+        productOutBoundEntity.setProductName(productOutBound.getProductName());
+        productOutBoundEntity.setProductModel(productOutBound.getProductModel());
+        productOutBoundEntity.setQuantity(productOutBound.getQuantity());
+        productOutBoundEntity.setUnit(productOutBound.getUnit());
+        Double singleAmount = CoreMathUtils.mul(productOutBoundForm.getSingleAmount(), 100L);
+        Long longSingleAmount = singleAmount.longValue();
+        productOutBoundEntity.setSingleAmount(longSingleAmount);
+
+        Long quantity = productOutBound.getQuantity();
+        Long totalAmount = CoreMathUtils.mul(longSingleAmount, quantity);
+        productOutBoundEntity.setTotalAmount(totalAmount);
+
+        productOutBoundEntity.setMemo(productOutBound.getMemo());
+        productOutBoundEntity.setOperator(productOutBound.getOperator());
+        productOutBoundEntity.setShipper(productOutBound.getShipper());
+
         productOutBoundService.save(productOutBoundEntity);
         
         return "result";
@@ -123,7 +145,7 @@ public class ProductOutBoundController extends AbstractController {
     public String view(@PathVariable Long id, ModelMap modelMap) {
         ProductOutBoundEntity productOutBoundEntity = productOutBoundService.get(id);
         modelMap.put("productOutBound", productOutBoundEntity);
-        return "purchase/productOutBound/view";
+        return "stock/productOutBound/view";
     }
 
     @RequiresPermissions("sts:productOutBound:disable")

@@ -64,7 +64,7 @@ public class OutBoundController extends AbstractController {
         });
         Page<OutBoundEntity> page = new PageImpl<>(outBoundEntityList, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
-        return "purchase/outBound/list";
+        return "stock/outBound/list";
     }
 
     @RequiresPermissions("sts:outBound:create")
@@ -96,7 +96,7 @@ public class OutBoundController extends AbstractController {
         modelMap.put("action", "create");
         modelMap.put("planList", planEntityList);
         modelMap.put("stockList", stockEntityList);
-        return "purchase/outBound/edit";
+        return "stock/outBound/edit";
     }
 
     @RequiresPermissions("sts:outBound:create")
@@ -142,7 +142,7 @@ public class OutBoundController extends AbstractController {
         }
         outBoundForm.setOutBound(outBoundEntity);
         modelMap.put("action", "update");
-        return "purchase/outBound/edit";
+        return "stock/outBound/edit";
     }
 
     @RequiresPermissions("sts:outBound:update")
@@ -172,7 +172,7 @@ public class OutBoundController extends AbstractController {
         StockEntity stockEntity = stockService.get(outBoundEntity.getStockId());
         outBoundEntity.setStock(stockEntity);
         modelMap.put("outBound", outBoundEntity);
-        return "purchase/outBound/view";
+        return "stock/outBound/view";
     }
 
     @RequiresPermissions("sts:outBound:disable")
