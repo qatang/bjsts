@@ -75,9 +75,7 @@
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">采购合同附件:</td>
                                 <td>
-                                [#if purchaseContractUrl??]
-                                    <a href="${ctx}/file${purchaseContractUrl}" target="_blank">${ctx}/file${purchaseContractUrl}</a>
-                                [/#if]
+                                    [@macro.displayFile document=document!"" /]
                                 </td>
                             </tr>
                         </table>

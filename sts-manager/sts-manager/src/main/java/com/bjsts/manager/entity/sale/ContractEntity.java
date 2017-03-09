@@ -26,6 +26,10 @@ public class ContractEntity extends AbstractEntity {
 
     public static final String SEQ_ID_GENERATOR = "contract";
 
+    public static final String SEQ_ID_PREFIX_AUTO = "STSC";
+
+    public static final String SEQ_ID_PREFIX = "STSCM";
+
     @Id
     @GeneratedValue
     private Long id;
@@ -33,13 +37,13 @@ public class ContractEntity extends AbstractEntity {
     /**
      * 项目编码，格式：sts20161016001
      */
-    @Column(name = "plan_no", nullable = false)
+    @Column(name = "plan_no")
     private String planNo;
 
     /**
      * 项目名称
      */
-    @Column(name = "plan_name", nullable = false)
+    @Column(name = "plan_name")
     private String planName;
 
     @Column(name = "contract_no", nullable = false)
@@ -65,24 +69,34 @@ public class ContractEntity extends AbstractEntity {
      * 签订时间
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "sign_time", nullable = false)
+    @Column(name = "sign_time")
     private Date signTime;
 
     /**
      * 质保日期
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "quality_time", nullable = false)
+    @Column(name = "quality_time")
     private Date qualityTime;
 
     /**
      * 合同金额
      */
-    @Column(nullable = false)
     private Long amount;
 
     @Column(name = "contract_url")
     private Long contractUrl;
+
+    /**
+     * 签订人
+     */
+    private String sign;
+
+    /**
+     * 质保金额
+     */
+    @Column(name = "quality_amount")
+    private Long qualityAmount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -95,6 +109,18 @@ public class ContractEntity extends AbstractEntity {
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
+
+    /**
+     * 已付金额
+     */
+    @Transient
+    private Long payedAmount;
+
+    /**
+     * 开票金额
+     */
+    @Transient
+    private Long invoiceAmount;
 
     public Long getId() {
         return id;
@@ -206,5 +232,37 @@ public class ContractEntity extends AbstractEntity {
 
     public void setValid(EnableDisableStatus valid) {
         this.valid = valid;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public Long getQualityAmount() {
+        return qualityAmount;
+    }
+
+    public void setQualityAmount(Long qualityAmount) {
+        this.qualityAmount = qualityAmount;
+    }
+
+    public Long getPayedAmount() {
+        return payedAmount;
+    }
+
+    public void setPayedAmount(Long payedAmount) {
+        this.payedAmount = payedAmount;
+    }
+
+    public Long getInvoiceAmount() {
+        return invoiceAmount;
+    }
+
+    public void setInvoiceAmount(Long invoiceAmount) {
+        this.invoiceAmount = invoiceAmount;
     }
 }

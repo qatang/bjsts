@@ -8,6 +8,7 @@ import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.invoice.InvoiceEntity;
+import com.bjsts.manager.enums.document.DocumentType;
 import com.bjsts.manager.query.invoice.InvoiceSearchable;
 import com.bjsts.manager.repository.document.DocumentRepository;
 import com.bjsts.manager.repository.invoice.InvoiceRepository;
@@ -47,18 +48,19 @@ public class InvoiceServiceImpl extends AbstractService<InvoiceEntity, Long> imp
 
 
     @Override
-    public InvoiceEntity save(InvoiceEntity invoiceEntity, String invoiceFileUrl) {
+    public InvoiceEntity save(InvoiceEntity invoiceEntity, DocumentEntity documentEntity) {
         InvoiceEntity db = invoiceRepository.save(invoiceEntity);
-        DocumentEntity existDocumentEntity = documentRepository.findByGroupKeyAndObjectId(GlobalConstants.INVOICE_FILE, db.getInvoiceNo());
+        DocumentEntity existDocumentEntity = documentRepository.findByGroupKeyAndObjectId(DocumentType.INVOICE.getEnglishName(), db.getInvoiceNo());
 
         if (existDocumentEntity == null) {
             existDocumentEntity = new DocumentEntity();
-            existDocumentEntity.setName(invoiceEntity.getInvoiceNo());
-            existDocumentEntity.setGroupKey(GlobalConstants.INVOICE_FILE);
-            existDocumentEntity.setUrl(invoiceFileUrl);
+            existDocumentEntity.setName(documentEntity.getName());
+            existDocumentEntity.setGroupKey(DocumentType.INVOICE.getEnglishName());
+            existDocumentEntity.setUrl(documentEntity.getUrl());
             existDocumentEntity.setObjectId(invoiceEntity.getInvoiceNo());
         } else {
-            existDocumentEntity.setUrl(invoiceFileUrl);
+            existDocumentEntity.setName(documentEntity.getName());
+            existDocumentEntity.setUrl(documentEntity.getUrl());
         }
         DocumentEntity dbDocumentEntity = documentRepository.save(existDocumentEntity);
 

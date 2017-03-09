@@ -12,7 +12,7 @@
                     <div class="page-content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">ID</th>
@@ -42,32 +42,25 @@
                                                     <td class="center">${resource.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                                     <td class="center">${resource.valid.getName()}</td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="diag('资源修改', '${ctx}/resource/update/${resource.id}');" style="cursor: pointer;text-decoration:none;">
                                                                 <i class="ace-icon fa fa-pencil bigger-130" title="编辑"></i>
                                                             </a>
-                                                        </div>
                                                     </td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             [#if !resource.end]
                                                                 <a class="green" onclick="diag('资源添加', '${ctx}/resource/create?resource.parent.id=${resource.id}');" style="cursor: pointer;">
                                                                     <i class="ace-icon fa fa-plus bigger-120" title="添加子资源"></i>
                                                                 </a>
                                                             [/#if]
-                                                        </div>
                                                     </td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             [#if !resource.end]
                                                                 <a class="purple" href="${ctx}/resource/list?resource.parent.id=${resource.id}">
                                                                     <i class="ace-icon fa fa-sitemap bigger-120" title="查看子资源"></i>
                                                                 </a>
                                                             [/#if]
-                                                        </div>
                                                     </td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             [#if resource.valid == disableStatus]
                                                                 <a class="blue" href="${ctx}/resource/enable/${resource.id}" onclick="return confirm('确定要启用[${resource.name}]资源吗?');">
                                                                     <i class="ace-icon fa fa-unlock bigger-130" title="启用"></i>
@@ -77,7 +70,6 @@
                                                                     <i class="ace-icon fa fa-lock bigger-120" title="禁用"></i>
                                                                 </a>
                                                             [/#if]
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             [/#list]

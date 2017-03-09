@@ -22,9 +22,19 @@ public class NormalPurchaseEntity extends AbstractEntity {
 
     private static final long serialVersionUID = -299721038872026718L;
 
+    public static final String SEQ_ID_GENERATOR = "normalPurchase";
+
+    public static final String SEQ_ID_PREFIX = "STSUP";
+
     @Id
     @GeneratedValue
     private Long id;
+
+    /**
+     * 采购单编号
+     */
+    @Column(name = "purchase_no", nullable = false)
+    private String purchaseNo;
 
     @Column(nullable = false)
     private String name;
@@ -144,5 +154,13 @@ public class NormalPurchaseEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getPurchaseNo() {
+        return purchaseNo;
+    }
+
+    public void setPurchaseNo(String purchaseNo) {
+        this.purchaseNo = purchaseNo;
     }
 }

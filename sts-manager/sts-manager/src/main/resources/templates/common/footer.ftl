@@ -21,6 +21,7 @@
 <script src="${ctx}/static/ace/js/chosen.jquery.js"></script>
 <script src="${ctx}/static/js/jquery.tips.js"></script>
 <script src="${ctx}/static/js/jquery.cookie.js"></script>
+<script src="${ctx}/static/js/jquery.michiweber.table-head-fixed.js"></script>
 
 <script>
     $(function() {

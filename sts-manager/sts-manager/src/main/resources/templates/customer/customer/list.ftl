@@ -37,7 +37,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">ID</th>
@@ -61,16 +61,12 @@
                                                     <td class="center">${customer.contract!""}</td>
                                                     <td class="center">${customer.address!""}</td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="diag('客户修改', '${ctx}/customer/update/${customer.id}');" style="cursor: pointer;text-decoration:none;">
                                                                 修改
                                                             </a>
-                                                        </div>
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="red" href="${ctx}/customer/disable/${customer.id}" onclick="return confirm('确定要删除该客户吗?');">
                                                                 删除
                                                             </a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             [/#list]

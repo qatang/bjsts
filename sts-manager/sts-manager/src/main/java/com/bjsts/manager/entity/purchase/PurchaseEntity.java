@@ -28,6 +28,8 @@ public class PurchaseEntity extends AbstractEntity {
 
     public static final String SEQ_ID_GENERATOR = "purchase";
 
+    public static final String SEQ_ID_PREFIX = "STSMP";
+
     @Id
     @GeneratedValue
     private Long id;

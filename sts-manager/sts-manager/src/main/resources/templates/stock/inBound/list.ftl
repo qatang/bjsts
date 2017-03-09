@@ -36,7 +36,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">采购单编号</th>
@@ -77,22 +77,16 @@
                                                     </td>
                                                     <td class="center">
                                                         [#if purchase.inBound.getValue() == noStatus.getValue()]
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="diag('入库', '${ctx}/inBound/create/${purchase.purchaseNo}');" style="cursor: pointer;text-decoration:none;">
                                                                 入库
                                                             </a>
-                                                        </div>
                                                         [#else]
-                                                            <div class="hidden-sm hidden-xs btn-group">
                                                                 <a class="green" onclick="diag('入库', '${ctx}/inBound/update/${purchase.purchaseNo}');" style="cursor: pointer;text-decoration:none;">
                                                                     修改
                                                                 </a>
-                                                            </div>
-                                                            <div class="hidden-sm hidden-xs btn-group">
                                                                 <a class="green" onclick="diag('入库', '${ctx}/inBound/view/${purchase.purchaseNo}');" style="cursor: pointer;text-decoration:none;">
                                                                     查看
                                                                 </a>
-                                                            </div>
                                                         [/#if]
                                                     </td>
                                                 </tr>

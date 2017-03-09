@@ -1,6 +1,7 @@
 package com.bjsts.manager.form.invoice;
 
 import com.bjsts.manager.core.form.AbstractForm;
+import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.invoice.InvoiceEntity;
 
 /**
@@ -12,7 +13,7 @@ public class InvoiceForm extends AbstractForm {
 
     private InvoiceEntity invoice;
 
-    private String invoiceFileUrl;
+    private DocumentEntity document;
 
     private Double amount;
 
@@ -24,12 +25,12 @@ public class InvoiceForm extends AbstractForm {
         this.invoice = invoice;
     }
 
-    public String getInvoiceFileUrl() {
-        return invoiceFileUrl;
+    public DocumentEntity getDocument() {
+        return document;
     }
 
-    public void setInvoiceFileUrl(String invoiceFileUrl) {
-        this.invoiceFileUrl = invoiceFileUrl;
+    public void setDocument(DocumentEntity document) {
+        this.document = document;
     }
 
     public Double getAmount() {

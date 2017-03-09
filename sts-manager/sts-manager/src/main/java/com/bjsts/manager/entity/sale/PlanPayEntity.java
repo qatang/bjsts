@@ -1,8 +1,6 @@
 package com.bjsts.manager.entity.sale;
 
 import com.bjsts.manager.core.entity.AbstractEntity;
-import com.bjsts.manager.enums.converter.invoice.MakeOutInvoiceStatusConverter;
-import com.bjsts.manager.enums.invoice.MakeOutInvoiceStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -26,20 +24,16 @@ public class PlanPayEntity extends AbstractEntity {
     private Long id;
 
     /**
-     * 项目编码，格式：sts20161016001
-     */
-    @Column(name = "plan_no", nullable = false)
-    private String planNo;
-
-    /**
      * 合同编号，格式：sts20161016001
      */
     @Column(name = "contract_no", nullable = false)
     private String contractNo;
 
-    @Convert(converter = MakeOutInvoiceStatusConverter.class)
-    @Column(name = "invoice_status", nullable = false)
-    private MakeOutInvoiceStatus makeOutInvoiceStatus;
+    /**
+     * 项目编码，格式：sts20161016001
+     */
+    @Column(name = "plan_no", nullable = false)
+    private String planNo;
 
     /**
      * 本次付款金额
@@ -63,8 +57,8 @@ public class PlanPayEntity extends AbstractEntity {
     /**
      * 经办人
      */
-    @Column(nullable = false)
-    private String operator;
+    @Column(name = "operator_id", nullable = false)
+    private Long operatorId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -74,17 +68,17 @@ public class PlanPayEntity extends AbstractEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
+    /**
+     * 开票金额
+     */
     @Transient
-    private String planName;
+    private Long invoiceAmount;
 
+    /**
+     * 经办人姓名
+     */
     @Transient
-    private String company;
-
-    @Transient
-    private Long contractAmount;
-
-    @Transient
-    private Long payedAmount;
+    private String operator;
 
     public Long getId() {
         return id;
@@ -158,43 +152,19 @@ public class PlanPayEntity extends AbstractEntity {
         this.contractNo = contractNo;
     }
 
-    public MakeOutInvoiceStatus getMakeOutInvoiceStatus() {
-        return makeOutInvoiceStatus;
+    public Long getOperatorId() {
+        return operatorId;
     }
 
-    public void setMakeOutInvoiceStatus(MakeOutInvoiceStatus makeOutInvoiceStatus) {
-        this.makeOutInvoiceStatus = makeOutInvoiceStatus;
+    public void setOperatorId(Long operatorId) {
+        this.operatorId = operatorId;
     }
 
-    public String getPlanName() {
-        return planName;
+    public Long getInvoiceAmount() {
+        return invoiceAmount;
     }
 
-    public void setPlanName(String planName) {
-        this.planName = planName;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public Long getContractAmount() {
-        return contractAmount;
-    }
-
-    public void setContractAmount(Long contractAmount) {
-        this.contractAmount = contractAmount;
-    }
-
-    public Long getPayedAmount() {
-        return payedAmount;
-    }
-
-    public void setPayedAmount(Long payedAmount) {
-        this.payedAmount = payedAmount;
+    public void setInvoiceAmount(Long invoiceAmount) {
+        this.invoiceAmount = invoiceAmount;
     }
 }

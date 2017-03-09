@@ -1,6 +1,7 @@
 package com.bjsts.manager.form.sale;
 
 import com.bjsts.manager.core.form.AbstractForm;
+import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 
 /**
@@ -13,9 +14,10 @@ public class QuoteForm extends AbstractForm {
 
     private PlanEntity productOrder;
 
-    private String customerFileUrl;
+    private DocumentEntity planDocument;
 
-    private String quoteFileUrl;
+    private DocumentEntity document;
+
 
     public PlanEntity getProductOrder() {
         return productOrder;
@@ -25,19 +27,19 @@ public class QuoteForm extends AbstractForm {
         this.productOrder = productOrder;
     }
 
-    public String getCustomerFileUrl() {
-        return customerFileUrl;
+    public DocumentEntity getPlanDocument() {
+        return planDocument;
     }
 
-    public void setCustomerFileUrl(String customerFileUrl) {
-        this.customerFileUrl = customerFileUrl;
+    public void setPlanDocument(DocumentEntity planDocument) {
+        this.planDocument = planDocument;
     }
 
-    public String getQuoteFileUrl() {
-        return quoteFileUrl;
+    public DocumentEntity getDocument() {
+        return document;
     }
 
-    public void setQuoteFileUrl(String quoteFileUrl) {
-        this.quoteFileUrl = quoteFileUrl;
+    public void setDocument(DocumentEntity document) {
+        this.document = document;
     }
 }

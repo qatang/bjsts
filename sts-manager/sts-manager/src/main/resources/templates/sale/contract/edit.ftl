@@ -24,20 +24,13 @@
                                         [#if contractForm.contract.id??]
                                             ${contractForm.contract.planNo}
                                             <input type="hidden" name="contract.planNo" value="${contractForm.contract.planNo!''}"/>
-                                        [#else]
-                                            <select class="chosen-select form-control" name="contract.planNo" data-placeholder="请选择" style="" onchange="queryPlan(this);" id="planNo">
-                                                <option value="0">请选择</option>
-                                                [#list planList as data]
-                                                    <option value="${data.planNo!""}" [#if contractForm.contract.planNo?has_content && data.planNo == contractForm.contract.planNo]selected[/#if]>${data.getName()!""}</option>
-                                                [/#list]
-                                            </select>
                                         [/#if]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">项目名称:</td>
                                     <td>
-                                        <input type="text" name="contract.planName" id="planName" value="${contractForm.contract.planName!''}" readonly required/>
+                                        <input type="text" name="contract.planName" id="planName" value="${contractForm.contract.planName!''}" required/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -49,33 +42,27 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">合同状态:</td>
-                                    <td>
-                                        [@macro.selectEnum name="contract.status" enumObj=contractForm.contract.status!contractStatusList[0] dataList=contractStatusList /]
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">客户名称:</td>
                                     <td>
-                                        <input type="text" name="contract.company" id="company" value="${contractForm.contract.company!''}" readonly required/>
+                                        <input type="text" name="contract.company" id="company" value="${contractForm.contract.company!''}" required/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">联系人:</td>
                                     <td>
-                                        <input type="text" name="contract.linkman" id="linkman" value="${contractForm.contract.linkman!''}" readonly required/>
+                                        <input type="text" name="contract.linkman" id="linkman" value="${contractForm.contract.linkman!''}" required/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">签订日期:</td>
                                     <td>
-                                    [@macro.datetimePicker name="contract.signTime" value=contractForm.contract.signTime!"" placeholder="签订日期"/]
+                                    [@macro.datePicker name="contract.signTime" value=contractForm.contract.signTime!"" placeholder="签订日期"/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">质保日期:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">签订人:</td>
                                     <td>
-                                    [@macro.datetimePicker name="contract.qualityTime" value=contractForm.contract.qualityTime!"" placeholder="质保日期"/]
+                                        <input type="text" name="contract.sign" value="${contractForm.contract.sign!''}" required/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -84,11 +71,24 @@
                                         [@macro.inputMoney name="amount" value=contractForm.amount!'' placeholder="合同金额"/]
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">质保期限:</td>
+                                    <td>
+                                    [@macro.datePicker name="contract.qualityTime" value=contractForm.contract.qualityTime!"" placeholder="质保期限"/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">质保金额:</td>
+                                    <td>
+                                    [@macro.inputMoney name="qualityAmount" value=contractForm.qualityAmount!'' placeholder="质保金额"/]
+                                    </td>
+                                </tr>
                                  <tr>
                                      <td style="width:100px;text-align: right;padding-top: 13px;">合同扫描附件:</td>
                                      <td>
-                                         <input id="input-contractUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                         [@macro.inputText name="contractUrl" id="contractUrl" value=contractForm.contractUrl!'' placeholder="合同扫描附件"/]
+                                         <input id="input-fileName" name="file" type="file" multiple class="file-loading" data-show-upload="false">
+                                         <input type="hidden" name="document.name" id="fileName" value="${contractForm.document.name!''}"/>
+                                         <input type="hidden" name="document.url" id="contractUrl" value="${contractForm.document.url!''}"/>
                                      </td>
                                  </tr>
                                 <tr>
@@ -114,51 +114,29 @@
 <script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
 
 <script>
-    var contractUrl = null;
-    if ('${contractForm.contractUrl!''}' != "") {
-        contractUrl = "${contractForm.contractUrl!''}";
+    var fileName = null;
+    if ('${contractForm.document.name!''}' != "") {
+        fileName = "${contractForm.document.name!''}";
     }
 
-    $("#input-contractUrl").fileinput({
+    $("#input-fileName").fileinput({
         language: "zh",
-        uploadUrl: "/contract/upload",
+        uploadUrl: "/document/upload",
+        uploadExtraData: {"group":"contract"},
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
         //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
-            contractUrl
+            fileName
         ]
     }).on("filebatchselected", function(event, files) {
         $(this).fileinput("upload");
     }).on("fileuploaded", function(event, data) {
         if (data.response) {
             $("#contractUrl").val(data.response.path);
+            $("#fileName").val(data.response.fileName);
         }
     });
-
-    /**
-     *
-     * @param url
-     */
-    function queryPlan() {
-        planNo = $('#planNo').val();
-        $.ajax({
-            type: "get",
-            url: "${ctx}/contract/findPlan/" + planNo,
-            data: {},
-            dataType: "json",
-            async: false,
-            success: function (data) {
-                $('#planName').val(data.name);
-                $('#company').val(data.company);
-                $('#linkman').val(data.linkman);
-            },
-            error: function (xmlHttpRequest,error) {
-            },
-            complete: function(xmlHttpRequest) {
-            }
-        });
-    }
 </script>
 </html>

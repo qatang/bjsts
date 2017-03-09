@@ -19,10 +19,10 @@
                             <input type="hidden" name="normalPurchase.id" value="${normalPurchaseForm.normalPurchase.id!''}"/>
                             <table id="table_report" class="table table-striped table-bordered table-hover">
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">编号:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">采购单编号:</td>
                                     <td>
-                                        [#if normalPurchaseForm.normalPurchase.id??]
-                                            ${normalPurchaseForm.normalPurchase.id?c}
+                                    [#if normalPurchaseForm.normalPurchase.id??]
+                                            ${normalPurchaseForm.normalPurchase.purchaseNo}
                                         [/#if]
                                     </td>
                                 </tr>

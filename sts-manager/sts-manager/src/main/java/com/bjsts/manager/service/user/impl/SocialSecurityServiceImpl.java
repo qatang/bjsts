@@ -8,6 +8,7 @@ import com.bjsts.manager.entity.user.SocialSecurityEntity;
 import com.bjsts.manager.query.user.SocialSecuritySearchable;
 import com.bjsts.manager.repository.user.SocialSecurityRepository;
 import com.bjsts.manager.service.user.SocialSecurityService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,9 @@ public class SocialSecurityServiceImpl extends AbstractService<SocialSecurityEnt
     public ApiResponse<SocialSecurityEntity> findAll(SocialSecuritySearchable socialSecuritySearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
 
+        if (StringUtils.isNotEmpty(socialSecuritySearchable.getRealName())) {
+            request.filterLike("realName", socialSecuritySearchable.getRealName());
+        }
        /* if (StringUtils.isNotEmpty(userSearchable.getId())) {
             String[] ids = StringUtils.split(userSearchable.getId(), ",");
             if (ids != null && ids.length > 0) {

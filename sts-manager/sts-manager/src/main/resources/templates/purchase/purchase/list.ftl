@@ -37,7 +37,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">采购单编号</th>
@@ -77,15 +77,11 @@
                                                     <td class="center">${purchase.makeOutInvoiceStatus.getName()}</td>
                                                     <td class="center">${purchase.inBound.getName()}</td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="customDiag('修改采购合同', '${ctx}/purchase/update/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
                                                                 修改
                                                             </a>
-                                                        </div>
                                                         [#if purchase.inBound.getValue() == noStatus.getValue()]
-                                                            <div class="hidden-sm hidden-xs btn-group">
                                                                 <a href="${ctx}/purchase/disable/${purchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                                            </div>
                                                         [/#if]
                                                     </td>
                                                 </tr>

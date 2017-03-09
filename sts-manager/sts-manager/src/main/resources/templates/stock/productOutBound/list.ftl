@@ -36,7 +36,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                        <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                             <thead>
                             <tr>
                                 <th class="center">序号</th>
@@ -78,14 +78,10 @@
                                     <td class="center">${productOutBound.operator!""}</td>
                                     <td class="center">${productOutBound.shipper!""}</td>
                                     <td class="center">
-                                        <div class="hidden-sm hidden-xs btn-group">
                                             <a class="green" onclick="diag('修改', '${ctx}/productOutBound/update/${productOutBound.id}');" style="cursor: pointer;text-decoration:none;">
                                                 修改
                                             </a>
-                                        </div>
-                                        <div class="hidden-sm hidden-xs btn-group">
                                             <a class="red" href="${ctx}/productOutBound/disable/${productOutBound.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                        </div>
                                     </td>
                                 </tr>
                                 [/#list]

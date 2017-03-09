@@ -1,6 +1,7 @@
 package com.bjsts.manager.form.sale;
 
 import com.bjsts.manager.core.form.AbstractForm;
+import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.ContractEntity;
 
 /**
@@ -13,9 +14,11 @@ public class ContractForm extends AbstractForm {
 
     private ContractEntity contract;
 
-    private String contractUrl;
-
     private Double amount;
+
+    private Double qualityAmount;
+
+    private DocumentEntity document;
 
     public ContractEntity getContract() {
         return contract;
@@ -25,19 +28,27 @@ public class ContractForm extends AbstractForm {
         this.contract = contract;
     }
 
-    public String getContractUrl() {
-        return contractUrl;
-    }
-
-    public void setContractUrl(String contractUrl) {
-        this.contractUrl = contractUrl;
-    }
-
     public Double getAmount() {
         return amount;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public Double getQualityAmount() {
+        return qualityAmount;
+    }
+
+    public void setQualityAmount(Double qualityAmount) {
+        this.qualityAmount = qualityAmount;
+    }
+
+    public DocumentEntity getDocument() {
+        return document;
+    }
+
+    public void setDocument(DocumentEntity document) {
+        this.document = document;
     }
 }

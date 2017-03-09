@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface PlanPayRepository extends IRepository<PlanPayEntity, Long> {
 
-    List<PlanPayEntity> findByPlanNo(String planNo);
+    List<PlanPayEntity> findByContractNo(String contractNo);
 }

@@ -37,7 +37,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">ID</th>
@@ -59,16 +59,12 @@
                                                 <td class="center">${planManage.planExecuteStatus.getName()}</td>
                                                 <td class="center">[@macro.displayDate value=planManage.actualDate!""/]</td>
                                                 <td class="center">
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="green" onclick="diag('项目管理修改', '${ctx}/planManage/update/${planManage.id}');" style="cursor: pointer;text-decoration:none;">
                                                             修改
                                                         </a>
-                                                    </div>
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="red" href="${ctx}/planManage/disable/${planManage.id}" onclick="return confirm('确定要删除该项目管理吗?');">
                                                             删除
                                                         </a>
-                                                    </div>
                                                 </td>
                                             </tr>
                                             [/#list]

@@ -8,6 +8,7 @@ import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.purchase.NormalPurchaseEntity;
 import com.bjsts.manager.form.purchase.NormalPurchaseForm;
 import com.bjsts.manager.query.purchase.NormalPurchaseSearchable;
+import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.purchase.NormalPurchaseService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,6 +37,9 @@ public class NormalPurchaseController extends AbstractController {
 
     @Autowired
     private NormalPurchaseService normalPurchaseService;
+
+    @Autowired
+    private IdGeneratorService idGeneratorService;
 
     @RequiresPermissions("sts:normalPurchase:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
@@ -67,6 +71,8 @@ public class NormalPurchaseController extends AbstractController {
             return "redirect:/normalPurchase/create";
         }
         NormalPurchaseEntity normalPurchaseEntity = normalPurchaseForm.getNormalPurchase();
+
+        normalPurchaseEntity.setPurchaseNo(NormalPurchaseEntity.SEQ_ID_PREFIX + idGeneratorService.generateDateFormatted(NormalPurchaseEntity.SEQ_ID_GENERATOR));
 
         Double amount = CoreMathUtils.mul(normalPurchaseForm.getAmount(), 100L);
         normalPurchaseEntity.setAmount(amount.longValue());

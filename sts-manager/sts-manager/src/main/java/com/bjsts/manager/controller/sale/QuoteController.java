@@ -5,6 +5,7 @@ import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
+import com.bjsts.manager.entity.system.UserEntity;
 import com.bjsts.manager.enums.sale.PlanStatus;
 import com.bjsts.manager.enums.sale.PlanType;
 import com.bjsts.manager.enums.sale.SourceType;
@@ -12,10 +13,9 @@ import com.bjsts.manager.form.sale.QuoteForm;
 import com.bjsts.manager.query.sale.QuoteSearchable;
 import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.sale.ProductOrderService;
-import com.bjsts.manager.utils.FileUtils;
 import com.google.common.collect.Lists;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,16 +28,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -72,11 +65,9 @@ public class QuoteController extends AbstractController {
     @RequiresPermissions("sts:quote:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(QuoteSearchable quoteSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-/*        List<PlanStatus> planStatuses = Lists.newArrayList();
-        planStatuses.add(PlanStatus.ASK_PRICE);
-        quoteSearchable.setPlanStatusList(planStatuses);*/
         ApiResponse<PlanEntity> apiResponse = productOrderService.findAll(quoteSearchable, pageable);
-        Page<PlanEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+        List<PlanEntity> planEntityList = Lists.newArrayList(apiResponse.getPagedData());
+        Page<PlanEntity> page = new PageImpl<>(planEntityList, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
         return "sale/quote/list";
     }
@@ -98,13 +89,13 @@ public class QuoteController extends AbstractController {
         Long documentId = planEntity.getDocumentId();
         if (documentId != null) {
             DocumentEntity documentEntity = documentService.get(documentId);
-            quoteForm.setCustomerFileUrl(documentEntity.getUrl());
+            quoteForm.setPlanDocument(documentEntity);
         }
 
         Long quoteFileId = planEntity.getQuoteFileId();
         if (quoteFileId != null) {
             DocumentEntity documentEntity = documentService.get(quoteFileId);
-            quoteForm.setQuoteFileUrl(documentEntity.getUrl());
+            quoteForm.setDocument(documentEntity);
         }
         modelMap.put("action", "create");
         return "sale/quote/edit";
@@ -123,11 +114,15 @@ public class QuoteController extends AbstractController {
         planEntity.setQuoteTime(quote.getQuoteTime());
         planEntity.setPlanStatus(PlanStatus.QUOTE_FOR_SALE);
 
-        String quoteFileUrl = quoteForm.getQuoteFileUrl();
-        if (StringUtils.isEmpty(quoteFileUrl)) {
+        UserEntity currentUser = (UserEntity) SecurityUtils.getSubject().getPrincipal();
+        planEntity.setQuoterId(currentUser.getId());
+        planEntity.setQuoter(currentUser.getRealName());
+
+        DocumentEntity documentEntity = quoteForm.getDocument();
+        if (StringUtils.isEmpty(documentEntity.getName())) {
             productOrderService.save(planEntity);
         } else {
-            productOrderService.saveQuote(planEntity, quoteFileUrl);
+            productOrderService.saveQuote(planEntity, documentEntity);
         }
         return "result";
     }
@@ -140,51 +135,16 @@ public class QuoteController extends AbstractController {
         Long documentId = planEntity.getDocumentId();
         if (documentId != null) {
             DocumentEntity documentEntity = documentService.get(documentId);
-            modelMap.addAttribute("customerFileUrl", documentEntity.getUrl());
+            modelMap.addAttribute("planDocument", documentEntity);
         }
 
         Long quoteFileId = planEntity.getQuoteFileId();
         if (quoteFileId != null) {
             DocumentEntity documentEntity = documentService.get(quoteFileId);
-            modelMap.addAttribute("quoteFileUrl", documentEntity.getUrl());
+            modelMap.addAttribute("document", documentEntity);
         }
+
         modelMap.put("quote", planEntity);
         return "sale/quote/view";
-    }
-
-    @RequiresPermissions("sts:quote:upload")
-    @RequestMapping("/upload")
-    @ResponseBody
-    public Map<String, String> upload(@RequestParam(value = "file", required = false) MultipartFile file, ModelMap modelMap) {
-        Map<String, String> map = new HashMap<>();
-        if (!file.isEmpty()) {
-            try {
-                InputStream input = file.getInputStream();
-
-                String fullFileDir = fileExternalUrl + File.separator + GlobalConstants.QUOTE_FILE + File.separator;
-                if (!FileUtils.createDirectory(fullFileDir)) {
-                    String message = "创建文件夹失败，请重试!";
-                    map.put("message", message);
-                    return map;
-                }
-
-                String fileName = File.separator + GlobalConstants.QUOTE_FILE + File.separator + file.getOriginalFilename();
-                OutputStream output = new FileOutputStream(fileExternalUrl + fileName);
-                IOUtils.copy(input, output);
-
-                output.close();
-                input.close();
-
-                String message = "上传成功!";
-
-                map.put("path", fileName);
-                map.put("message", message);
-            } catch (Exception e) {
-                map.put("message", "上传失败 => " + e.getMessage());
-            }
-        } else {
-            map.put("message", "上传失败，文件为空.");
-        }
-        return map;
     }
 }

@@ -11,74 +11,61 @@
                 <div class="main-content-inner">
                     <div class="page-content">
                         <div class="row">
-                            <div class="col-xs-11">
-                            [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
-                                    <table style="margin-top:5px;">
-                                        <tr>
-                                            <td>
-                                                <div class="nav-search">
-                                                    <span class="input-icon">
-                                                        <input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="content" value="${socialSecuritySearchable.content!''}" placeholder="这里输入关键词" />
-                                                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
-                                        </tr>
-                                    </table>
-                                </form>--]
-                            </div>
-                            <div class="col-xs-1">
-                                <div style="float:right;margin-top:5px;">
-                                    <a class="btn btn-xs btn-success" onclick="diag('新增项目付款', '${ctx}/planPay/create');">新增项目付款</a>
-                                </div>
+                            <div class="col-xs-12">
+                                <form action="${ctx}/planPay/list" method="post" name="planPayForm" id="planPayForm">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-2"  style="padding:2px;border-top:0;">
+                                            [@macro.inputText name="company" value=contractSearchable.company!'' placeholder="客户名称"  required=false /]
+                                            </div>
+                                            <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                            [@macro.datePicker name="qualityTime" value=contractSearchable.qualityTime!"" placeholder="质保期限" required=false/]
+                                            </div>
+                                            <div class="col-xs-1" style="padding:2px;border-top:0;"><button id="btn" class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
-                                            <th class="center">付款编码</th>
+                                            <th class="center">合同编码</th>
                                             <th class="center">项目编码</th>
                                             <th class="center">项目名称</th>
-                                            <th class="center">合同编码</th>
                                             <th class="center">客户名称</th>
                                             <th class="center">合同总额</th>
-                                            <th class="center">开票信息</th>
-                                            <th class="center">已付金额</th>
-                                            [#--<th class="center">质保金额</th>--]
-                                            <th class="center">本次付款信息</th>
-                                            <th class="center">本次付款方式</th>
-                                            <th class="center">本次付款日期</th>
-                                            <th class="center">经办人</th>
+                                            <th class="center">质保期限</th>
+                                            <th class="center">质保金额</th>
+                                            <th class="center">已收金额</th>
+                                            <th class="center">开票金额</th>
                                             <th class="center" colspan="2">操作</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         [#if page?? && page.content?has_content]
-                                            [#list page.content as planPay]
+                                            [#list page.content as contract]
                                                 <tr>
-                                                    <td class="center"><a onclick="diag('查看项目付款', '${ctx}/planPay/view/${planPay.id}');">${planPay.id}</a></td>
-                                                    <td class="center">${planPay.planNo}</td>
-                                                    <td class="center">${planPay.planName!""}</td>
-                                                    <td class="center">${planPay.contractNo}</td>
-                                                    <td class="center">${planPay.company!""}</td>
-                                                    <td class="center">[@macro.displayMoney value=planPay.contractAmount!''/]</td>
-                                                    <td class="center">${planPay.makeOutInvoiceStatus.getName()}</td>
-                                                    <td class="center">[@macro.displayMoney value=planPay.payedAmount!''/]</td>
-                                                    [#--<td class="center"></td>--]
-                                                    <td class="center">[@macro.displayMoney value=planPay.amount!''/]</td>
-                                                    <td class="center">${planPay.payModel}</td>
-                                                    <td class="center">${planPay.payTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                                                    <td class="center">${planPay.operator}</td>
+                                                    <td class="center"><a onclick="diag('合同信息', '${ctx}/contract/view/${contract.id}');" style="cursor: pointer;text-decoration:none;">${contract.contractNo}</a></td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" onclick="diag('项目修改', '${ctx}/planPay/update/${planPay.id}');" style="cursor: pointer;text-decoration:none;">
-                                                                编辑
-                                                            </a>
-                                                        </div>
+                                                        [#if contract.planNo??]
+                                                            <a onclick="diag('项目信息', '${ctx}/productOrder/viewByPlanNo/${contract.planNo}');" style="cursor: pointer;text-decoration:none;">${contract.planNo}</a>
+                                                        [/#if]
+                                                    </td>
+                                                    <td class="center">${contract.planName!""}</td>
+                                                    <td class="center">${contract.company!""}</td>
+                                                    <td class="center">[@macro.displayMoney value=contract.amount!''/]</td>
+                                                    <td class="center">[@macro.displayDate value=contract.qualityTime!""/]</td>
+                                                    <td class="center">[@macro.displayMoney value=contract.qualityAmount!''/]</td>
+                                                    <td class="center">[@macro.displayMoney value=contract.payedAmount!''/]</td>
+                                                    <td class="center">[@macro.displayMoney value=contract.invoiceAmount!''/]</td>
+                                                    <td class="center">
+                                                        <a class="green" onclick="diag('收款详细信息', '${ctx}/planPay/create/${contract.contractNo}');" style="cursor: pointer;text-decoration:none;">
+                                                            详细信息
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             [/#list]

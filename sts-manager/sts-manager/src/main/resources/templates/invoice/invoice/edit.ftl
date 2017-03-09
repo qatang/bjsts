@@ -95,7 +95,8 @@
                                     <td style="width:100px;text-align: right;padding-top: 13px;">发票扫描附件:</td>
                                     <td>
                                         <input id="input-invoiceUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                    [@macro.inputText name="invoiceFileUrl" id="invoiceFileUrl" value=invoiceForm.invoiceFileUrl!'' placeholder="发票扫描附件"/]
+                                        <input type="hidden" name="document.name" id="fileName" value="${invoiceForm.document.name!''}"/>
+                                        <input type="hidden" name="document.url" id="invoiceUrl" value="${invoiceForm.document.url!''}"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -121,26 +122,28 @@
 <script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
 
 <script>
-    var invoiceFileUrl = null;
-    if ('${invoiceForm.invoiceFileUrl!''}' != "") {
-        invoiceFileUrl = "${invoiceForm.invoiceFileUrl!''}";
+    var fileName = null;
+    if ('${invoiceForm.document.name!''}' != "") {
+        fileName = "${invoiceForm.document.name!''}";
     }
 
-    $("#input-invoiceUrl").fileinput({
+    $("#input-quoteFileUrl").fileinput({
         language: "zh",
-        uploadUrl: "/invoice/upload",
+        uploadUrl: "/document/upload",
+        uploadExtraData: {"group":"quote"},
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
         //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
-            invoiceFileUrl
+            fileName
         ]
     }).on("filebatchselected", function(event, files) {
         $(this).fileinput("upload");
     }).on("fileuploaded", function(event, data) {
         if (data.response) {
-            $("#invoiceFileUrl").val(data.response.path);
+            $("#invoiceUrl").val(data.response.path);
+            $("#fileName").val(data.response.fileName);
         }
     });
 </script>

@@ -184,10 +184,12 @@ CREATE TABLE `sts_plan` (
   `updated_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` int(11) NOT NULL,
   `document_id` bigint(20) DEFAULT NULL,
-  `quoter` VARCHAR(32) DEFAULT NULL,
+  `quoter` VARCHAR(32) NULL DEFAULT NULL,
+  `quoter_id` bigint(20) NULL DEFAULT NULL,
   `quote_time` TIMESTAMP NULL DEFAULT NULL,
   `quote_file_id` bigint(20) DEFAULT NULL,
-  `booker` VARCHAR(32) DEFAULT NULL,
+  `booker` VARCHAR(32) NOT NULL,
+  `booker_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -205,8 +207,8 @@ CREATE TABLE `sts_plan_trace` (
 
 CREATE TABLE `sts_contract` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `plan_no` varchar(255) NOT NULL,
-  `plan_name` varchar(255) NOT NULL,
+  `plan_no` varchar(255) NOT NULL DEFAULT '',
+  `plan_name` varchar(255) NOT NULL DEFAULT '',
   `contract_no` VARCHAR(255) NOT NULL,
   `status` int(11) NOT NULL,
   `company` varchar(255) DEFAULT NULL,
@@ -215,6 +217,8 @@ CREATE TABLE `sts_contract` (
   `quality_time` TIMESTAMP NULL DEFAULT NULL,
   `amount` bigint(20) NOT NULL DEFAULT 0,
   `contract_url` bigint(20) DEFAULT NULL,
+  `sign` VARCHAR(32) DEFAULT NULL,
+  `quality_amount` bigint(20) NOT NULL DEFAULT 0,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
@@ -224,13 +228,12 @@ CREATE TABLE `sts_contract` (
 
 CREATE TABLE `sts_plan_pay` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `plan_no` varchar(255) NOT NULL,
+  `plan_no` varchar(255) NOT NULL DEFAULT '',
   `contract_no` varchar(255) NOT NULL,
-  `invoice_status` int(11) NOT NULL,
   `amount` bigint(20) NOT NULL,
   `pay_model` VARCHAR(20) NOT NULL DEFAULT '',
   `pay_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `operator` varchar(255) NOT NULL,
+  `operator_id` bigint(20) NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -319,6 +322,7 @@ CREATE TABLE `sts_express` (
 
 CREATE TABLE `sts_normal_purchase` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `purchase_no` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `buyer` VARCHAR(128) NOT NULL,
   `quantity` bigint(20) NOT NULL DEFAULT 0,
@@ -443,6 +447,18 @@ CREATE TABLE `sts_product_out_bound` (
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `valid` TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sts_purchase_pay` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `purchase_no` varchar(255) NOT NULL DEFAULT '',
+  `amount` bigint(20) NOT NULL,
+  `pay_model` VARCHAR(20) NOT NULL DEFAULT '',
+  `pay_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `operator_id` bigint(20) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

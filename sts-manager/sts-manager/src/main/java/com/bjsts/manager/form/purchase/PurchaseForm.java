@@ -1,6 +1,7 @@
 package com.bjsts.manager.form.purchase;
 
 import com.bjsts.manager.core.form.AbstractForm;
+import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
 
 /**
@@ -13,7 +14,7 @@ public class PurchaseForm extends AbstractForm {
 
     private PurchaseEntity purchase;
 
-    private String purchaseContractUrl;
+    private DocumentEntity document;
 
     private Double totalAmount;
 
@@ -29,12 +30,12 @@ public class PurchaseForm extends AbstractForm {
         this.purchase = purchase;
     }
 
-    public String getPurchaseContractUrl() {
-        return purchaseContractUrl;
+    public DocumentEntity getDocument() {
+        return document;
     }
 
-    public void setPurchaseContractUrl(String purchaseContractUrl) {
-        this.purchaseContractUrl = purchaseContractUrl;
+    public void setDocument(DocumentEntity document) {
+        this.document = document;
     }
 
     public Double getTotalAmount() {

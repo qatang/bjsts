@@ -2,6 +2,7 @@ package com.bjsts.manager.enums.sale;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,9 @@ public enum PlanStatus {
     QUOTE_FOR_SALE(4, "提交报价单至销售"),
     QUOTE_FOR_CUSTOMER(5, "提交报价单至甲方"),
     UN_COMPLETE(6, "无法完成"),
-    COMPLETE(7, "成单"),
-    OTHERS(8, "其他"),
+    COMPLETE(7, "签订合同"),
+    TWO_ASK_PRICE(8, "二次报价"),
+    OTHERS(9, "其他"),
     ;
 
     private static Logger logger = LoggerFactory.getLogger(PlanStatus.class);
@@ -85,5 +87,23 @@ public enum PlanStatus {
 
     public static List<PlanStatus> listAll() {
         return _ALL_LIST;
+    }
+
+    //可追踪状态
+    public static List<PlanStatus> listTraceStatus() {
+        return Lists.newArrayList(
+                ASK_PRICE,
+                CONTINUE,
+                QUOTE_FOR_SALE,
+                QUOTE_FOR_CUSTOMER,
+                TWO_ASK_PRICE,
+                OTHERS);
+    }
+
+    //归档状态
+    public static List<PlanStatus> listHistoryStatus() {
+        return Lists.newArrayList(
+                ABANDON,
+                UN_COMPLETE);
     }
 }

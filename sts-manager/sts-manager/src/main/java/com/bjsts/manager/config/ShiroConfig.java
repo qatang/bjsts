@@ -48,6 +48,7 @@ public class ShiroConfig {
     public Realm userRealm() {
         UserRealm userRealm = new UserRealm();
         userRealm.setCredentialsMatcher(credentialsMatcher());
+        userRealm.setCachingEnabled(false);
         return userRealm;
     }
 
@@ -68,7 +69,6 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("/api/** = anon").append("\n");
         sb.append("/static/** = anon").append("\n");
         sb.append("/plugins/** = anon").append("\n");
         sb.append("/favicon.ico = anon").append("\n");
@@ -76,6 +76,8 @@ public class ShiroConfig {
         sb.append("/user/password/forget = anon").append("\n");
         sb.append("/signout = logout").append("\n");
         sb.append("/dashboard = user").append("\n");
+        sb.append("/document/download/** = user").append("\n");
+        sb.append("/document/upload = user").append("\n");
         sb.append("/** = user");
         shiroFilterFactoryBean.setFilterChainDefinitions(sb.toString());
         return shiroFilterFactoryBean;

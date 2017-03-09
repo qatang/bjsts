@@ -20,9 +20,7 @@ import com.bjsts.manager.query.invoice.InvoiceSearchable;
 import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.invoice.InvoiceService;
 import com.bjsts.manager.service.sale.ProductOrderService;
-import com.bjsts.manager.utils.FileUtils;
 import com.google.common.collect.Lists;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +34,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -128,11 +119,11 @@ public class InvoiceController extends AbstractController {
         Double amount = CoreMathUtils.mul(invoiceForm.getAmount(), 100L);
         invoiceEntity.setAmount(amount.longValue());
 
-        String invoiceFileUrl = invoiceForm.getInvoiceFileUrl();
-        if (StringUtils.isEmpty(invoiceFileUrl)) {
+        DocumentEntity documentEntity = invoiceForm.getDocument();
+        if (StringUtils.isEmpty(documentEntity.getName())) {
             invoiceService.save(invoiceEntity);
         } else {
-            invoiceService.save(invoiceEntity, invoiceFileUrl);
+            invoiceService.save(invoiceEntity, documentEntity);
         }
         return "result";
     }
@@ -163,7 +154,7 @@ public class InvoiceController extends AbstractController {
         Long documentId = invoiceEntity.getInvoiceUrl();
         if (documentId != null) {
             DocumentEntity documentEntity = documentService.get(documentId);
-            invoiceForm.setInvoiceFileUrl(documentEntity.getUrl());
+            invoiceForm.setDocument(documentEntity);
         }
 
         invoiceForm.setInvoice(invoiceEntity);
@@ -193,11 +184,11 @@ public class InvoiceController extends AbstractController {
         invoiceEntity.setContent(invoice.getContent());
         invoiceEntity.setInvoiceStatus(invoice.getInvoiceStatus());
 
-        String invoiceFileUrl = invoiceForm.getInvoiceFileUrl();
-        if (StringUtils.isEmpty(invoiceFileUrl)) {
+        DocumentEntity documentEntity = invoiceForm.getDocument();
+        if (StringUtils.isEmpty(documentEntity.getName())) {
             invoiceService.save(invoiceEntity);
         } else {
-            invoiceService.save(invoiceEntity, invoiceFileUrl);
+            invoiceService.save(invoiceEntity, documentEntity);
         }
 
         return "result";
@@ -213,7 +204,7 @@ public class InvoiceController extends AbstractController {
         Long documentId = invoiceEntity.getInvoiceUrl();
         if (documentId != null) {
             DocumentEntity documentEntity = documentService.get(documentId);
-            modelMap.addAttribute("invoiceUrl", documentEntity.getUrl());
+            modelMap.addAttribute("document", documentEntity);
         }
         return "invoice/invoice/view";
     }
@@ -231,41 +222,5 @@ public class InvoiceController extends AbstractController {
         invoiceEntity.setValid(EnableDisableStatus.DISABLE);
         invoiceService.update(invoiceEntity);
         return "redirect:/invoice/list";
-    }
-
-    @RequiresPermissions("sts:invoice:upload")
-    @RequestMapping("/upload")
-    @ResponseBody
-    public Map<String, String> upload(@RequestParam(value = "file", required = false) MultipartFile file, ModelMap modelMap) {
-        Map<String, String> map = new HashMap<>();
-        if (!file.isEmpty()) {
-            try {
-                InputStream input = file.getInputStream();
-
-                String fullFileDir = fileExternalUrl + File.separator + GlobalConstants.INVOICE_FILE + File.separator;
-                if (!FileUtils.createDirectory(fullFileDir)) {
-                    String message = "创建文件夹失败，请重试!";
-                    map.put("message", message);
-                    return map;
-                }
-
-                String fileName = File.separator + GlobalConstants.INVOICE_FILE + File.separator + file.getOriginalFilename();
-                OutputStream output = new FileOutputStream(fileExternalUrl + fileName);
-                IOUtils.copy(input, output);
-
-                output.close();
-                input.close();
-
-                String message = "上传成功!";
-
-                map.put("path", fileName);
-                map.put("message", message);
-            } catch (Exception e) {
-                map.put("message", "上传失败 => " + e.getMessage());
-            }
-        } else {
-            map.put("message", "上传失败，文件为空.");
-        }
-        return map;
     }
 }

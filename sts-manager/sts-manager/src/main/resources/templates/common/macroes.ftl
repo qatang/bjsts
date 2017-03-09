@@ -110,18 +110,14 @@
 </div>
 [/#macro]
 
-[#macro dateRange fromName toName fromId="" toId="" fromValue="" toValue="" placeholder="" readonly=true required=false]
-    [#if !fromId?has_content][#local fromId=fromName][/#if]
-    [#if !toId?has_content][#local toId=toName][/#if]
-    [#if fromValue?has_content][#local fromValue = fromValue?string("yyyy-MM-dd HH:mm:ss")][/#if]
-    [#if toValue?has_content][#local toValue = toValue?string("yyyy-MM-dd HH:mm:ss")][/#if]
-    <div class="input-daterange input-group">
-        <input id="${fromId}" type="text" class="input-sm form-control" name="${fromName}" value="${fromValue}" [#if readonly]readonly="readonly"[/#if] [#if required]required=""[/#if] placeholder="开始${placeholder}" />
-        <span class="input-group-addon">
+[#macro dateRange fromName toName fromValue="" toValue="" format="yyyy-MM-dd" placeholder="" readonly=true required=false]
+<div class="input-daterange input-group">
+    <input type="text" class="input-sm form-control date-picker" name="${fromName}" [#if fromValue?has_content]value="${fromValue?string(format)}"[/#if] [#if readonly]readonly="readonly"[/#if] [#if required]required=""[/#if] placeholder="开始${placeholder}" />
+    <span class="input-group-addon">
             <i class="fa fa-exchange"></i>
         </span>
-        <input id="${toId}" type="text" class="input-sm form-control" name="${toName}" value="${toValue}" [#if readonly]readonly="readonly"[/#if] [#if required]required=""[/#if] placeholder="结束${placeholder}" />
-    </div>
+    <input type="text" class="input-sm form-control date-picker" name="${toName}" [#if toValue?has_content]value="${toValue?string(format)}"[/#if] [#if readonly]readonly="readonly"[/#if] [#if required]required=""[/#if] placeholder="结束${placeholder}" />
+</div>
 [/#macro]
 
 [#macro datetimeRange fromName toName fromValue="" toValue="" format="yyyy-MM-dd HH:mm:ss" placeholder="" readonly=true required=false]
@@ -267,6 +263,12 @@
 [#macro displayPercentage value format="##.##"]
     [#if value?has_content]
         ${value?string("${format}")}
+    [/#if]
+[/#macro]
+
+[#macro displayFile document]
+    [#if document?has_content]
+        <a href="${ctx}/document/download/${document.id}" target="_blank">${document.name}</a>
     [/#if]
 [/#macro]
 

@@ -20,7 +20,7 @@
 
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head"  style="margin-top:5px;">
                                     <thead>
                                     <tr>
                                         <th class="center">部门编号</th>
@@ -37,14 +37,10 @@
                                             <td class="center"><a onclick="diag('部门查看', '${ctx}/department/view/${department.id}')" style="cursor:pointer;">${department.name}</a></td>
                                             <td class="center">${department.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                             <td class="center">
-                                                <div class="hidden-sm hidden-xs btn-group">
                                                     <a class="green" onclick="diag('部门修改', '${ctx}/department/update/${department.id}');" style="cursor: pointer;text-decoration:none;">
                                                         编辑
                                                     </a>
-                                                </div>
-                                                <div class="hidden-sm hidden-xs btn-group">
                                                     <a href="${ctx}/department/disable/${department.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                                </div>
                                             </td>
                                         </tr>
                                         [/#list]

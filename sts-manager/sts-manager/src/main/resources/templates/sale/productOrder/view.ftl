@@ -75,9 +75,21 @@
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
                                         <td>
-                                            [#if customerFileUrl??]
-                                                <a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a>
-                                            [/#if]
+                                            [@macro.displayFile document=planDocument!"" /]
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">报价员:</td>
+                                        <td>${productOrder.quoter!""}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">报价时间:</td>
+                                        <td>[@macro.displayDate value=productOrder.quoteTime!""/]</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">报价单:</td>
+                                        <td>
+                                            [@macro.displayFile document=document!"" /]
                                         </td>
                                     </tr>
                                 </table>

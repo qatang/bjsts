@@ -58,15 +58,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private ModelAttributeInterceptor modelAttributeInterceptor;
 
-    @Value("${file.external.url}")
-    private String fileExternalUrl;
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/", "classpath:/static/");
         registry.addResourceHandler("/plugins/**").addResourceLocations("/plugins/", "classpath:/plugins/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/", "classpath:/static/favicon.ico");
-        registry.addResourceHandler("/file/**").addResourceLocations("file:" + fileExternalUrl + File.separator);
     }
 
     @Override
@@ -89,6 +85,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(defaultInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/static/**")
+                .excludePathPatterns("/static/**")
                 .excludePathPatterns("/plugins/**")
                 .excludePathPatterns("/signout");
 
@@ -103,6 +100,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/welcome")
                 .excludePathPatterns("/default")
                 .excludePathPatterns("/error")
+                .excludePathPatterns("/document/download/**")
+                .excludePathPatterns("/document/upload")
                 .excludePathPatterns("/");
 
         registry.addInterceptor(modelAttributeInterceptor)

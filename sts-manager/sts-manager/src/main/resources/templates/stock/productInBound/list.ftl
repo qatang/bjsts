@@ -36,7 +36,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                        <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                             <thead>
                             <tr>
                                 <th class="center">编号</th>
@@ -66,14 +66,10 @@
                                     <td class="center">${productInBound.unit!""}</td>
                                     <td class="center">[@macro.displayDate value=productInBound.inBoundTime!"" /]</td>
                                     <td class="center">
-                                        <div class="hidden-sm hidden-xs btn-group">
                                             <a class="green" onclick="diag('修改', '${ctx}/productInBound/update/${productInBound.id}');" style="cursor: pointer;text-decoration:none;">
                                                 修改
                                             </a>
-                                        </div>
-                                        <div class="hidden-sm hidden-xs btn-group">
                                             <a class="red" href="${ctx}/productInBound/disable/${productInBound.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                        </div>
                                     </td>
                                 </tr>
                                 [/#list]

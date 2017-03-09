@@ -81,12 +81,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">报价员:</td>
-                                    <td>
-                                    [@macro.inputText name="productOrder.quoter" value=quoteForm.productOrder.quoter!'' placeholder="报价员"/]
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">报价日期:</td>
                                     <td>
                                     [@macro.datetimePicker name="productOrder.quoteTime" value=quoteForm.productOrder.quoteTime!"" placeholder="报价日期"/]
@@ -96,7 +90,8 @@
                                     <td style="width:100px;text-align: right;padding-top: 13px;">报价单:</td>
                                     <td>
                                         <input id="input-quoteFileUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                        [@macro.inputText name="quoteFileUrl" id="quoteFileUrl" value=quoteForm.quoteFileUrl!'' placeholder="文件地址"/]
+                                        <input type="hidden" name="document.name" id="fileName" value="${quoteForm.document.name!''}"/>
+                                        <input type="hidden" name="document.url" id="quoteFileUrl" value="${quoteForm.document.url!''}"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -122,26 +117,28 @@
 <script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
 
 <script>
-    var quoteFileUrl = null;
-    if ('${quoteForm.quoteFileUrl!''}' != "") {
-        quoteFileUrl = "${quoteForm.quoteFileUrl!''}";
+    var fileName = null;
+    if ('${quoteForm.document.name!''}' != "") {
+        fileName = "${quoteForm.document.name!''}";
     }
 
     $("#input-quoteFileUrl").fileinput({
         language: "zh",
-        uploadUrl: "/quote/upload",
+        uploadUrl: "/document/upload",
+        uploadExtraData: {"group":"quote"},
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
         //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
-            quoteFileUrl
+            fileName
         ]
     }).on("filebatchselected", function(event, files) {
         $(this).fileinput("upload");
     }).on("fileuploaded", function(event, data) {
         if (data.response) {
             $("#quoteFileUrl").val(data.response.path);
+            $("#fileName").val(data.response.fileName);
         }
     });
 </script>

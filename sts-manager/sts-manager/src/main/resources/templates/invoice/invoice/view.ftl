@@ -83,7 +83,7 @@
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">发票扫描附件:</td>
                                 <td>
-                                    ${invoiceUrl!""}
+                                    [@macro.displayFile document=document!"" /]
                                 </td>
                             </tr>
                         </table>

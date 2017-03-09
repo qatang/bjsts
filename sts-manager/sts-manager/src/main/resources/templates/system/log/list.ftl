@@ -29,7 +29,7 @@
                                     </table>
                                 </form>
 
-                                <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head"  style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">ID</th>

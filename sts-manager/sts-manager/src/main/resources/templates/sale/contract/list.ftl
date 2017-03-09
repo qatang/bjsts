@@ -12,42 +12,46 @@
                     <div class="page-content">
                         <div class="row">
                             <div class="col-xs-11">
-                            [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
-                                    <table style="margin-top:5px;">
-                                        <tr>
-                                            <td>
-                                                <div class="nav-search">
-                                                    <span class="input-icon">
-                                                        <input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="content" value="${socialSecuritySearchable.content!''}" placeholder="这里输入关键词" />
-                                                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
-                                        </tr>
-                                    </table>
-                                </form>--]
+                                <form action="${ctx}/contract/list" method="post" name="contractForm" id="contractForm">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-2"  style="padding:2px;border-top:0;">
+                                                [@macro.inputText name="company" value=contractSearchable.company!'' placeholder="客户名称"  required=false /]
+                                            </div>
+                                            <div class="col-xs-3" style="padding:2px;border-top:0;">
+                                            [@macro.datePicker name="signTime" value=contractSearchable.signTime!"" placeholder="签订日期" required=fasle/]
+                                            </div>
+                                            <div class="col-xs-2"  style="padding:2px;border-top:0;">
+                                            [@macro.inputText name="sign" value=contractSearchable.sign!'' placeholder="签订人"  required=false /]
+                                            </div>
+                                            <div class="col-xs-1" style="padding:2px;border-top:0;"><button id="btn" class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <div class="col-xs-1">
                                 <div style="float:right;margin-top:5px;">
-                                    <a class="btn btn-xs btn-success" onclick="customDiag('新增合同', '${ctx}/contract/create', 800, 600);">新增合同</a>
+                                    <a class="btn btn-xs btn-success" onclick="diag('新增合同', '${ctx}/contract/create');">新增合同</a>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                [@macro.successMsg close=false /]
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">合同编号</th>
                                             <th class="center">项目编号</th>
                                             <th class="center">项目名称</th>
-                                            <th class="center">合同状态</th>
                                             <th class="center">客户名称</th>
                                             <th class="center">联系人</th>
                                             <th class="center">签订日期</th>
-                                            <th class="center">质保日期</th>
+                                            <th class="center">签订人</th>
                                             <th class="center">合同金额</th>
+                                            <th class="center">质保日期</th>
+                                            <th class="center">质保金额</th>
+                                            <th class="center">合同状态</th>
                                             <th class="center" colspan="2">操作</th>
                                         </tr>
                                     </thead>
@@ -56,24 +60,29 @@
                                         [#if page?? && page.content?has_content]
                                             [#list page.content as contract]
                                                 <tr>
-                                                    <td class="center"><a href="${ctx}/contract/view/${contract.id}">${contract.contractNo}</a></td>
-                                                    <td class="center">${contract.planNo}</td>
+                                                    <td class="center"><a onclick="diag('合同信息', '${ctx}/contract/view/${contract.id}');" style="cursor: pointer;text-decoration:none;">${contract.contractNo}</a></td>
+                                                    <td class="center">
+                                                        [#if contract.planNo??]
+                                                            <a onclick="diag('项目信息', '${ctx}/productOrder/viewByPlanNo/${contract.planNo}');" style="cursor: pointer;text-decoration:none;">${contract.planNo}</a>
+                                                        [/#if]
+                                                    </td>
                                                     <td class="center">${contract.planName!''}</td>
-                                                    <td class="center">${contract.status.getName()}</td>
                                                     <td class="center">${contract.company}</td>
                                                     <td class="center">${contract.linkman}</td>
                                                     <td class="center">[@macro.displayDate value=contract.signTime!""/]</td>
-                                                    <td class="center">[@macro.displayDate value=contract.qualityTime!""/]</td>
+                                                    <td class="center">${contract.sign!""}</td>
                                                     <td class="center">[@macro.displayMoney value=contract.amount!''/]</td>
+                                                    <td class="center">[@macro.displayDate value=contract.qualityTime!""/]</td>
+                                                    <td class="center">[@macro.displayMoney value=contract.qualityAmount!''/]</td>
+                                                    <td class="center">${contract.status.getName()}</td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" onclick="customDiag('修改合同', '${ctx}/contract/update/${contract.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
+                                                            <a class="green" onclick="diag('修改合同状态', '${ctx}/contract/updateStatus/${contract.id}');" style="cursor: pointer;text-decoration:none;">
+                                                                状态调整
+                                                            </a>
+                                                            <a class="green" onclick="diag('修改合同', '${ctx}/contract/update/${contract.id}');" style="cursor: pointer;text-decoration:none;">
                                                                 修改
                                                             </a>
-                                                        </div>
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a href="${ctx}/contract/disable/${contract.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             [/#list]

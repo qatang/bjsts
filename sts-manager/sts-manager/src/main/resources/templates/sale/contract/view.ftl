@@ -54,9 +54,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">质保日期:</td>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">签订人:</td>
                                 <td>
-                                [@macro.displayDate value=contract.qualityTime!""/]
+                                ${contract.sign!""}
                                 </td>
                             </tr>
                             <tr>
@@ -64,16 +64,21 @@
                                 <td>[@macro.displayMoney value=contract.amount!''/]</td>
                             </tr>
                             <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">质保期限:</td>
                                 <td>
-                                [#if contractUrl??]
-                                    <a href="${ctx}/file${contractUrl}" target="_blank">${ctx}/file${contractUrl}</a>
-                                [/#if]
+                                [@macro.displayDate value=contract.qualityTime!""/]
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: center;" colspan="2">
-                                    <a class="btn btn-mini btn-primary" href="${ctx}/contract/list">返回</a>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">质保金额:</td>
+                                <td>
+                                [@macro.displayMoney value=contract.qualityAmount!''/]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
+                                <td>
+                                    [@macro.displayFile document=document!"" /]
                                 </td>
                             </tr>
                         </table>

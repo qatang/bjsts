@@ -31,6 +31,8 @@ public class PlanEntity extends AbstractEntity {
 
     public static final String SEQ_ID_GENERATOR = "plan";
 
+    public static final String SEQ_ID_PREFIX = "STSM";
+
     @Id
     @GeneratedValue
     private Long id;
@@ -115,6 +117,12 @@ public class PlanEntity extends AbstractEntity {
      */
     private String booker;
 
+    /**
+     * 备案登记人用户编码
+     */
+    @Column(name = "booker_id", nullable = false)
+    private Long bookerId;
+
     /************************************************************************************
      *
      * 报价相关
@@ -125,6 +133,12 @@ public class PlanEntity extends AbstractEntity {
      * 报价员
      */
     private String quoter;
+
+    /**
+     * 报价员
+     */
+    @Column(name = "quote_id", nullable = false)
+    private Long quoterId;
 
     /**
      * 报价时间
@@ -404,5 +418,21 @@ public class PlanEntity extends AbstractEntity {
 
     public void setBooker(String booker) {
         this.booker = booker;
+    }
+
+    public Long getBookerId() {
+        return bookerId;
+    }
+
+    public void setBookerId(Long bookerId) {
+        this.bookerId = bookerId;
+    }
+
+    public Long getQuoterId() {
+        return quoterId;
+    }
+
+    public void setQuoterId(Long quoterId) {
+        this.quoterId = quoterId;
     }
 }

@@ -37,7 +37,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">ID</th>
@@ -71,16 +71,12 @@
                                                 <td class="center">${invoice.content}</td>
                                                 <td class="center">${invoice.invoiceStatus.getName()}</td>
                                                 <td class="center">
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="green" onclick="diag('发票修改', '${ctx}/invoice/update/${invoice.id}');" style="cursor: pointer;text-decoration:none;">
                                                             修改
                                                         </a>
-                                                    </div>
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="red" href="${ctx}/invoice/disable/${invoice.id}" onclick="return confirm('确定要删除该发票吗?');">
                                                             删除
                                                         </a>
-                                                    </div>
                                                 </td>
                                             </tr>
                                             [/#list]

@@ -134,7 +134,8 @@
                                      <td style="width:100px;text-align: right;padding-top: 13px;">采购合同扫描附件:</td>
                                      <td>
                                          <input id="input-purchaseContractUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                         [@macro.inputText name="purchaseContractUrl" id="purchaseContractUrl" value=purchaseForm.purchaseContractUrl!'' placeholder="采购合同扫描附件"/]
+                                         <input type="hidden" name="document.name" id="fileName" value="${purchaseForm.document.name!''}"/>
+                                         <input type="hidden" name="document.url" id="purchaseContractUrl" value="${purchaseForm.document.url!''}"/>
                                      </td>
                                  </tr>
                                 <tr>
@@ -160,26 +161,28 @@
 <script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
 
 <script>
-    var purchaseContractUrl = null;
-    if ('${purchaseForm.purchaseContractUrl!''}' != "") {
-        purchaseContractUrl = "${purchaseForm.purchaseContractUrl!''}";
+    var fileName = null;
+    if ('${purchaseForm.document.name!''}' != "") {
+        fileName = "${purchaseForm.document.name!''}";
     }
 
     $("#input-purchaseContractUrl").fileinput({
         language: "zh",
-        uploadUrl: "/purchase/upload",
+        uploadUrl: "/document/upload",
+        uploadExtraData: {"group":"contract"},
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
-        allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
+        //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
-            purchaseContractUrl
+            fileName
         ]
     }).on("filebatchselected", function(event, files) {
         $(this).fileinput("upload");
     }).on("fileuploaded", function(event, data) {
         if (data.response) {
             $("#purchaseContractUrl").val(data.response.path);
+            $("#fileName").val(data.response.fileName);
         }
     });
 </script>

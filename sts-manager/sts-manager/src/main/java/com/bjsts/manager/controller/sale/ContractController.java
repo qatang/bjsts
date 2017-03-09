@@ -1,27 +1,20 @@
 package com.bjsts.manager.controller.sale;
 
-import com.bjsts.core.api.component.request.ApiPageRequestHelper;
-import com.bjsts.core.api.request.ApiRequest;
-import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
-import com.bjsts.core.enums.PageOrderType;
 import com.bjsts.core.util.CoreMathUtils;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.sale.ContractEntity;
-import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.enums.sale.ContractStatus;
 import com.bjsts.manager.form.sale.ContractForm;
 import com.bjsts.manager.query.sale.ContractSearchable;
+import com.bjsts.manager.query.sale.ContractSum;
 import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.idgenerator.IdGeneratorService;
 import com.bjsts.manager.service.sale.ContractService;
-import com.bjsts.manager.service.sale.ProductOrderService;
-import com.bjsts.manager.utils.FileUtils;
 import com.google.common.collect.Lists;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +29,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -59,9 +45,6 @@ public class ContractController extends AbstractController {
 
     @Autowired
     private ContractService contractService;
-
-    @Autowired
-    private ProductOrderService productOrderService;
 
     @Autowired
     private IdGeneratorService idGeneratorService;
@@ -81,8 +64,15 @@ public class ContractController extends AbstractController {
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(ContractSearchable contractSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         ApiResponse<ContractEntity> apiResponse = contractService.findAll(contractSearchable, pageable);
-        Page<ContractEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+        List<ContractEntity> contractEntities = Lists.newArrayList(apiResponse.getPagedData());
+        Page<ContractEntity> page = new PageImpl<>(contractEntities, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
+        if (!contractEntities.isEmpty()) {
+            ContractSum contractSum = contractService.sumAll(contractSearchable);
+            String successMessage = String.format("<b>合同总金额</b>: <b style='color:#ff0000'>%s</b>元",
+                    CoreMathUtils.formatMoney(contractSum.getAmount()));
+            modelMap.addAttribute(SUCCESS_MESSAGE_KEY, successMessage);
+        }
         return "sale/contract/list";
     }
 
@@ -96,16 +86,7 @@ public class ContractController extends AbstractController {
             contractForm.setContract(new ContractEntity());
         }
 
-        ApiRequest apiRequest = ApiRequest.newInstance();
-        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
-
-        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
-                .addOrder("id", PageOrderType.ASC);
-
-        List<PlanEntity> planEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, productOrderService::findAll);
-
         modelMap.put("action", "create");
-        modelMap.put("planList", planEntityList);
         return "sale/contract/edit";
     }
 
@@ -130,16 +111,21 @@ public class ContractController extends AbstractController {
             return "redirect:/contract/create";
         }
 
-        contractEntity.setContractNo(idGeneratorService.generateDateFormatted(ContractEntity.SEQ_ID_GENERATOR));
+        contractEntity.setContractNo(ContractEntity.SEQ_ID_PREFIX + idGeneratorService.generateDateFormatted(ContractEntity.SEQ_ID_GENERATOR));
 
         Double amount = CoreMathUtils.mul(contractForm.getAmount(), 100L);
         contractEntity.setAmount(amount.longValue());
 
-        String contractUrl = contractForm.getContractUrl();
+        Double qualityAmount = CoreMathUtils.mul(contractForm.getQualityAmount(), 100L);
+        contractEntity.setQualityAmount(qualityAmount.longValue());
+
+        contractEntity.setStatus(ContractStatus.EXECUTE_NOT);
+
+        String contractUrl = contractForm.getDocument().getUrl();
         if (StringUtils.isEmpty(contractUrl)) {
             contractService.save(contractEntity);
         } else {
-            contractService.save(contractEntity, contractUrl);
+            contractService.save(contractEntity, contractForm.getDocument());
         }
         return "result";
     }
@@ -158,11 +144,12 @@ public class ContractController extends AbstractController {
         }
         contractForm.setContract(contractEntity);
         contractForm.setAmount(Double.valueOf(contractEntity.getAmount()));
+        contractForm.setQualityAmount(Double.valueOf(contractEntity.getQualityAmount()));
 
         Long documentId = contractEntity.getContractUrl();
         if (documentId != null) {
             DocumentEntity documentEntity = documentService.get(documentId);
-            contractForm.setContractUrl(documentEntity.getUrl());
+            contractForm.setDocument(documentEntity);
         }
 
         modelMap.put("action", "update");
@@ -178,18 +165,60 @@ public class ContractController extends AbstractController {
         }
         ContractEntity contract = contractForm.getContract();
         ContractEntity contractEntity = contractService.get(contract.getId());
-        contractEntity.setStatus(contract.getStatus());
         contractEntity.setQualityTime(contract.getQualityTime());
         contractEntity.setSignTime(contract.getSignTime());
         Double amount = CoreMathUtils.mul(contractForm.getAmount(), 100L);
         contractEntity.setAmount(amount.longValue());
 
-        String contractUrl = contractForm.getContractUrl();
+        Double qualityAmount = CoreMathUtils.mul(contractForm.getQualityAmount(), 100L);
+        contractEntity.setQualityAmount(qualityAmount.longValue());
+
+        contractEntity.setSign(contract.getSign());
+
+        String contractUrl = contractForm.getDocument().getUrl();
         if (StringUtils.isEmpty(contractUrl)) {
             contractService.save(contractEntity);
         } else {
-            contractService.save(contractEntity, contractUrl);
+            contractService.save(contractEntity, contractForm.getDocument());
         }
+        return "result";
+    }
+
+    @RequiresPermissions("sts:contract:updateStatus")
+    @RequestMapping(value = "/updateStatus/{id}", method = RequestMethod.GET)
+    public String updateStatus(@PathVariable Long id, @ModelAttribute ContractForm contractForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
+        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
+            modelMap.addAttribute(BindingResult.class.getName().concat(".contractForm"), modelMap.get(BINDING_RESULT_KEY));
+        }
+        ContractEntity contractEntity = contractService.get(id);
+        if (Objects.isNull(contractEntity)) {
+            logger.error("修改合同,未查询[id={}]的合同信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "无效数据!");
+            return "redirect:/error";
+        }
+
+        contractForm.setContract(contractEntity);
+        contractForm.setAmount(Double.valueOf(contractEntity.getAmount()));
+        contractForm.setQualityAmount(Double.valueOf(contractEntity.getQualityAmount()));
+
+        Long documentId = contractEntity.getContractUrl();
+        if (documentId != null) {
+            DocumentEntity documentEntity = documentService.get(documentId);
+            contractForm.setDocument(documentEntity);
+        }
+
+        return "sale/contract/editStatus";
+    }
+
+    @RequiresPermissions("sts:contract:updateStatus")
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    public String updateStatus(ContractForm contractForm, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(contractForm);
+            return "redirect:/contract/update/" + contractForm.getContract().getId();
+        }
+        ContractEntity contract = contractForm.getContract();
+        contractService.updateStatus(contract.getId(), contract.getStatus());
         return "result";
     }
 
@@ -203,60 +232,10 @@ public class ContractController extends AbstractController {
         Long documentId = contractEntity.getContractUrl();
         if (documentId != null) {
             DocumentEntity documentEntity = documentService.get(documentId);
-            modelMap.addAttribute("contractUrl", documentEntity.getUrl());
+            modelMap.addAttribute("document", documentEntity);
         }
 
         return "sale/contract/view";
-    }
-
-    @RequiresPermissions("sts:contract:findPlan")
-    @RequestMapping("/findPlan/{planNo}")
-    @ResponseBody
-    public PlanEntity findPlan(@PathVariable String planNo) {
-        PlanEntity planEntity = null;
-        try {
-            planEntity = productOrderService.findByPlanNo(planNo);
-        } catch (Exception e) {
-            logger.error("调用productOrderService获取项目信息接口出错！");
-            logger.error(e.getMessage(), e);
-        }
-        return planEntity;
-    }
-
-    @RequiresPermissions("sts:contract:upload")
-    @RequestMapping("/upload")
-    @ResponseBody
-    public Map<String, String> upload(@RequestParam(value = "file", required = false) MultipartFile file, ModelMap modelMap) {
-        Map<String, String> map = new HashMap<>();
-        if (!file.isEmpty()) {
-            try {
-                InputStream input = file.getInputStream();
-
-                String fullFileDir = fileExternalUrl + File.separator + GlobalConstants.CONTRACT_FILE + File.separator;
-                if (!FileUtils.createDirectory(fullFileDir)) {
-                    String message = "创建文件夹失败，请重试!";
-                    map.put("message", message);
-                    return map;
-                }
-
-                String fileName = File.separator + GlobalConstants.CONTRACT_FILE + File.separator + file.getOriginalFilename();
-                OutputStream output = new FileOutputStream(fileExternalUrl + fileName);
-                IOUtils.copy(input, output);
-
-                output.close();
-                input.close();
-
-                String message = "上传成功!";
-
-                map.put("path", fileName);
-                map.put("message", message);
-            } catch (Exception e) {
-                map.put("message", "上传失败 => " + e.getMessage());
-            }
-        } else {
-            map.put("message", "上传失败，文件为空.");
-        }
-        return map;
     }
 
     @RequiresPermissions("sts:contract:disable")

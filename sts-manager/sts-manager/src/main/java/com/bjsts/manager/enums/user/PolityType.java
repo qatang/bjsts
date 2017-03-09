@@ -16,10 +16,9 @@ import java.util.Map;
  */
 public enum PolityType {
     ALL(-1, "全部"),
-    NONE(1, "无"),
+    NONE(1, "群众"),
     TUAN(2, "团员"),
-    DANG(3, "党员"),
-    OTHER(4, "其他"),
+    DANG(3, "党员")
     ;
 
     private static Logger logger = LoggerFactory.getLogger(PolityType.class);

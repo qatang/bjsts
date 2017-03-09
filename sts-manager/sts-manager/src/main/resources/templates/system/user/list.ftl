@@ -41,7 +41,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="table-responsive">
-                                    <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
+                                    <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head"  style="margin-top:5px;">
                                         <thead>
                                         <tr>
                                             <th class="center">ID</th>
@@ -65,24 +65,16 @@
                                                 <td class="center">${userInfo.mobile}</td>
                                                 <td class="center">${userInfo.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                                 <td class="center">
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="green" onclick="diag('用户修改', '${ctx}/user/update/${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
                                                             编辑
                                                         </a>
-                                                    </div>
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="blue" onclick="diag('分配角色', '${ctx}/user/role/allot/${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
                                                             分配角色
                                                         </a>
-                                                    </div>
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a class="grey" onclick="diag('重置密码', '${ctx}/user/password/reset?userInfo.id=${userInfo.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
                                                             重置密码
                                                         </a>
-                                                    </div>
-                                                    <div class="hidden-sm hidden-xs btn-group">
                                                         <a href="${ctx}/user/disable/${userInfo.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
-                                                    </div>
                                                 </td>
                                             </tr>
                                             [/#list]

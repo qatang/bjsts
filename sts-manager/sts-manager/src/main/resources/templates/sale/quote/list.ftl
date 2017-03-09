@@ -12,26 +12,27 @@
                     <div class="page-content">
                         <div class="row">
                             <div class="col-xs-12">
-                            [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
-                                    <table style="margin-top:5px;">
-                                        <tr>
-                                            <td>
-                                                <div class="nav-search">
-                                                    <span class="input-icon">
-                                                        <input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="content" value="${socialSecuritySearchable.content!''}" placeholder="这里输入关键词" />
-                                                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
-                                        </tr>
-                                    </table>
-                                </form>--]
+                                <form action="${ctx}/quote/list" method="post" name="quoteForm" id="quoteForm">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-3" style="padding:2px;border-top:0;">
+                                            [@macro.dateRange fromName="beginPriceTime" toName="endPriceTime" fromValue=quoteSearchable.beginPriceTime!'' toValue=quoteSearchable.endPriceTime!'' readonly=false placeholder="签订日期"/]
+                                            </div>
+                                            <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                            [@macro.inputText name="booker" value=quoteSearchable.booker!'' placeholder="备案登记人" required=false /]
+                                            </div>
+                                            <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                            [@macro.inputText name="linkman" value=quoteSearchable.linkman!'' placeholder="联系人" required=false /]
+                                            </div>
+                                            <div class="col-xs-1" style="padding:2px;border-top:0;"><button id="btn" class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">项目编码</th>
@@ -59,11 +60,9 @@
                                                     <td class="center">${plan.email}</td>
                                                     <td class="center">${plan.planStatus.getName()}</td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
                                                             <a class="green" onclick="diag('报价', '${ctx}/quote/create/${plan.id}');" style="cursor: pointer;text-decoration:none;">
                                                                 报价
                                                             </a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             [/#list]

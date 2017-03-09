@@ -78,15 +78,10 @@ public class IdGeneratorServiceImpl extends AbstractService<IdGeneratorEntity, S
 
     @Override
     public String generateDateFormatted(String sequence, int count) {
-        return this.generateDateFormatted(sequence, count, 1);
-    }
-
-    @Override
-    public String generateDateFormatted(String sequence, int count, int prefix) {
         Long nextValue = generate(sequence, count);
 
         String date = CoreDateUtils.formatDate(new Date(), "yyMMdd");
-        String str = String.format("STS%s%01d%05d", date, prefix % 10, nextValue % 100000);
+        String str = String.format("%s%03d", date, nextValue % 100);
 
         return str;
     }

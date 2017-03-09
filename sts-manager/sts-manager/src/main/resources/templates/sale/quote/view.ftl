@@ -66,13 +66,18 @@
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目说明:</td>
                                         <td>${quote.description!""}</td>
                                     </tr>
+
+                                    <tr>
+                                        <td style="width:100px;text-align: right;padding-top: 13px;">备案登记人:</td>
+                                        <td>
+                                        ${quote.booker!""}
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
                                         <td>
-                                        [#if customerFileUrl??]
-                                            <a href="${ctx}/file${customerFileUrl}" target="_blank">${ctx}/file${customerFileUrl}</a>
-                                        [/#if]
-                                    </tr>
+                                            [@macro.displayFile document=planDocument!"" /]
+                                        </td>
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">报价员:</td>
                                         <td>${quote.quoter!""}</td>
@@ -84,9 +89,7 @@
                                     <tr>
                                         <td style="width:100px;text-align: right;padding-top: 13px;">报价单:</td>
                                         <td>
-                                        [#if quoteFileUrl??]
-                                            <a href="${ctx}/file${quoteFileUrl}" target="_blank">${ctx}/file${quoteFileUrl}</a>
-                                        [/#if]
+                                            [@macro.displayFile document=document!"" /]
                                         </td>
                                     </tr>
                                 </table>

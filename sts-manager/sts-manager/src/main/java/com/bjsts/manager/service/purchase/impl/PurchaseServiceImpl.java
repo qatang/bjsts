@@ -9,6 +9,7 @@ import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
+import com.bjsts.manager.enums.document.DocumentType;
 import com.bjsts.manager.query.purchase.PurchaseSearchable;
 import com.bjsts.manager.repository.document.DocumentRepository;
 import com.bjsts.manager.repository.purchase.PurchaseRepository;
@@ -53,18 +54,19 @@ public class PurchaseServiceImpl extends AbstractService<PurchaseEntity, Long> i
     }
 
     @Override
-    public PurchaseEntity save(PurchaseEntity purchaseEntity, String purchaseFileUrl) {
+    public PurchaseEntity save(PurchaseEntity purchaseEntity, DocumentEntity documentEntity) {
         PurchaseEntity db = purchaseRepository.save(purchaseEntity);
-        DocumentEntity existDocumentEntity = documentRepository.findByGroupKeyAndObjectId(GlobalConstants.CONTRACT_FILE, db.getPurchaseNo());
+        DocumentEntity existDocumentEntity = documentRepository.findByGroupKeyAndObjectId(DocumentType.PURCHASE.getEnglishName(), db.getPurchaseNo());
 
         if (existDocumentEntity == null) {
             existDocumentEntity = new DocumentEntity();
-            existDocumentEntity.setName(purchaseEntity.getPurchaseNo());
-            existDocumentEntity.setGroupKey(GlobalConstants.CONTRACT_FILE);
-            existDocumentEntity.setUrl(purchaseFileUrl);
+            existDocumentEntity.setName(documentEntity.getName());
+            existDocumentEntity.setGroupKey(DocumentType.PURCHASE.getEnglishName());
+            existDocumentEntity.setUrl(documentEntity.getUrl());
             existDocumentEntity.setObjectId(purchaseEntity.getPurchaseNo());
         } else {
-            existDocumentEntity.setUrl(purchaseFileUrl);
+            existDocumentEntity.setName(documentEntity.getName());
+            existDocumentEntity.setUrl(documentEntity.getUrl());
         }
         DocumentEntity dbDocumentEntity = documentRepository.save(existDocumentEntity);
 

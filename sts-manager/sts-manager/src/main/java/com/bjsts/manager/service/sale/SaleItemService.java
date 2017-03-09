@@ -1,6 +1,7 @@
 package com.bjsts.manager.service.sale;
 
 import com.bjsts.manager.core.service.IService;
+import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.entity.sale.PlanTraceEntity;
 
 import java.util.List;
@@ -11,4 +12,6 @@ import java.util.List;
  */
 public interface SaleItemService extends IService<PlanTraceEntity, Long> {
     List<PlanTraceEntity> findByPlanNo(String planNo);
+
+    PlanTraceEntity save(PlanTraceEntity planTraceEntity, PlanEntity planEntity);
 }

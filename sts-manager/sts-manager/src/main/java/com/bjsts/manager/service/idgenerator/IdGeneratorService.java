@@ -50,13 +50,4 @@ public interface IdGeneratorService extends IService<IdGeneratorEntity, String> 
      * @return 第一个号的值
      */
 	String generateDateFormatted(String sequence, int count);
-
-    /**
-     * 获取一个序列的自增值，形式如：年月日(yyMMdd)+000(3位预留码)+前缀码(1位)+00001(5位数字)
-     * @param sequence 序列名称
-     * @param count 发号个数
-     * @param prefix 前缀码
-     * @return 第一个号的值
-     */
-    String generateDateFormatted(String sequence, int count, int prefix);
 }

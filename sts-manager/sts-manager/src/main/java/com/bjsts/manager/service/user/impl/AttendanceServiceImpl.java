@@ -8,6 +8,7 @@ import com.bjsts.manager.entity.user.AttendanceEntity;
 import com.bjsts.manager.query.user.AttendanceSearchable;
 import com.bjsts.manager.repository.user.AttendanceRepository;
 import com.bjsts.manager.service.user.AttendanceService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,10 @@ public class AttendanceServiceImpl extends AbstractService<AttendanceEntity, Lon
     @Override
     public ApiResponse<AttendanceEntity> findAll(AttendanceSearchable attendanceSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
+
+        if (StringUtils.isNotEmpty(attendanceSearchable.getRealName())) {
+            request.filterLike("realName", attendanceSearchable.getRealName());
+        }
 
        /* if (StringUtils.isNotEmpty(userSearchable.getId())) {
             String[] ids = StringUtils.split(userSearchable.getId(), ",");

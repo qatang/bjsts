@@ -36,7 +36,7 @@
                                 </div>
 
 
-                                <table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head"  style="margin-top:5px;">
                                     <thead>
                                     <tr>
                                         <th class="center">ID</th>
@@ -62,21 +62,16 @@
                                             <td class="center">${role.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                                             <td class="center">${role.valid.getName()}</td>
                                             <td class="center">
-                                                <div class="hidden-sm hidden-xs btn-group">
                                                     <a class="green" onclick="diag('角色修改', '${ctx}/role/update/${role.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
                                                         <i class="ace-icon fa fa-pencil bigger-130" title="编辑"></i>
                                                     </a>
-                                                </div>
                                             </td>
                                             <td class="center">
-                                                <div class="hidden-sm hidden-xs btn-group">
                                                     <a class="purple" onclick="diag('分配权限', '${ctx}/role/resource/allot/${role.id}', '${page.number}');" style="cursor: pointer;text-decoration:none;">
                                                         <i class="ace-icon fa fa-sitemap bigger-130" title="分配权限"></i>
                                                     </a>
-                                                </div>
                                             </td>
                                             <td class="center">
-                                                <div class="hidden-sm hidden-xs btn-group">
                                                     [#if role.valid == disableStatus]
                                                         <a class="blue" href="${ctx}/role/enable/${role.id}" onclick="return confirm('确定要启用[${role.name}]角色吗?');">
                                                             <i class="ace-icon fa fa-unlock bigger-130" title="启用"></i>
@@ -86,7 +81,6 @@
                                                             <i class="ace-icon fa fa-lock bigger-120" title="禁用"></i>
                                                         </a>
                                                     [/#if]
-                                                </div>
                                             </td>
                                         </tr>
                                         [/#list]

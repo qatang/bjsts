@@ -11,27 +11,28 @@
                 <div class="main-content-inner">
                     <div class="page-content">
                         <div class="row">
-                            <div class="col-xs-11">
-                            [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
-                                    <table style="margin-top:5px;">
-                                        <tr>
-                                            <td>
-                                                <div class="nav-search">
-                                                    <span class="input-icon">
-                                                        <input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="content" value="${socialSecuritySearchable.content!''}" placeholder="这里输入关键词" />
-                                                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
-                                        </tr>
-                                    </table>
-                                </form>--]
+                            <div class="col-xs-12">
+                                <form action="${ctx}/saleItem/list" method="post" name="saleItemForm" id="saleItemForm">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-xs-3" style="padding:2px;border-top:0;">
+                                            [@macro.dateRange fromName="beginPriceTime" toName="endPriceTime" fromValue=saleItemSearchable.beginPriceTime!'' toValue=saleItemSearchable.endPriceTime!'' readonly=false placeholder="签订日期"/]
+                                            </div>
+                                            <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                            [@macro.inputText name="booker" value=saleItemSearchable.booker!'' placeholder="备案登记人" required=false /]
+                                            </div>
+                                            <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                            [@macro.inputText name="linkman" value=saleItemSearchable.linkman!'' placeholder="联系人" required=false /]
+                                            </div>
+                                            <div class="col-xs-1" style="padding:2px;border-top:0;"><button id="btn" class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+                                <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">项目编码</th>
@@ -53,7 +54,7 @@
                                         [#if page?? && page.content?has_content]
                                             [#list page.content as plan]
                                                 <tr>
-                                                    <td class="center"><a onclick="diag('查看项目', '${ctx}/productOrder/view/${plan.id}');">${plan.planNo}</a></td>
+                                                    <td class="center"><a onclick="diag('查看项目', '${ctx}/productOrder/view/${plan.id}');" style="cursor: pointer;text-decoration:none;">${plan.planNo}</a></td>
                                                     <td class="center">${plan.name!''}</td>
                                                     <td class="center">${plan.planType.getName()}</td>
                                                     <td class="center">${plan.sourceType.getName()}</td>
@@ -65,17 +66,25 @@
                                                     <td class="center">${plan.email}</td>
                                                     <td class="center">${plan.planStatus.getName()}</td>
                                                     <td class="center">
-                                                        <div class="hidden-sm hidden-xs btn-group">
-                                                            <a class="green" href="${ctx}/saleItem/list/${plan.planNo}">
-                                                                项目追踪
+                                                            <a class="green" onclick="diag('销售追踪', '${ctx}/saleItem/create/${plan.planNo}');" style="cursor: pointer;text-decoration:none;">
+                                                                销售追踪
                                                             </a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             [/#list]
                                         [/#if]
                                     </tbody>
                                 </table>
+
+                                <div class="page-header position-relative">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td style="vertical-align:top;">
+                                                <div style="float: right;padding-top: 0px;margin-top: 0px;">[@macro.pagination page=page/]</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

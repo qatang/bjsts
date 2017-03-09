@@ -9607,7 +9607,8 @@ $.extend(Datepicker.prototype, {
 			cornerClass, calender, thead, day, daysInMonth, leadDays, curRows, numRows,
 			printDate, dRow, tbody, daySettings, otherMonth, unselectable,
 			tempDate = new Date(),
-			today = this._daylightSavingAdjust(
+			today =
+		._daylightSavingAdjust(
 				new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate())), // clear time
 			isRTL = this._get(inst, "isRTL"),
 			showButtonPanel = this._get(inst, "showButtonPanel"),

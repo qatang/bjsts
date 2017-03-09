@@ -47,7 +47,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">询价日期:</td>
                                     <td>
-                                        [@macro.datetimePicker name="productOrder.priceTime" value=productOrderForm.productOrder.priceTime!"" placeholder="询价时间"/]
+                                        [@macro.datePicker name="productOrder.priceTime" value=productOrderForm.productOrder.priceTime!"" placeholder="询价时间"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -87,16 +87,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">备案登记人:</td>
-                                    <td>
-                                    [@macro.inputText name="productOrder.booker" value=productOrderForm.productOrder.booker!'' placeholder="备案登记人" required=false/]
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">项目资料:</td>
                                     <td>
                                         <input id="input-customerFileUrl" name="file" type="file" multiple class="file-loading" data-show-upload="false">
-                                        [@macro.inputText name="customerFileUrl" id="customerFileUrl" value=productOrderForm.customerFileUrl!'' placeholder="文件地址"/]
+                                        <input type="hidden" name="document.name" id="fileName" value="${productOrderForm.document.name!''}"/>
+                                        <input type="hidden" name="document.url" id="customerFileUrl" value="${productOrderForm.document.url!''}"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -122,26 +117,28 @@
 <script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
 
 <script>
-    var customerFileUrl = null;
-    if ('${productOrderForm.customerFileUrl!''}' != "") {
-        customerFileUrl = "${productOrderForm.customerFileUrl!''}";
+    var fileName = null;
+    if ('${productOrderForm.document.name!''}' != "") {
+        fileName = "${productOrderForm.document.name!''}";
     }
 
     $("#input-customerFileUrl").fileinput({
         language: "zh",
-        uploadUrl: "/productOrder/upload",
+        uploadUrl: "/document/upload",
+        uploadExtraData: {"group":"customer"},
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,
         //allowedFileExtensions: ["jpg", "png", "gif", "rar", "zip", "doc", "docx", "pdf"],
         initialPreview: [
-            customerFileUrl
+            fileName
         ]
     }).on("filebatchselected", function(event, files) {
         $(this).fileinput("upload");
     }).on("fileuploaded", function(event, data) {
         if (data.response) {
             $("#customerFileUrl").val(data.response.path);
+            $("#fileName").val(data.response.fileName);
         }
     });
 </script>

@@ -9,6 +9,7 @@ import com.bjsts.manager.entity.user.StaffEntity;
 import com.bjsts.manager.query.user.StaffSearchable;
 import com.bjsts.manager.repository.user.StaffRepository;
 import com.bjsts.manager.service.user.StaffService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,10 @@ public class StaffServiceImpl extends AbstractService<StaffEntity, Long> impleme
     @Override
     public ApiResponse<StaffEntity> findAll(StaffSearchable staffSearchable, Pageable pageable) {
         ApiRequest request = ApiRequest.newInstance();
+
+        if (StringUtils.isNotEmpty(staffSearchable.getRealName())) {
+            request.filterLike("realName", staffSearchable.getRealName());
+        }
 
        /* if (StringUtils.isNotEmpty(userSearchable.getId())) {
             String[] ids = StringUtils.split(userSearchable.getId(), ",");

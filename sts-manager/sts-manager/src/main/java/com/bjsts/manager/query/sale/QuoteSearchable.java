@@ -3,6 +3,7 @@ package com.bjsts.manager.query.sale;
 import com.bjsts.manager.core.query.CommonSearchable;
 import com.bjsts.manager.enums.sale.PlanStatus;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,14 @@ public class QuoteSearchable extends CommonSearchable {
     private PlanStatus planStatus;
 
     private List<PlanStatus> planStatusList;
+
+    private Date beginPriceTime;
+
+    private Date endPriceTime;
+
+    private String booker;
+
+    private String linkman;
 
     public PlanStatus getPlanStatus() {
         return planStatus;
@@ -30,5 +39,37 @@ public class QuoteSearchable extends CommonSearchable {
 
     public void setPlanStatusList(List<PlanStatus> planStatusList) {
         this.planStatusList = planStatusList;
+    }
+
+    public Date getBeginPriceTime() {
+        return beginPriceTime;
+    }
+
+    public void setBeginPriceTime(Date beginPriceTime) {
+        this.beginPriceTime = beginPriceTime;
+    }
+
+    public Date getEndPriceTime() {
+        return endPriceTime;
+    }
+
+    public void setEndPriceTime(Date endPriceTime) {
+        this.endPriceTime = endPriceTime;
+    }
+
+    public String getBooker() {
+        return booker;
+    }
+
+    public void setBooker(String booker) {
+        this.booker = booker;
+    }
+
+    public String getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
     }
 }
