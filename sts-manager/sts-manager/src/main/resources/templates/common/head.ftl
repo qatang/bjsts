@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="${ctx}/static/css/bootstrap-datetimepicker.css" />
 <!-- inline styles related to this page -->
 <!-- ace settings handler -->
-<script src="${ctx}/static/js/ace-extra.js"></script>
+<script src="${ctx}/static/js/ace/ace-extra.js"></script>
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 <!--[if lte IE 8]>
 <script src="${ctx}/static/js/html5shiv.js"></script>
