@@ -3,7 +3,7 @@
 <html>
     <head>
         [#include "${ctx}/common/head.ftl"/]
-        <link href="${ctx}/plugins/zTree/3.5/zTreeStyle.css" rel="stylesheet">
+        <link href="${ctx}/static/js/zTree/zTreeStyle.css" rel="stylesheet">
     </head>
     <body class="no-skin">
         <div class="main-container" id="main-container">
@@ -41,7 +41,7 @@
     </body>
 
     [#include "${ctx}/common/footer.ftl"/]
-    <script src="${ctx}/plugins/zTree/3.5/jquery.ztree.all-3.5.min.js"></script>
+    <script src="${ctx}/static/js/zTree/jquery.ztree.all-3.5.min.js"></script>
 
     <script>
         function save(){

@@ -1,24 +1,24 @@
 <!--[if !IE]> -->
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='${ctx}/static/ace/js/jquery.js'>"+"<"+"/script>");
+    window.jQuery || document.write("<script src='${ctx}/static/js/jquery.js'>"+"<"+"/script>");
 </script>
 <!-- <![endif]-->
 <!--[if IE]>
 <script type="text/javascript">
- window.jQuery || document.write("<script src='${ctx}/static/ace/js/jquery1x.js'>"+"<"+"/script>");
+ window.jQuery || document.write("<script src='${ctx}/static/js/jquery1x.js'>"+"<"+"/script>");
 </script>
 <![endif]-->
 <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='${ctx}/static/ace/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+    if('ontouchstart' in document.documentElement) document.write("<script src='${ctx}/static/js/jquery.mobile.custom.js'>"+"<"+"/script>");
 </script>
-<script src="${ctx}/static/ace/js/bootstrap.js"></script>
+<script src="${ctx}/static/js/bootstrap.min.js"></script>
 <script src="${ctx}/static/js/myjs/diag.js"></script>
 
-<script src="${ctx}/static/ace/js/bootbox.js"></script>
-<script src="${ctx}/static/ace/js/date-time/moment.js"></script>
-<script src="${ctx}/static/ace/js/date-time/bootstrap-datepicker.js"></script>
-<script src="${ctx}/static/ace/js/date-time/bootstrap-datetimepicker.js"></script>
-<script src="${ctx}/static/ace/js/chosen.jquery.js"></script>
+<script src="${ctx}/static/js/bootbox.js"></script>
+<script src="${ctx}/static/js/date-time/moment.js"></script>
+<script src="${ctx}/static/js/date-time/bootstrap-datepicker.js"></script>
+<script src="${ctx}/static/js/date-time/bootstrap-datetimepicker.js"></script>
+<script src="${ctx}/static/js/chosen.jquery.js"></script>
 <script src="${ctx}/static/js/jquery.tips.js"></script>
 <script src="${ctx}/static/js/jquery.cookie.js"></script>
 <script src="${ctx}/static/js/jquery.michiweber.table-head-fixed.js"></script>

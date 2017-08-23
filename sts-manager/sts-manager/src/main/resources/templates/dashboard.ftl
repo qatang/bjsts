@@ -55,7 +55,7 @@
                     </li>
                     <li class="light-blue">
                         <a data-toggle="dropdown"  class="dropdown-toggle" href="#">
-                            <img class="nav-user-photo" src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" />
+                            <img class="nav-user-photo" src="${ctx}/static/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info" id="user_info">
 								</span>
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -162,38 +162,38 @@
 
         <#include "${ctx}/common/footer.ftl"/>
         <!-- ace scripts -->
-        <script src="${ctx}/static/ace/js/ace/elements.scroller.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.colorpicker.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.fileinput.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.typeahead.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.wysiwyg.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.spinner.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.treeview.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.wizard.js"></script>
-        <script src="${ctx}/static/ace/js/ace/elements.aside.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.ajax-content.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.touch-drag.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.sidebar.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.sidebar-scroll-1.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.submenu-hover.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.widget-box.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.settings.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.settings-rtl.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.settings-skin.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.widget-on-reload.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.searchbox-autocomplete.js"></script>
+        <script src="${ctx}/static/js/ace/elements.scroller.js"></script>
+        <script src="${ctx}/static/js/ace/elements.colorpicker.js"></script>
+        <script src="${ctx}/static/js/ace/elements.fileinput.js"></script>
+        <script src="${ctx}/static/js/ace/elements.typeahead.js"></script>
+        <script src="${ctx}/static/js/ace/elements.wysiwyg.js"></script>
+        <script src="${ctx}/static/js/ace/elements.spinner.js"></script>
+        <script src="${ctx}/static/js/ace/elements.treeview.js"></script>
+        <script src="${ctx}/static/js/ace/elements.wizard.js"></script>
+        <script src="${ctx}/static/js/ace/elements.aside.js"></script>
+        <script src="${ctx}/static/js/ace/ace.js"></script>
+        <script src="${ctx}/static/js/ace/ace.ajax-content.js"></script>
+        <script src="${ctx}/static/js/ace/ace.touch-drag.js"></script>
+        <script src="${ctx}/static/js/ace/ace.sidebar.js"></script>
+        <script src="${ctx}/static/js/ace/ace.sidebar-scroll-1.js"></script>
+        <script src="${ctx}/static/js/ace/ace.submenu-hover.js"></script>
+        <script src="${ctx}/static/js/ace/ace.widget-box.js"></script>
+        <script src="${ctx}/static/js/ace/ace.settings.js"></script>
+        <script src="${ctx}/static/js/ace/ace.settings-rtl.js"></script>
+        <script src="${ctx}/static/js/ace/ace.settings-skin.js"></script>
+        <script src="${ctx}/static/js/ace/ace.widget-on-reload.js"></script>
+        <script src="${ctx}/static/js/ace/ace.searchbox-autocomplete.js"></script>
 
-        <script src="${ctx}/static/ace/js/ace/elements.onpage-help.js"></script>
-        <script src="${ctx}/static/ace/js/ace/ace.onpage-help.js"></script>
+        <script src="${ctx}/static/js/ace/elements.onpage-help.js"></script>
+        <script src="${ctx}/static/js/ace/ace.onpage-help.js"></script>
 
         <!--引入属于此页面的js -->
         <script src="${ctx}/static/js/myjs/head.js"></script>
         <!--引入属于此页面的js -->
         <script src="${ctx}/static/js/myjs/index.js"></script>
         <!--引入弹窗组件start-->
-        <script src="${ctx}/plugins/attention/zDialog/zDrag.js"></script>
-        <script src="${ctx}/plugins/attention/zDialog/zDialog.js"></script>
+        <script src="${ctx}/static/js/zDialog/zDrag.js"></script>
+        <script src="${ctx}/static/js/zDialog/zDialog.js"></script>
         <!--引入弹窗组件end-->
         <!--提示框-->
         <script src="${ctx}/static/js/jquery.tips.js"></script>

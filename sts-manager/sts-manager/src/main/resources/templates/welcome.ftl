@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <script src="${ctx}/static/js/jquery-1.7.2.js"></script>
-    <script src="${ctx}/plugins/tab/js/framework.js"></script>
-    <link href="${ctx}/plugins/tab/css/import_basic.css" rel="stylesheet" type="text/css"/>
-    <link  rel="stylesheet" type="text/css" id="skin" prePath="${ctx}/plugins/tab/" />
-    <script src="${ctx}/plugins/tab/js/tab.js"></script>
+    <script src="${ctx}/static/js/tab/js/framework.js"></script>
+    <link href="${ctx}/static/js/tab/css/import_basic.css" rel="stylesheet" type="text/css"/>
+    <link  rel="stylesheet" type="text/css" id="skin" prePath="${ctx}/static/js/tab/" />
+    <script src="${ctx}/static/js/tab/js/tab.js"></script>
 </head>
 <body>
 <div id="tab_menu" style="height:30px;"></div>

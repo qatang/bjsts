@@ -66,7 +66,7 @@ public class AttendanceController extends AbstractController {
     }
 
     @RequiresPermissions("sts:attendance:create")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@ModelAttribute AttendanceForm attendanceForm, ModelMap modelMap, BindingResult result, RedirectAttributes redirectAttributes) {
         return "user/attendance/edit";
     }

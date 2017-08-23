@@ -91,9 +91,9 @@
 
 [#include "${ctx}/common/footer.ftl"/]
 
-<link href="/plugins/bootstrap-fileinput-master/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-<script src="/plugins/bootstrap-fileinput-master/js/fileinput.min.js"></script>
-<script src="/plugins/bootstrap-fileinput-master/js/locales/zh.js"></script>
+<link href="/static/js/bootstrap-fileinput-master/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<script src="/static/js/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script src="/static/js/bootstrap-fileinput-master/js/locales/zh.js"></script>
 
 <script>
     var inBoundContractUrl = null;
