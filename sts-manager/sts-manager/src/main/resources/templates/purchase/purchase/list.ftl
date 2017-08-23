@@ -41,18 +41,13 @@
                                     <thead>
                                         <tr>
                                             <th class="center">采购单编号</th>
-                                            <th class="center">产品名称</th>
-                                            <th class="center">规格型号</th>
-                                            <th class="center">采购数量</th>
-                                            <th class="center">采购负责人</th>
                                             <th class="center">供应商名称</th>
                                             <th class="center">供应商联系人</th>
                                             <th class="center">供应商电话</th>
+                                            <th class="center">采购申请人</th>
+                                            <th class="center">采购负责人</th>
                                             <th class="center">采购日期</th>
                                             <th class="center">采购金额</th>
-                                            <th class="center">已付款金额</th>
-                                            <th class="center">未付款金额</th>
-                                            <th class="center">发票状态</th>
                                             <th class="center">入库状态</th>
                                             <th class="center">操作</th>
                                         </tr>
@@ -63,25 +58,23 @@
                                             [#list page.content as purchase]
                                                 <tr>
                                                     <td class="center"><a onclick="diag('采购单查看', '${ctx}/purchase/view/${purchase.id}');">${purchase.purchaseNo}</a></td>
-                                                    <td class="center">${purchase.productName!""}</td>
-                                                    <td class="center">${purchase.productModel!""}</td>
-                                                    <td class="center">${purchase.quantity}</td>
+                                                    <td class="center">${purchase.supplier.company}</td>
+                                                    <td class="center">${purchase.supplier.linkman}</td>
+                                                    <td class="center">${purchase.supplier.contact}</td>
+                                                    <td class="center">${purchase.proposer!""}</td>
                                                     <td class="center">${purchase.operator}</td>
-                                                    <td class="center">${purchase.supplier}</td>
-                                                    <td class="center">${purchase.supplierLinkman}</td>
-                                                    <td class="center">${purchase.supplierMobile}</td>
                                                     <td class="center">[@macro.displayDate value=purchase.purchaseTime!""/]</td>
                                                     <td class="center">[@macro.displayMoney value=purchase.totalAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.payedAmount!""/]</td>
-                                                    <td class="center">[@macro.displayMoney value=purchase.unPayedAmount!""/]</td>
-                                                    <td class="center">${purchase.makeOutInvoiceStatus.getName()}</td>
                                                     <td class="center">${purchase.inBound.getName()}</td>
                                                     <td class="center">
-                                                            <a class="green" onclick="customDiag('修改采购合同', '${ctx}/purchase/update/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
-                                                                修改
-                                                            </a>
+                                                        <a class="green" onclick="customDiag('采购详情', '${ctx}/purchase/viewDetail/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
+                                                            详细信息
+                                                        </a>
+                                                        <a class="green" onclick="customDiag('修改采购合同', '${ctx}/purchase/update/${purchase.id}', 800, 600);" style="cursor: pointer;text-decoration:none;">
+                                                            修改
+                                                        </a>
                                                         [#if purchase.inBound.getValue() == noStatus.getValue()]
-                                                                <a href="${ctx}/purchase/disable/${purchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
+                                                            <a href="${ctx}/purchase/disable/${purchase.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
                                                         [/#if]
                                                     </td>
                                                 </tr>

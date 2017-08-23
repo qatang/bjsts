@@ -33,11 +33,19 @@ public class CustomerEntity extends AbstractEntity {
     @Column(name = "company_name")
     private String companyName;
 
-    private String linkman;
+    private String owner;
 
-    private String contact;
+    private String tel;
+
+    private String url;
+
+    private String fax;
 
     private String address;
+
+    private String postcode;
+
+    private String memo;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -67,20 +75,28 @@ public class CustomerEntity extends AbstractEntity {
         this.companyName = companyName;
     }
 
-    public String getLinkman() {
-        return linkman;
+    public CustomerType getCustomerType() {
+        return customerType;
     }
 
-    public void setLinkman(String linkman) {
-        this.linkman = linkman;
+    public void setCustomerType(CustomerType customerType) {
+        this.customerType = customerType;
     }
 
-    public String getContact() {
-        return contact;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
     public String getAddress() {
@@ -91,12 +107,20 @@ public class CustomerEntity extends AbstractEntity {
         this.address = address;
     }
 
-    public EnableDisableStatus getValid() {
-        return valid;
+    public String getPostcode() {
+        return postcode;
     }
 
-    public void setValid(EnableDisableStatus valid) {
-        this.valid = valid;
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
     public Date getCreatedTime() {
@@ -107,19 +131,35 @@ public class CustomerEntity extends AbstractEntity {
         this.createdTime = createdTime;
     }
 
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public EnableDisableStatus getValid() {
+        return valid;
+    }
+
+    public void setValid(EnableDisableStatus valid) {
+        this.valid = valid;
+    }
+
     public Date getUpdatedTime() {
         return updatedTime;
     }
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
-    }
-
-    public CustomerType getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(CustomerType customerType) {
-        this.customerType = customerType;
     }
 }

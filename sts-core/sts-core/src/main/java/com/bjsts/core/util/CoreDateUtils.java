@@ -35,6 +35,20 @@ public class CoreDateUtils {
         }
         return DateFormatUtils.format(date, pattern, Locale.CHINA);
 	}
+
+    public static String formatLocalDateTime(LocalDateTime datetime, String pattern) {
+        if (datetime == null) {
+            return null;
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+            return datetime.format(formatter);
+        } catch (Exception e) {
+            logger.error("本地时间格式化错误, dateStr={}, pattern={}", datetime, pattern);
+            logger.error(e.getMessage(), e);
+            return null;
+        }
+    }
 	
 	public static String formatDate(String dateStr, String srcPattern, String desPattern) {
 		Date date = parseDate(dateStr, srcPattern);

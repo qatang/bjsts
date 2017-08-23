@@ -5,9 +5,11 @@ import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.customer.CustomerEntity;
+import com.bjsts.manager.entity.customer.CustomerItemEntity;
 import com.bjsts.manager.enums.customer.CustomerType;
 import com.bjsts.manager.form.customer.CustomerForm;
 import com.bjsts.manager.query.customer.CustomerSearchable;
+import com.bjsts.manager.service.customer.CustomerItemService;
 import com.bjsts.manager.service.customer.CustomerService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,6 +40,9 @@ public class CustomerController extends AbstractController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private CustomerItemService customerItemService;
 
     @ModelAttribute("customerTypeList")
     public List<CustomerType> getCustomerTypeList() {
@@ -78,6 +83,40 @@ public class CustomerController extends AbstractController {
         return "result";
     }
 
+    @RequiresPermissions("sts:customer:createItem")
+    @RequestMapping(value = "/createItem/{customerId}", method = RequestMethod.GET)
+    public String createItem(@PathVariable Long customerId, @ModelAttribute CustomerForm customerForm, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
+            modelMap.addAttribute(BindingResult.class.getName().concat(".customerForm"), modelMap.get(BINDING_RESULT_KEY));
+        }
+
+        if (Objects.isNull(customerForm.getCustomerItem())) {
+            CustomerItemEntity customerItemEntity = new CustomerItemEntity();
+            customerItemEntity.setCustomerId(customerId);
+            customerForm.setCustomerItem(customerItemEntity);
+        }
+
+        CustomerEntity customerEntity = customerService.get(customerId);
+        customerForm.setCustomer(customerEntity);
+
+        List<CustomerItemEntity> customerItemEntityList = customerItemService.findByCustomerId(customerId);
+
+        modelMap.addAttribute("customerItemList", customerItemEntityList);
+        return "customer/customer/editItem";
+    }
+
+    @RequiresPermissions("sts:customer:createItem")
+    @RequestMapping(value = "/createItem", method = RequestMethod.POST)
+    public String createItem(CustomerForm customerForm, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(customerForm);
+            return "redirect:/customer/createItem";
+        }
+        CustomerItemEntity customerItemEntity = customerForm.getCustomerItem();
+        customerItemService.save(customerItemEntity);
+        return "redirect:/customer/createItem/" + customerItemEntity.getCustomerId();
+    }
+
     @RequiresPermissions("sts:customer:update")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String update(@PathVariable Long id, @ModelAttribute CustomerForm customerForm, RedirectAttributes redirectAttributes, ModelMap modelMap) {
@@ -106,9 +145,13 @@ public class CustomerController extends AbstractController {
         CustomerEntity customerEntity = customerService.get(customer.getId());
         customerEntity.setCustomerType(customer.getCustomerType());
         customerEntity.setCompanyName(customer.getCompanyName());
-        customerEntity.setLinkman(customer.getLinkman());
-        customerEntity.setContact(customer.getContact());
+        customerEntity.setOwner(customer.getOwner());
+        customerEntity.setTel(customer.getTel());
+        customerEntity.setUrl(customer.getUrl());
+        customerEntity.setFax(customer.getFax());
         customerEntity.setAddress(customer.getAddress());
+        customerEntity.setPostcode(customer.getPostcode());
+        customerEntity.setMemo(customer.getMemo());
         customerService.update(customerEntity);
         return "result";
     }
@@ -117,6 +160,9 @@ public class CustomerController extends AbstractController {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("customer", customerService.get(id));
+
+        List<CustomerItemEntity> customerItemEntities = customerItemService.findByCustomerId(id);
+        modelMap.put("customerItemList", customerItemEntities);
         return "customer/customer/view";
     }
 
@@ -133,5 +179,20 @@ public class CustomerController extends AbstractController {
         customerEntity.setValid(EnableDisableStatus.DISABLE);
         customerService.update(customerEntity);
         return "redirect:/customer/list";
+    }
+
+    @RequiresPermissions("sts:customer:disable")
+    @RequestMapping(value = "/disableItem/{id}", method = RequestMethod.GET)
+    public String disableItem(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        CustomerItemEntity customerItemEntity = customerItemService.get(id);
+        if (Objects.isNull(customerItemEntity)) {
+            logger.error("删除客户,未查询[id={}]的客户", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询[id={"+id+"}]的客户!");
+            return "redirect:/error";
+        }
+
+        customerItemEntity.setValid(EnableDisableStatus.DISABLE);
+        customerItemService.update(customerItemEntity);
+        return "redirect:/customer/createItem/" + customerItemEntity.getCustomerId();
     }
 }

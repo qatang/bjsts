@@ -32,7 +32,22 @@ public class SupplierEntity extends AbstractEntity {
     @Column(nullable = false)
     private String contact;
 
-    private String product;
+    /**
+     * 单位地址
+     */
+    private String address;
+
+    /**
+     * 开户行
+     */
+    @Column(name = "bank_name")
+    private String bankName;
+
+    /**
+     * 银行账号
+     */
+    @Column(name = "bank_account")
+    private String bankAccount;
 
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
@@ -78,14 +93,6 @@ public class SupplierEntity extends AbstractEntity {
         this.contact = contact;
     }
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -108,5 +115,29 @@ public class SupplierEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
     }
 }

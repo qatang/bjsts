@@ -17,10 +17,8 @@ import java.util.Map;
 public enum InvoiceStatus {
     ALL(-1, "全部"),
     ZC(1, "正常"),
-    ZF(2, "作废"),
     HC(2, "红冲"),
-    YDK(2, "已抵扣"),
-    WDK(2, "未抵扣"),
+    ZF(3, "作废"),
     ;
 
     private static Logger logger = LoggerFactory.getLogger(InvoiceStatus.class);

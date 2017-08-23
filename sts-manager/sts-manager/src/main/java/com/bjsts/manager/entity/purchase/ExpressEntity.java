@@ -48,6 +48,13 @@ public class ExpressEntity extends AbstractEntity {
     @Column(name = "deliver_date")
     private Date deliverDate;
 
+    @Column(name = "express_no")
+    private String expressNo;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "receive_date")
+    private Date receiveDate;
+
     @Convert(converter = EnableDisableStatusConverter.class)
     @Column(nullable = false)
     private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
@@ -162,5 +169,21 @@ public class ExpressEntity extends AbstractEntity {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
+    }
+
+    public String getExpressNo() {
+        return expressNo;
+    }
+
+    public void setExpressNo(String expressNo) {
+        this.expressNo = expressNo;
     }
 }

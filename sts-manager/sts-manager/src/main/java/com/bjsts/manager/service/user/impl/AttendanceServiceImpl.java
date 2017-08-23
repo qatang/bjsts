@@ -5,6 +5,7 @@ import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.AbstractService;
 import com.bjsts.manager.entity.user.AttendanceEntity;
+import com.bjsts.manager.entity.user.DepartmentEntity;
 import com.bjsts.manager.query.user.AttendanceSearchable;
 import com.bjsts.manager.repository.user.AttendanceRepository;
 import com.bjsts.manager.service.user.AttendanceService;
@@ -76,5 +77,11 @@ public class AttendanceServiceImpl extends AbstractService<AttendanceEntity, Lon
 
         Page<AttendanceEntity> attendanceEntityPage = attendanceRepository.findAll(convertSpecification(request), convertPageable(requestPage));
         return convertApiResponse(attendanceEntityPage);
+    }
+
+    @Override
+    public ApiResponse<AttendanceEntity> findAll(ApiRequest request, ApiRequestPage requestPage) {
+        Page<AttendanceEntity> page = attendanceRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(page);
     }
 }

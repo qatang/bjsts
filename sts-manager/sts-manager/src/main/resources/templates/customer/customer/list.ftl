@@ -13,21 +13,19 @@
                         [@macro.errorMsg/]
                         <div class="row">
                             <div class="col-xs-11">
-                            [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
-                                    <table style="margin-top:5px;">
-                                        <tr>
-                                            <td>
-                                                <div class="nav-search">
-                                                    <span class="input-icon">
-                                                        <input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="content" value="${socialSecuritySearchable.content!''}" placeholder="这里输入关键词" />
-                                                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
-                                        </tr>
-                                    </table>
-                                </form>--]
+                            <form action="${ctx}/customer/list" method="post" name="customerForm" id="customerForm">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                        [@macro.inputText name="companyName" value=customerSearchable.companyName!'' placeholder="客户名称" required=false /]
+                                        </div>
+                                        <div class="col-xs-2" style="padding:2px;border-top:0;">
+                                        [@macro.inputText name="tel" value=customerSearchable.tel!'' placeholder="公司电话" required=false /]
+                                        </div>
+                                        <div class="col-xs-1" style="padding:2px;border-top:0;"><button id="btn" class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></div>
+                                    </div>
+                                </div>
+                                </form>
                             </div>
                             <div class="col-xs-1">
                                 <div style="float:right;margin-top:5px;">
@@ -40,12 +38,11 @@
                                 <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
-                                            <th class="center">ID</th>
+                                            <th class="center">客户编号</th>
+                                            <th class="center">客户名称</th>
                                             <th class="center">客户类型</th>
-                                            <th class="center">单位名称</th>
-                                            <th class="center">联系人</th>
-                                            <th class="center">联系方式</th>
-                                            <th class="center">单位地址</th>
+                                            <th class="center">公司电话</th>
+                                            <th class="center">所有者</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
@@ -55,18 +52,20 @@
                                             [#list page.content as customer]
                                                 <tr>
                                                     <td class="center"><a onclick="diag('客户查看', '${ctx}/customer/view/${customer.id}')" style="cursor:pointer;">${customer.id}</a></td>
-                                                    <td class="center">${customer.customerType.getName()}</td>
                                                     <td class="center">${customer.companyName!""}</a></td>
-                                                    <td class="center">${customer.linkman!''}</td>
-                                                    <td class="center">${customer.contract!""}</td>
-                                                    <td class="center">${customer.address!""}</td>
+                                                    <td class="center">${customer.customerType.getName()}</td>
+                                                    <td class="center">${customer.tel!''}</td>
+                                                    <td class="center">${customer.owner!""}</td>
                                                     <td class="center">
-                                                            <a class="green" onclick="diag('客户修改', '${ctx}/customer/update/${customer.id}');" style="cursor: pointer;text-decoration:none;">
-                                                                修改
-                                                            </a>
-                                                            <a class="red" href="${ctx}/customer/disable/${customer.id}" onclick="return confirm('确定要删除该客户吗?');">
-                                                                删除
-                                                            </a>
+                                                        <a class="green" onclick="diag('详细信息', '${ctx}/customer/createItem/${customer.id}');" style="cursor: pointer;text-decoration:none;">
+                                                            详细信息
+                                                        </a>
+                                                        <a class="green" onclick="diag('客户修改', '${ctx}/customer/update/${customer.id}');" style="cursor: pointer;text-decoration:none;">
+                                                            修改
+                                                        </a>
+                                                        <a class="red" href="${ctx}/customer/disable/${customer.id}" onclick="return confirm('确定要删除该客户吗?');">
+                                                            删除
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             [/#list]

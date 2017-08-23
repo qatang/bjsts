@@ -13,9 +13,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
- * 采购单
+ * 物料采购单
  * @author wangzhiliang
  */
 @Entity
@@ -41,21 +42,9 @@ public class PurchaseEntity extends AbstractEntity {
     private String purchaseNo;
 
     /**
-     * 产品名称
+     * 采购申请人
      */
-    @Column(nullable = false, name = "product_name")
-    private String productName;
-
-    /**
-     * 规格型号
-     */
-    @Column(nullable = false, name = "product_model")
-    private String productModel;
-
-    /**
-     * 采购数量
-     */
-    private Long quantity;
+    private String  proposer;
 
     /**
      * 采购负责人
@@ -63,21 +52,10 @@ public class PurchaseEntity extends AbstractEntity {
     private String operator;
 
     /**
-     * 供应商
+     * 供应商信息
      */
-    private String supplier;
-
-    /**
-     * 供应商联系人
-     */
-    @Column(name = "supplier_linkman")
-    private String supplierLinkman;
-
-    /**
-     * 供应商电话
-     */
-    @Column(name = "supplier_mobile")
-    private String supplierMobile;
+    @Column(name = "supplier_id", nullable = false)
+    private Long supplierId;
 
     /**
      * 采购日期
@@ -133,36 +111,18 @@ public class PurchaseEntity extends AbstractEntity {
     @Transient
     private InBoundEntity inBoundEntity;
 
+    @Transient
+    private SupplierEntity supplier;
+
+    @Transient
+    private List<PurchaseItemEntity> purchaseItemEntityList;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductModel() {
-        return productModel;
-    }
-
-    public void setProductModel(String productModel) {
-        this.productModel = productModel;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
     }
 
     public Long getTotalAmount() {
@@ -213,28 +173,20 @@ public class PurchaseEntity extends AbstractEntity {
         this.unPayedAmount = unPayedAmount;
     }
 
+    public String getProposer() {
+        return proposer;
+    }
+
+    public void setProposer(String proposer) {
+        this.proposer = proposer;
+    }
+
     public String getOperator() {
         return operator;
     }
 
     public void setOperator(String operator) {
         this.operator = operator;
-    }
-
-    public String getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
-    }
-
-    public String getSupplierMobile() {
-        return supplierMobile;
-    }
-
-    public void setSupplierMobile(String supplierMobile) {
-        this.supplierMobile = supplierMobile;
     }
 
     public Date getPurchaseTime() {
@@ -269,14 +221,6 @@ public class PurchaseEntity extends AbstractEntity {
         this.makeOutInvoiceStatus = makeOutInvoiceStatus;
     }
 
-    public String getSupplierLinkman() {
-        return supplierLinkman;
-    }
-
-    public void setSupplierLinkman(String supplierLinkman) {
-        this.supplierLinkman = supplierLinkman;
-    }
-
     public YesNoStatus getInBound() {
         return inBound;
     }
@@ -291,5 +235,29 @@ public class PurchaseEntity extends AbstractEntity {
 
     public void setInBoundEntity(InBoundEntity inBoundEntity) {
         this.inBoundEntity = inBoundEntity;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public void setSupplier(SupplierEntity supplier) {
+        this.supplier = supplier;
+    }
+
+    public SupplierEntity getSupplier() {
+        return supplier;
+    }
+
+    public List<PurchaseItemEntity> getPurchaseItemEntityList() {
+        return purchaseItemEntityList;
+    }
+
+    public void setPurchaseItemEntityList(List<PurchaseItemEntity> purchaseItemEntityList) {
+        this.purchaseItemEntityList = purchaseItemEntityList;
     }
 }

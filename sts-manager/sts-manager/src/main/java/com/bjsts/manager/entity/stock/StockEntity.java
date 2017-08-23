@@ -25,11 +25,23 @@ public class StockEntity extends AbstractEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, name = "product_name")
-    private String productName;
+    /**
+     * 供应商产品条目
+     */
+    @Column(name = "supplier_item_id", nullable = false)
+    private Long supplierItemId;
 
-    @Column(nullable = false, name = "product_model")
-    private String productModel;
+    /**
+     * 采购单价
+     */
+    @Column(name = "unit_price", nullable = false)
+    private Long unitPrice;
+
+    /**
+     * 库存单价
+     */
+    @Column(name = "in_bound_unit_price", nullable = false)
+    private Long inBoundUnitPrice;
 
     @Column(nullable = false)
     private Long quantity;
@@ -54,22 +66,6 @@ public class StockEntity extends AbstractEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductModel() {
-        return productModel;
-    }
-
-    public void setProductModel(String productModel) {
-        this.productModel = productModel;
     }
 
     public Long getQuantity() {
@@ -110,5 +106,29 @@ public class StockEntity extends AbstractEntity {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Long getInBoundUnitPrice() {
+        return inBoundUnitPrice;
+    }
+
+    public void setInBoundUnitPrice(Long inBoundUnitPrice) {
+        this.inBoundUnitPrice = inBoundUnitPrice;
+    }
+
+    public Long getSupplierItemId() {
+        return supplierItemId;
+    }
+
+    public void setSupplierItemId(Long supplierItemId) {
+        this.supplierItemId = supplierItemId;
+    }
+
+    public Long getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Long unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

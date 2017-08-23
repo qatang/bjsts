@@ -4,11 +4,7 @@ import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import com.bjsts.manager.enums.converter.invoice.InvoiceCategoryConverter;
-import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
-import com.bjsts.manager.enums.converter.invoice.InvoiceTypeConverter;
 import com.bjsts.manager.enums.invoice.InvoiceCategory;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
-import com.bjsts.manager.enums.invoice.InvoiceType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,7 +12,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 发票管理
+ * 采购发票登记
  * @author wangzhiliang
  */
 @Entity
@@ -36,10 +32,6 @@ public class InvoiceEntity extends AbstractEntity {
     @Column(name = "plan_content")
     private String planContent;
 
-    @Convert(converter = InvoiceTypeConverter.class)
-    @Column(name = "invoice_type", nullable = false)
-    private InvoiceType invoiceType;
-
     @Convert(converter = InvoiceCategoryConverter.class)
     @Column(name = "invoice_category", nullable = false)
     private InvoiceCategory invoiceCategory;
@@ -57,9 +49,9 @@ public class InvoiceEntity extends AbstractEntity {
 
     private String content;
 
-    @Convert(converter = InvoiceStatusConverter.class)
-    @Column(name = "invoice_status", nullable = false)
-    private InvoiceStatus invoiceStatus;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "deduction_date")
+    private Date deductionDate;
 
     @Column(name = "invoice_url")
     private Long invoiceUrl;
@@ -98,14 +90,6 @@ public class InvoiceEntity extends AbstractEntity {
 
     public void setPlanContent(String planContent) {
         this.planContent = planContent;
-    }
-
-    public InvoiceType getInvoiceType() {
-        return invoiceType;
-    }
-
-    public void setInvoiceType(InvoiceType invoiceType) {
-        this.invoiceType = invoiceType;
     }
 
     public InvoiceCategory getInvoiceCategory() {
@@ -148,12 +132,12 @@ public class InvoiceEntity extends AbstractEntity {
         this.content = content;
     }
 
-    public InvoiceStatus getInvoiceStatus() {
-        return invoiceStatus;
+    public Date getDeductionDate() {
+        return deductionDate;
     }
 
-    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
-        this.invoiceStatus = invoiceStatus;
+    public void setDeductionDate(Date deductionDate) {
+        this.deductionDate = deductionDate;
     }
 
     public Long getInvoiceUrl() {

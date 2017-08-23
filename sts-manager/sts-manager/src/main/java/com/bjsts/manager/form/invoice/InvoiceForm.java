@@ -13,7 +13,7 @@ public class InvoiceForm extends AbstractForm {
 
     private InvoiceEntity invoice;
 
-    private DocumentEntity document;
+    private DocumentEntity document = new DocumentEntity();
 
     private Double amount;
 

@@ -41,6 +41,7 @@
                                     <thead>
                                         <tr>
                                             <th class="center">编号</th>
+                                            <th class="center">快递单号</th>
                                             <th class="center">发货人</th>
                                             <th class="center">付款人</th>
                                             <th class="center">快递费</th>
@@ -50,6 +51,7 @@
                                             <th class="center">收货人地址</th>
                                             <th class="center">快递单位名称</th>
                                             <th class="center">投递日期</th>
+                                            <th class="center">接收日期</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
@@ -58,6 +60,7 @@
                                             [#list page.content as express]
                                                 <tr>
                                                     <td class="center"><a onclick="diag('快递单查看', '${ctx}/express/view/${express.id}');">${express.id}</a></td>
+                                                    <td class="center">${express.expressNo!""}</td>
                                                     <td class="center">${express.shipper!""}</td>
                                                     <td class="center">${express.payer!""}</td>
                                                     <td class="center">[@macro.displayMoney value=express.cost!""/]</td>
@@ -67,6 +70,7 @@
                                                     <td class="center">${express.address!""}</td>
                                                     <td class="center">${express.company!""}</td>
                                                     <td class="center">[@macro.displayDate value=express.deliverDate!""/]</td>
+                                                    <td class="center">[@macro.displayDate value=express.receiveDate!""/]</td>
                                                     <td class="center">
                                                             <a class="green" onclick="diag('修改快递单', '${ctx}/express/update/${express.id?c}');" style="cursor: pointer;text-decoration:none;">
                                                                 修改

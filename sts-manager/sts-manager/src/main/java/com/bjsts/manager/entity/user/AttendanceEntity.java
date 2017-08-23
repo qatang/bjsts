@@ -3,6 +3,8 @@ package com.bjsts.manager.entity.user;
 import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
+import com.bjsts.manager.enums.converter.user.AttendanceTypeConverter;
+import com.bjsts.manager.enums.user.AttendanceType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -34,12 +36,21 @@ public class AttendanceEntity extends AbstractEntity {
     private Long departmentId;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     private Date startTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_time")
-    private Date endTime;
+    /**
+     * 上下午
+     */
+    @Column(name = "time_type", nullable = false)
+    private Integer timeType;
+
+    /**
+     * 考勤类型
+     */
+    @Convert(converter = AttendanceTypeConverter.class)
+    @Column(name = "type", nullable = false)
+    private AttendanceType type;
 
     private String memo;
 
@@ -95,14 +106,6 @@ public class AttendanceEntity extends AbstractEntity {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
     public String getMemo() {
         return memo;
     }
@@ -133,5 +136,21 @@ public class AttendanceEntity extends AbstractEntity {
 
     public void setValid(EnableDisableStatus valid) {
         this.valid = valid;
+    }
+
+    public Integer getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(Integer timeType) {
+        this.timeType = timeType;
+    }
+
+    public AttendanceType getType() {
+        return type;
+    }
+
+    public void setType(AttendanceType type) {
+        this.type = type;
     }
 }

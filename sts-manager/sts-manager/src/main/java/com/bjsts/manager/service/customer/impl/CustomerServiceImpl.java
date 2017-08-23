@@ -9,6 +9,7 @@ import com.bjsts.manager.entity.customer.CustomerEntity;
 import com.bjsts.manager.query.customer.CustomerSearchable;
 import com.bjsts.manager.repository.customer.CustomerRepository;
 import com.bjsts.manager.service.customer.CustomerService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,16 @@ public class CustomerServiceImpl extends AbstractService<CustomerEntity, Long> i
         ApiRequest request = ApiRequest.newInstance();
 
         request.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        String companyName = customerSearchable.getCompanyName();
+        if (!StringUtils.isEmpty(companyName)) {
+            request.filterLike("companyName", companyName);
+        }
+
+        String tel = customerSearchable.getTel();
+        if (!StringUtils.isEmpty(tel)) {
+            request.filterLike("tel", tel);
+        }
 
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         customerSearchable.convertPageable(requestPage, pageable);

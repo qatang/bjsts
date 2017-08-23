@@ -1,5 +1,7 @@
 package com.bjsts.manager.entity.purchase;
 
+import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -24,35 +26,22 @@ public class PurchasePayEntity extends AbstractEntity {
     private Long id;
 
     /**
-     * 采购编号，格式：sts20161016001
+     * 采购单编号，格式：sts20161016001
      */
     @Column(name = "purchase_no", nullable = false)
     private String purchaseNo;
 
     /**
-     * 本次付款金额
+     * 总付款金额
      */
     @Column(nullable = false)
     private Long amount;
 
     /**
-     * 本次付款方式
+     * 已付金额
      */
-    @Column(name = "pay_model", nullable = false)
-    private String payModel;
-
-    /**
-     * 本次付款时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "pay_time", nullable = false)
-    private Date payTime;
-
-    /**
-     * 经办人
-     */
-    @Column(name = "operator_id", nullable = false)
-    private Long operatorId;
+    @Column(name = "payed_amount", nullable = false)
+    private Long payedAmount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time", updatable = false, nullable = false)
@@ -62,17 +51,12 @@ public class PurchasePayEntity extends AbstractEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
-    /**
-     * 开票金额
-     */
-    @Transient
-    private Long invoiceAmount;
+    @Convert(converter = EnableDisableStatusConverter.class)
+    @Column(nullable = false)
+    private EnableDisableStatus valid = EnableDisableStatus.ENABLE;
 
-    /**
-     * 经办人姓名
-     */
     @Transient
-    private String operator;
+    private Long unPayedAmount;
 
     public Long getId() {
         return id;
@@ -88,30 +72,6 @@ public class PurchasePayEntity extends AbstractEntity {
 
     public void setAmount(Long amount) {
         this.amount = amount;
-    }
-
-    public String getPayModel() {
-        return payModel;
-    }
-
-    public void setPayModel(String payModel) {
-        this.payModel = payModel;
-    }
-
-    public Date getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
     }
 
     public Date getCreatedTime() {
@@ -130,27 +90,31 @@ public class PurchasePayEntity extends AbstractEntity {
         this.updatedTime = updatedTime;
     }
 
-    public Long getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    public Long getInvoiceAmount() {
-        return invoiceAmount;
-    }
-
-    public void setInvoiceAmount(Long invoiceAmount) {
-        this.invoiceAmount = invoiceAmount;
-    }
-
     public String getPurchaseNo() {
         return purchaseNo;
     }
 
     public void setPurchaseNo(String purchaseNo) {
         this.purchaseNo = purchaseNo;
+    }
+
+    public Long getPayedAmount() {
+        return payedAmount;
+    }
+
+    public void setPayedAmount(Long payedAmount) {
+        this.payedAmount = payedAmount;
+    }
+
+    public EnableDisableStatus getValid() {
+        return valid;
+    }
+
+    public void setValid(EnableDisableStatus valid) {
+        this.valid = valid;
+    }
+
+    public Long getUnPayedAmount() {
+        return amount - payedAmount;
     }
 }

@@ -12,54 +12,173 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="${ctx}/attendance/${action}" name="attendanceForm" id="attendanceForm" method="post">
-                            <div style="padding-top: 13px;"></div>
-                        [@macro.errors /]
-                            <input type="hidden" name="attendance.id" value="${attendanceForm.attendance.id!''}"/>
-                            <table id="table_report" class="table table-striped table-bordered table-hover">
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">职员:</td>
-                                    <td>
-                                    [#if attendanceForm.attendance.id??]
-                                        ${attendanceForm.attendance.realName!""}
-                                        <input type="hidden" name="attendance.id" value="${attendanceForm.attendance.staffId!''}"/>
-                                    [#else]
-                                        <select class="chosen-select form-control" name="attendance.staffId" data-placeholder="请选择" style="" onchange="queryStaff(this);" id="staffId">
-                                            <option value="0">请选择</option>
-                                            [#list staffList as data]
-                                                <option value="${data.id?c}" [#if attendanceForm.attendance.staffId?has_content && data.id == attendanceForm.attendance.staffId]selected[/#if]>${data.getRealName()!""}</option>
-                                            [/#list]
-                                        </select>
-                                    [/#if]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">上班时间:</td>
-                                    <td>
-                                        [@macro.datetimePicker name="attendance.startTime" value=attendanceForm.attendance.startTime placeholder="上班时间" required=true/]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">下班时间:</td>
-                                    <td>
-                                    [@macro.datetimePicker name="attendance.endTime" value=attendanceForm.attendance.endTime placeholder="下班时间" required=true/]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width:79px;text-align: right;padding-top: 13px;">备注:</td>
-                                    <td>
-                                    [@macro.inputText name="attendance.memo" value=attendanceForm.attendance.memo!"" required=false/]
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;" colspan="10">
-                                        <button class="btn btn-mini btn-primary" type="submit">保存</button>
-                                        <button class="btn btn-mini btn-danger" type="button" onclick="top.Dialog.close();">取消</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
+                        <table cellpadding="0" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_orange">迟到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_blue">早退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_green">旷工</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_pink">未签到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_grass">未签退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_purple">加班</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_sky">请假</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_orange">迟到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_blue">早退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_green">旷工</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_pink">未签到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_grass">未签退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_purple">加班</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_sky">请假</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_orange">迟到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_blue">早退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_green">旷工</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_pink">未签到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_grass">未签退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_purple">加班</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_sky">请假</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_orange">迟到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_blue">早退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_green">旷工</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_pink">未签到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_grass">未签退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_purple">加班</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_sky">请假</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_orange">迟到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_blue">早退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_green">旷工</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_pink">未签到</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_grass">未签退</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_purple">加班</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                                <td><div class="attend_count">
+                                    <p class="at_c_name at_sky">请假</p>
+                                    <p class="at_c_num">2</p>
+                                </div></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                    </div>
+                    <div class="col-xs-1">
+                        <a class="btn btn-mini btn-primary" href="${ctx}/attendance/list">返回</a>
+                    </div>
+                    <div class="col-xs-5">
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

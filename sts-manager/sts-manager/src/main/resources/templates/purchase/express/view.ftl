@@ -21,6 +21,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">快递单号:</td>
+                                <td>${express.expressNo!""}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">发货人:</td>
                                 <td>${express.shipper!""}</td>
                             </tr>
@@ -57,6 +61,12 @@
                                 <td style="width:100px;text-align: right;padding-top: 13px;">投递日期:</td>
                                 <td>
                                 [@macro.displayDate value=express.deliverDate!""/]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">接收日期:</td>
+                                <td>
+                                [@macro.displayDate value=express.receiveDate!""/]
                                 </td>
                             </tr>
                         </table>

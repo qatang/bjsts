@@ -12,13 +12,15 @@ import java.util.Map;
 
 /**
  * 客户类型
- * @author jinsheng
- * @since 2016-04-27 15:04
+ * @author wangzhiliang
  */
 public enum CustomerType {
     ALL(-1, "全部"),
     NORMAL(1, "一般客户"),
-    VIP(2, "重点客户");
+    VIP(2, "重点客户"),
+    LATENT(3, "潜在客户"),
+    INVALID(4, "失效客户"),
+    ;
 
     private static Logger logger = LoggerFactory.getLogger(CustomerType.class);
 

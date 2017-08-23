@@ -96,8 +96,8 @@ public class StockController extends AbstractController {
         }
         StockEntity stock = stockForm.getStock();
         StockEntity stockEntity = stockService.get(stock.getId());
-        stockEntity.setProductName(stock.getProductName());
-        stockEntity.setProductModel(stock.getProductModel());
+/*        stockEntity.setProductName(stock.getProductName());
+        stockEntity.setProductModel(stock.getProductModel());*/
         stockEntity.setQuantity(stock.getQuantity());
         stockService.update(stockEntity);
         return "result";

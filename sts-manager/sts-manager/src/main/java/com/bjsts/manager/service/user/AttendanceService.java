@@ -1,5 +1,7 @@
 package com.bjsts.manager.service.user;
 
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.manager.core.service.IService;
 import com.bjsts.manager.entity.user.AttendanceEntity;
@@ -17,4 +19,6 @@ public interface AttendanceService extends IService<AttendanceEntity, Long> {
     List<AttendanceEntity> findByStaffId(Long staffId);
 
     ApiResponse<AttendanceEntity> findAll(AttendanceSearchable attendanceSearchable, Pageable pageable);
+
+    ApiResponse<AttendanceEntity> findAll(ApiRequest request, ApiRequestPage requestPage);
 }

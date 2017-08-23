@@ -44,7 +44,6 @@
                                             <th class="center">单位名称</th>
                                             <th class="center">联系人</th>
                                             <th class="center">联系方式</th>
-                                            <th class="center">产品</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
@@ -56,12 +55,14 @@
                                                     <td class="center">${supplier.company!""}</td>
                                                     <td class="center">${supplier.linkman!""}</td>
                                                     <td class="center">${supplier.contact!""}</td>
-                                                    <td class="center">${supplier.product!""}</td>
                                                     <td class="center">
-                                                            <a class="green" onclick="diag('修改供应商', '${ctx}/supplier/update/${supplier.id?c}');" style="cursor: pointer;text-decoration:none;">
-                                                                修改
-                                                            </a>
-                                                            <a href="${ctx}/supplier/disable/${supplier.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
+                                                        <a class="green" onclick="diag('修改供应商', '${ctx}/supplier/update/${supplier.id?c}');" style="cursor: pointer;text-decoration:none;">
+                                                            修改
+                                                        </a>
+                                                        <a class="red" onclick="diag('产品信息', '${ctx}/supplier/createItem/${supplier.id?c}');" style="cursor: pointer;text-decoration:none;">
+                                                            详细信息
+                                                        </a>
+                                                        <a href="${ctx}/supplier/disable/${supplier.id?c}" onclick="return confirm('确定要删除吗?');">删除</a>
                                                     </td>
                                                 </tr>
                                             [/#list]

@@ -5,7 +5,6 @@ import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.enums.converter.customer.CustomerTypeConverter;
 import com.bjsts.manager.enums.converter.invoice.InvoiceCategoryConverter;
 import com.bjsts.manager.enums.converter.invoice.InvoiceStatusConverter;
-import com.bjsts.manager.enums.converter.invoice.InvoiceTypeConverter;
 import com.bjsts.manager.enums.converter.invoice.MakeOutInvoiceStatusConverter;
 import com.bjsts.manager.enums.converter.produce.PlanExecuteStatusConverter;
 import com.bjsts.manager.enums.converter.resource.ResourceTypeConverter;
@@ -57,6 +56,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private ModelAttributeInterceptor modelAttributeInterceptor;
+
+    @Value("${file.external.url}")
+    private String fileExternalUrl;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -134,7 +136,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new ContractStatusConverter());
         registry.addConverter(new MakeOutInvoiceStatusConverter());
         registry.addConverter(new OnJobStatusConverter());
-        registry.addConverter(new InvoiceTypeConverter());
         registry.addConverter(new InvoiceCategoryConverter());
         registry.addConverter(new InvoiceStatusConverter());
         registry.addConverter(new PlanExecuteStatusConverter());
@@ -162,6 +163,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
          * 设置最大上传文件的大小，默认是10MB
          */
         mcf.setMaxFileSize("50MB");
+        mcf.setLocation(fileExternalUrl);
         return mcf.createMultipartConfig();
     }
 }

@@ -3,6 +3,9 @@ package com.bjsts.manager.form.purchase;
 import com.bjsts.manager.core.form.AbstractForm;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
+import com.bjsts.manager.entity.purchase.PurchaseItemEntity;
+
+import java.util.List;
 
 /**
  * @author jinsheng
@@ -14,7 +17,7 @@ public class PurchaseForm extends AbstractForm {
 
     private PurchaseEntity purchase;
 
-    private DocumentEntity document;
+    private DocumentEntity document = new DocumentEntity();
 
     private Double totalAmount;
 
@@ -22,9 +25,13 @@ public class PurchaseForm extends AbstractForm {
 
     private Double unPayedAmount;
 
+    private PurchaseItemEntity purchaseItem;
+
     public PurchaseEntity getPurchase() {
         return purchase;
     }
+
+    public List<PurchaseItemEntity> purchaseItemList;
 
     public void setPurchase(PurchaseEntity purchase) {
         this.purchase = purchase;
@@ -60,5 +67,21 @@ public class PurchaseForm extends AbstractForm {
 
     public void setUnPayedAmount(Double unPayedAmount) {
         this.unPayedAmount = unPayedAmount;
+    }
+
+    public PurchaseItemEntity getPurchaseItem() {
+        return purchaseItem;
+    }
+
+    public void setPurchaseItem(PurchaseItemEntity purchaseItem) {
+        this.purchaseItem = purchaseItem;
+    }
+
+    public List<PurchaseItemEntity> getPurchaseItemList() {
+        return purchaseItemList;
+    }
+
+    public void setPurchaseItemList(List<PurchaseItemEntity> purchaseItemList) {
+        this.purchaseItemList = purchaseItemList;
     }
 }

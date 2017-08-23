@@ -45,9 +45,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">产品:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">单位地址:</td>
                                     <td>
-                                        [@macro.inputText name="supplier.product" value=supplierForm.supplier.product!'' placeholder="产品" required=false/]
+                                        [@macro.inputText name="supplier.address" value=supplierForm.supplier.address!'' placeholder="单位地址" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">开户行:</td>
+                                    <td>
+                                        [@macro.inputText name="supplier.bankName" value=supplierForm.supplier.bankName!'' placeholder="开户行" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">账号:</td>
+                                    <td>
+                                        [@macro.inputText name="supplier.bankAccount" value=supplierForm.supplier.bankAccount!'' placeholder="账号" required=false/]
                                     </td>
                                 </tr>
                                 <tr>

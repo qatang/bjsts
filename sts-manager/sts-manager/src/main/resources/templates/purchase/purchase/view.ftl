@@ -22,15 +22,19 @@
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">产品名称:</td>
-                                <td>${purchase.productName}</td>
+                                <td>${purchase.productName!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">规格型号:</td>
-                                <td>${purchase.productModel}</td>
+                                <td>${purchase.productModel!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">采购数量:</td>
-                                <td>${purchase.quantity}</td>
+                                <td>${purchase.quantity!""}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">采购申请人:</td>
+                                <td>${purchase.proposer!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">采购负责人:</td>
@@ -38,15 +42,15 @@
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">供应商名称:</td>
-                                <td>${purchase.supplier}</td>
+                                <td>${purchase.supplier!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">供应商联系人:</td>
-                                <td>${purchase.supplierLinkman}</td>
+                                <td>${purchase.supplierLinkman!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">供应商联系电话:</td>
-                                <td>${purchase.supplierMobile}</td>
+                                <td>${purchase.supplierMobile!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">采购日期:</td>

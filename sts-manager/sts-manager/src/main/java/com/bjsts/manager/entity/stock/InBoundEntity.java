@@ -6,11 +6,13 @@ import com.bjsts.core.enums.converter.EnableDisableStatusConverter;
 import com.bjsts.core.enums.converter.YesNoStatusConverter;
 import com.bjsts.manager.core.entity.AbstractEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
+import com.bjsts.manager.entity.purchase.PurchaseItemEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 物料入库单
@@ -69,6 +71,9 @@ public class InBoundEntity extends AbstractEntity {
 
     @Transient
     private PurchaseEntity purchase;
+
+    @Transient
+    private List<PurchaseItemEntity> purchaseItemList;
 
     public Long getId() {
         return id;

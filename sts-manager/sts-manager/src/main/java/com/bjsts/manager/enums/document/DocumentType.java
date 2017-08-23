@@ -22,6 +22,7 @@ public enum DocumentType {
     CONTRACT("contract", "合同"),
     PURCHASE("purchase", "采购合同"),
     INVOICE("invoice", "发票"),
+    SALE_INVOICE("saleInvoice", "销售发票"),
     ;
 
     private static Logger logger = LoggerFactory.getLogger(DocumentType.class);

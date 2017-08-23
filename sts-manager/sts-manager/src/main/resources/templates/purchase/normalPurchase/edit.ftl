@@ -41,7 +41,7 @@
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">数量:</td>
                                     <td>
-                                        [@macro.inputNumber name="normalPurchase.quantity" value=normalPurchaseForm.normalPurchase.quantity!'' placeholder="数量"/]
+                                    [@macro.inputText name="normalPurchase.quantity" value=normalPurchaseForm.normalPurchase.quantity!'' placeholder="数量"/]
                                     </td>
                                 </tr>
                                 <tr>

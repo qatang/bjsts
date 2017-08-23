@@ -27,6 +27,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">快递单号:</td>
+                                    <td>
+                                    [@macro.inputText name="express.expressNo" value=expressForm.express.expressNo!'' placeholder="快递单号"/]
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">发货人:</td>
                                     <td>
                                         [@macro.inputText name="express.shipper" value=expressForm.express.shipper!'' placeholder="发货人"/]
@@ -78,6 +84,12 @@
                                     <td style="width:100px;text-align: right;padding-top: 13px;">投递日期:</td>
                                     <td>
                                         [@macro.datePicker name="express.deliverDate" value=expressForm.express.deliverDate!"" placeholder="投递日期"/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">接收日期:</td>
+                                    <td>
+                                    [@macro.datePicker name="express.receiveDate" value=expressForm.express.receiveDate!"" placeholder="接收日期"/]
                                     </td>
                                 </tr>
                                 <tr>

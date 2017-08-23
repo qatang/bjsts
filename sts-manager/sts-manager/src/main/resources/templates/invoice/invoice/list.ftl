@@ -13,21 +13,23 @@
                         [@macro.errorMsg/]
                         <div class="row">
                             <div class="col-xs-11">
-                            [#--<form action="${ctx}/socialSecurity/list" method="post" name="socialSecurityForm" id="socialSecurityForm">
+                            <form action="${ctx}/invoice/list" method="post" name="invoiceForm" id="invoiceForm">
                                     <table style="margin-top:5px;">
                                         <tr>
-                                            <td>
-                                                <div class="nav-search">
-                                                    <span class="input-icon">
-                                                        <input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="content" value="${socialSecuritySearchable.content!''}" placeholder="这里输入关键词" />
-                                                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                                                    </span>
-                                                </div>
+                                            <td style="padding-left:2px;">[@macro.dateRange fromName="beginCreatedTime" toName="endCreatedTime" fromValue=invoiceSearchable.beginCreatedTime!'' toValue=invoiceSearchable.endCreatedTime!'' placeholder="开票日期"/]</td>
+                                            <td style="vertical-align:top;padding-left:2px;">
+                                                [@macro.selectEnum name="invoiceCategory" enumObj=invoiceSearchable.invoiceCategory!allInvoiceCategoryList[0] dataList=allInvoiceCategoryList /]
+                                            </td>
+                                            <td style="vertical-align:top;padding-left:2px;">
+                                                [@macro.inputText name="planContent" value=invoiceSearchable.planContent!'' placeholder="项目内容" required=false/]
+                                            </td>
+                                            <td style="vertical-align:top;padding-left:2px;">
+                                                [@macro.inputText name="customer" value=invoiceSearchable.customer!'' placeholder="客户名称" required=false/]
                                             </td>
                                             <td style="vertical-align:top;padding-left:2px;"><button class="btn btn-light btn-xs" title="检索" type="submit"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></button></td>
                                         </tr>
                                     </table>
-                                </form>--]
+                                </form>
                             </div>
                             <div class="col-xs-1">
                                 <div style="float:right;margin-top:5px;">
@@ -37,20 +39,20 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
+                                [@macro.successMsg close=false /]
                                 <table id="simple-table" class="table table-striped table-bordered table-hover table-fixed-head" style="margin-top:5px;">
                                     <thead>
                                         <tr>
                                             <th class="center">ID</th>
                                             <th class="center">项目编号</th>
                                             <th class="center">项目内容</th>
-                                            <th class="center">发票分类</th>
                                             <th class="center">发票类型</th>
                                             <th class="center">发票编号</th>
                                             <th class="center">客户名称</th>
                                             <th class="center">开票日期</th>
                                             <th class="center">开票金额</th>
                                             <th class="center">开票内容</th>
-                                            <th class="center">发票状态</th>
+                                            <th class="center">抵扣日期</th>
                                             <th class="center">操作</th>
                                         </tr>
                                     </thead>
@@ -62,14 +64,13 @@
                                                 <td class="center"><a onclick="diag('发票查看', '${ctx}/invoice/view/${invoice.id}')" style="cursor:pointer;">${invoice.id}</a></td>
                                                 <td class="center">${invoice.planNo!""}</td>
                                                 <td class="center">${invoice.planContent!""}</a></td>
-                                                <td class="center">${invoice.invoiceType.getName()}</td>
                                                 <td class="center">${invoice.invoiceCategory.getName()}</td>
                                                 <td class="center">${invoice.invoiceNo}</td>
                                                 <td class="center">${invoice.customer}</td>
                                                 <td class="center">[@macro.displayDate value=invoice.invoiceDate!""/]</td>
                                                 <td class="center">[@macro.displayMoney value=invoice.amount!""/]</td>
                                                 <td class="center">${invoice.content}</td>
-                                                <td class="center">${invoice.invoiceStatus.getName()}</td>
+                                                <td class="center">[@macro.displayDate value=invoice.deductionDate!""/]</td>
                                                 <td class="center">
                                                         <a class="green" onclick="diag('发票修改', '${ctx}/invoice/update/${invoice.id}');" style="cursor: pointer;text-decoration:none;">
                                                             修改

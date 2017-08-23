@@ -1,12 +1,10 @@
 package com.bjsts.manager.service.stock.impl;
 
-import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.manager.core.service.AbstractService;
-import com.bjsts.manager.entity.stock.InBoundEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
-import com.bjsts.manager.entity.stock.StockEntity;
-import com.bjsts.manager.repository.stock.InBoundRepository;
+import com.bjsts.manager.entity.stock.InBoundEntity;
 import com.bjsts.manager.repository.purchase.PurchaseRepository;
+import com.bjsts.manager.repository.stock.InBoundRepository;
 import com.bjsts.manager.repository.stock.StockRepository;
 import com.bjsts.manager.service.stock.InBoundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +38,7 @@ public class InBoundServiceImpl extends AbstractService<InBoundEntity, Long> imp
     public InBoundEntity inBound(InBoundEntity inBoundEntity) {
         //修改采购单状态
         PurchaseEntity purchaseEntity = purchaseRepository.getByPurchaseNo(inBoundEntity.getPurchaseNo());
-        if (purchaseEntity.getInBound() == YesNoStatus.NO) {
+        /*if (purchaseEntity.getInBound() == YesNoStatus.NO) {
             purchaseEntity.setInBound(YesNoStatus.YES);
             purchaseRepository.save(purchaseEntity);
 
@@ -56,7 +54,7 @@ public class InBoundServiceImpl extends AbstractService<InBoundEntity, Long> imp
                 stockEntity.setQuantity(stockEntity.getQuantity() + purchaseEntity.getQuantity());
                 stockRepository.save(stockEntity);
             }
-        }
+        }*/
 
         //保存入库单
         InBoundEntity db = inBoundRepository.save(inBoundEntity);

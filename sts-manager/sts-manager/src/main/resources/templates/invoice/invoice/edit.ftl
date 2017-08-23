@@ -44,12 +44,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">发票分类:</td>
-                                    <td>
-                                    [@macro.selectEnum name="invoice.invoiceType" enumObj=invoiceForm.invoice.invoiceType!invoiceTypeList[0] dataList=invoiceTypeList /]
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">发票类型:</td>
                                     <td>
                                     [@macro.selectEnum name="invoice.invoiceCategory" enumObj=invoiceForm.invoice.invoiceCategory!invoiceCategoryList[0] dataList=invoiceCategoryList /]
@@ -86,9 +80,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">发票状态:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">抵扣日期:</td>
                                     <td>
-                                    [@macro.selectEnum name="invoice.invoiceStatus" enumObj=invoiceForm.invoice.invoiceStatus!invoiceStatusList[0] dataList=invoiceStatusList /]
+                                    [@macro.datePicker name="invoice.deductionDate" value=invoiceForm.invoice.deductionDate!"" placeholder="抵扣日期"/]
                                     </td>
                                 </tr>
                                 <tr>
@@ -127,10 +121,10 @@
         fileName = "${invoiceForm.document.name!''}";
     }
 
-    $("#input-quoteFileUrl").fileinput({
+    $("#input-invoiceUrl").fileinput({
         language: "zh",
         uploadUrl: "/document/upload",
-        uploadExtraData: {"group":"quote"},
+        uploadExtraData: {"group":"invoice"},
         autoReplace: true,
         uploadAsync: true,
         maxFileCount: 1,

@@ -17,7 +17,7 @@
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">编号:</td>
                                 <td>
-                                    ${invoiceForm.invoice.id?c}
+                                    ${invoice.id?c}
                                 </td>
                             </tr>
                             <tr>
@@ -33,15 +33,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">发票分类:</td>
-                                <td>
-                                    ${invoice.invoiceType.getName()}
-                                </td>
-                            </tr>
-                            <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">发票类型:</td>
                                 <td>
-                                    ${invoice.invoiceCatetory.getName()}
+                                    ${invoice.invoiceCategory.getName()}
                                 </td>
                             </tr>
                             <tr>
@@ -75,9 +69,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="width:100px;text-align: right;padding-top: 13px;">发票状态:</td>
+                                <td style="width:100px;text-align: right;padding-top: 13px;">抵扣日期:</td>
                                 <td>
-                                    ${invoice.invoiceStatus.getName()}
+                                [@macro.displayDate value=invoice.deductionDate!""/]
                                 </td>
                             </tr>
                             <tr>

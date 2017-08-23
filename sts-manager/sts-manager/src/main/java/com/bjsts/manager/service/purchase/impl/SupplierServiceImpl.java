@@ -1,5 +1,6 @@
 package com.bjsts.manager.service.purchase.impl;
 
+import com.bjsts.core.api.component.request.ApiPageRequestHelper;
 import com.bjsts.core.api.request.ApiRequest;
 import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author wangzhiliang
@@ -35,6 +37,12 @@ public class SupplierServiceImpl extends AbstractService<SupplierEntity, Long> i
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
         supplierSearchable.convertPageable(requestPage, pageable);
 
+        Page<SupplierEntity> supplierEntityPage = supplierRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(supplierEntityPage);
+    }
+
+    @Override
+    public ApiResponse<SupplierEntity> findAll(ApiRequest request, ApiRequestPage requestPage) {
         Page<SupplierEntity> supplierEntityPage = supplierRepository.findAll(convertSpecification(request), convertPageable(requestPage));
         return convertApiResponse(supplierEntityPage);
     }

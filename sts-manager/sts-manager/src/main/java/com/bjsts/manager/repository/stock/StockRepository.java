@@ -11,8 +11,8 @@ import javax.persistence.LockModeType;
  * @since 2016-04-27 14:53
  */
 public interface StockRepository extends IRepository<StockEntity, Long> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    StockEntity getByProductNameAndProductModel(String productName, String productModel);
+/*    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    StockEntity getByProductNameAndProductModel(String productName, String productModel);*/
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     StockEntity getById(Long stockId);

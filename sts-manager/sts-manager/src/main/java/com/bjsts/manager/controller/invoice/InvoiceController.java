@@ -13,10 +13,9 @@ import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.invoice.InvoiceEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.enums.invoice.InvoiceCategory;
-import com.bjsts.manager.enums.invoice.InvoiceStatus;
-import com.bjsts.manager.enums.invoice.InvoiceType;
 import com.bjsts.manager.form.invoice.InvoiceForm;
 import com.bjsts.manager.query.invoice.InvoiceSearchable;
+import com.bjsts.manager.query.invoice.InvoiceSum;
 import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.invoice.InvoiceService;
 import com.bjsts.manager.service.sale.ProductOrderService;
@@ -60,19 +59,14 @@ public class InvoiceController extends AbstractController {
     @Value("${file.external.url}")
     private String fileExternalUrl;
 
-    @ModelAttribute("invoiceTypeList")
-    public List<InvoiceType> getInvoiceTypeList() {
-        return InvoiceType.list();
-    }
-
     @ModelAttribute("invoiceCategoryList")
     public List<InvoiceCategory> getInvoiceCategoryList() {
         return InvoiceCategory.list();
     }
 
-    @ModelAttribute("invoiceStatusList")
-    public List<InvoiceStatus> getInvoiceStatusList() {
-        return InvoiceStatus.list();
+    @ModelAttribute("allInvoiceCategoryList")
+    public List<InvoiceCategory> getAllInvoiceCategoryList() {
+        return InvoiceCategory.listAll();
     }
 
     @RequiresPermissions("sts:invoice:list")
@@ -81,6 +75,14 @@ public class InvoiceController extends AbstractController {
         ApiResponse<InvoiceEntity> apiResponse = invoiceService.findAll(invoiceSearchable, pageable);
         Page<InvoiceEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
+
+        if (page.getTotalElements() > 0) {
+            InvoiceSum invoiceSum = invoiceService.sumAll(invoiceSearchable);
+            String successMessage = String.format("<b>开票总金额</b>: <b style='color:#ff0000'>%s</b>元",
+                    CoreMathUtils.formatMoney(invoiceSum.getAmount()));
+            modelMap.addAttribute(SUCCESS_MESSAGE_KEY, successMessage);
+        }
+
         return "invoice/invoice/list";
     }
 
@@ -152,7 +154,7 @@ public class InvoiceController extends AbstractController {
         invoiceForm.setAmount(Double.valueOf(invoiceEntity.getAmount()));
 
         Long documentId = invoiceEntity.getInvoiceUrl();
-        if (documentId != null) {
+        if (documentId != null && documentId != 0) {
             DocumentEntity documentEntity = documentService.get(documentId);
             invoiceForm.setDocument(documentEntity);
         }
@@ -174,7 +176,6 @@ public class InvoiceController extends AbstractController {
         InvoiceEntity invoiceEntity = invoiceService.get(invoice.getId());
         invoiceEntity.setPlanNo(invoice.getPlanNo());
         invoiceEntity.setPlanContent(invoice.getPlanContent());
-        invoiceEntity.setInvoiceType(invoice.getInvoiceType());
         invoiceEntity.setInvoiceCategory(invoice.getInvoiceCategory());
         invoiceEntity.setInvoiceNo(invoice.getInvoiceNo());
         invoiceEntity.setCustomer(invoice.getCustomer());
@@ -182,7 +183,7 @@ public class InvoiceController extends AbstractController {
         Double amount = CoreMathUtils.mul(invoiceForm.getAmount(), 100L);
         invoiceEntity.setAmount(amount.longValue());
         invoiceEntity.setContent(invoice.getContent());
-        invoiceEntity.setInvoiceStatus(invoice.getInvoiceStatus());
+        invoiceEntity.setDeductionDate(invoice.getDeductionDate());
 
         DocumentEntity documentEntity = invoiceForm.getDocument();
         if (StringUtils.isEmpty(documentEntity.getName())) {
@@ -202,7 +203,7 @@ public class InvoiceController extends AbstractController {
         modelMap.put("invoice", invoiceEntity);
 
         Long documentId = invoiceEntity.getInvoiceUrl();
-        if (documentId != null) {
+        if (documentId != null && documentId != 0) {
             DocumentEntity documentEntity = documentService.get(documentId);
             modelMap.addAttribute("document", documentEntity);
         }

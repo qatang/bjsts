@@ -114,6 +114,8 @@ public class ExpressController extends AbstractController {
         expressEntity.setAddress(express.getAddress());
         expressEntity.setCompany(express.getCompany());
         expressEntity.setDeliverDate(express.getDeliverDate());
+        expressEntity.setReceiveDate(express.getReceiveDate());
+        expressEntity.setExpressNo(express.getExpressNo());
         expressService.save(expressEntity);
         
         return "result";

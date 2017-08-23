@@ -16,8 +16,7 @@ public class QuoteForm extends AbstractForm {
 
     private DocumentEntity planDocument;
 
-    private DocumentEntity document;
-
+    private DocumentEntity document = new DocumentEntity();
 
     public PlanEntity getProductOrder() {
         return productOrder;

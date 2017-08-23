@@ -11,8 +11,9 @@ import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.user.AttendanceEntity;
 import com.bjsts.manager.entity.user.StaffEntity;
 import com.bjsts.manager.form.user.AttendanceForm;
-import com.bjsts.manager.query.user.AttendanceSearchable;
+import com.bjsts.manager.query.user.StaffSearchable;
 import com.bjsts.manager.service.user.AttendanceService;
+import com.bjsts.manager.service.user.DepartmentService;
 import com.bjsts.manager.service.user.StaffService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -43,22 +44,37 @@ public class AttendanceController extends AbstractController {
 
     @Autowired
     private AttendanceService attendanceService;
+
     @Autowired
     private StaffService staffService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     @RequiresPermissions("sts:attendance:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public String list(AttendanceSearchable attendanceSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
-        ApiResponse<AttendanceEntity> apiResponse = attendanceService.findAll(attendanceSearchable, pageable);
-        Page<AttendanceEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+    public String list(StaffSearchable staffSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
+        ApiResponse<StaffEntity> apiResponse = staffService.findAll(staffSearchable, pageable);
+
+        List<StaffEntity> staffEntities = Lists.newArrayList(apiResponse.getPagedData());
+        staffEntities.forEach(staffEntity -> staffEntity.setDepartmentName(departmentService.get(staffEntity.getDepartmentId()).getName()));
+
+        Page<StaffEntity> page = new PageImpl<>(staffEntities, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
+
         return "user/attendance/list";
     }
 
     @RequiresPermissions("sts:attendance:create")
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(@ModelAttribute AttendanceForm attendanceForm, ModelMap modelMap) {
-        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(@ModelAttribute AttendanceForm attendanceForm, ModelMap modelMap, BindingResult result, RedirectAttributes redirectAttributes) {
+        return "user/attendance/edit";
+    }
+
+    /*@RequiresPermissions("sts:attendance:create")
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
+    public String create(@PathVariable Long id, @ModelAttribute AttendanceForm attendanceForm, ModelMap modelMap, BindingResult result, RedirectAttributes redirectAttributes) {
+*//*        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
             modelMap.addAttribute(BindingResult.class.getName().concat(".attendanceForm"), modelMap.get(BINDING_RESULT_KEY));
         }
         if (Objects.isNull(attendanceForm.getAttendance())) {
@@ -73,10 +89,44 @@ public class AttendanceController extends AbstractController {
 
         List<StaffEntity> staffEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, staffService::findAll);
 
-        modelMap.put("action", "create");
-        modelMap.put("staffList", staffEntityList);
+        modelMap.put("staffList", staffEntityList);*//*
+        StaffEntity staffEntity = staffService.get(id);
+        if (staffEntity == null) {
+            result.addError(new ObjectError("staffId", "错误的请求"));
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_KEY, result.getAllErrors());
+            redirectAttributes.addFlashAttribute(attendanceForm);
+            return "redirect:/attendance/list";
+        }
+
+        Integer year = attendanceForm.getYear();
+        Integer month = attendanceForm.getMonth();
+        if (year == null || year == 0) {
+            year = LocalDate.now().getYear();
+        }
+        if (month == null || month == 0) {
+            month = LocalDate.now().getMonthValue();
+        }
+
+        LocalDateTime beginTime = LocalDateTime.of(year, Month.of(month), 1, 0, 0, 0);
+        LocalDateTime endTime = beginTime.plusMonths(1).minusDays(1);
+        Date beginDate = CoreDateUtils.parseDate(CoreDateUtils.formatLocalDateTime(beginTime, CoreDateUtils.DATETIME), CoreDateUtils.DATETIME);
+        Date endDate = CoreDateUtils.parseDate(CoreDateUtils.formatLocalDateTime(endTime, CoreDateUtils.DATETIME), CoreDateUtils.DATETIME);
+        AttendanceSearchable attendanceSearchable = new AttendanceSearchable();
+        attendanceSearchable.setBeginCreatedTime(beginDate);
+        attendanceSearchable.setEndCreatedTime(endDate);
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterBetween("startTime", beginDate, endDate);
+        apiRequest.filterEqual("staffId", id);
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance()
+                .paging(0, 100)
+                .addOrder("startTime", PageOrderType.ASC)
+                .addOrder("timeType", PageOrderType.ASC);
+        List<AttendanceEntity> attendanceEntities = ApiPageRequestHelper.request(apiRequest, apiRequestPage, attendanceService::findAll);
+        modelMap.put("staff", staffEntity);
+        modelMap.put("attendanceList", attendanceEntities);
         return "user/attendance/edit";
-    }
+    }*/
 
     @RequiresPermissions("sts:attendance:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -142,7 +192,7 @@ public class AttendanceController extends AbstractController {
         attendanceEntity.setRealName(staffEntity.getRealName());
         attendanceEntity.setDepartmentId(staffEntity.getDepartmentId());
         attendanceEntity.setStartTime(attendance.getStartTime());
-        attendanceEntity.setEndTime(attendance.getEndTime());
+        //attendanceEntity.setEndTime(attendance.getEndTime());
         attendanceService.update(attendanceEntity);
         return "result";
     }

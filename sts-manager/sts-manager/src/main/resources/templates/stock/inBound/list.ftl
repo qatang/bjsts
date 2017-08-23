@@ -58,7 +58,7 @@
                                                     <td class="center"><a onclick="diag('采购单查看', '${ctx}/purchase/view/${purchase.id}');">${purchase.purchaseNo}</a></td>
                                                     <td class="center">${purchase.productName!""}</td>
                                                     <td class="center">${purchase.productModel!""}</td>
-                                                    <td class="center">${purchase.quantity}</td>
+                                                    <td class="center">${purchase.quantity!""}</td>
                                                     <td class="center">${purchase.operator}</td>
                                                     <td class="center">
                                                         [#if purchase.inBound.getValue() != noStatus.getValue()]

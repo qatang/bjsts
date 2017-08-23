@@ -18,7 +18,7 @@ public class ContractForm extends AbstractForm {
 
     private Double qualityAmount;
 
-    private DocumentEntity document;
+    private DocumentEntity document = new DocumentEntity();
 
     public ContractEntity getContract() {
         return contract;

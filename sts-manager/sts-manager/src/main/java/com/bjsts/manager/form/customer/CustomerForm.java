@@ -2,6 +2,7 @@ package com.bjsts.manager.form.customer;
 
 import com.bjsts.manager.core.form.AbstractForm;
 import com.bjsts.manager.entity.customer.CustomerEntity;
+import com.bjsts.manager.entity.customer.CustomerItemEntity;
 
 /**
  * @author jinsheng
@@ -13,11 +14,21 @@ public class CustomerForm extends AbstractForm {
 
     private CustomerEntity customer;
 
+    private CustomerItemEntity customerItem;
+
     public CustomerEntity getCustomer() {
         return customer;
     }
 
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
+    }
+
+    public CustomerItemEntity getCustomerItem() {
+        return customerItem;
+    }
+
+    public void setCustomerItem(CustomerItemEntity customerItem) {
+        this.customerItem = customerItem;
     }
 }

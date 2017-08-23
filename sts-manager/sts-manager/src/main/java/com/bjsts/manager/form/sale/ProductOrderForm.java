@@ -14,7 +14,7 @@ public class ProductOrderForm extends AbstractForm {
 
     private PlanEntity productOrder;
 
-    private DocumentEntity document;
+    private DocumentEntity document = new DocumentEntity();
 
     public PlanEntity getProductOrder() {
         return productOrder;

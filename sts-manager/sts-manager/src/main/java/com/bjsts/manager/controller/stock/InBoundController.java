@@ -5,12 +5,13 @@ import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
-import com.bjsts.manager.entity.stock.InBoundEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
+import com.bjsts.manager.entity.stock.InBoundEntity;
 import com.bjsts.manager.form.stock.InBoundForm;
 import com.bjsts.manager.query.purchase.PurchaseSearchable;
-import com.bjsts.manager.service.stock.InBoundService;
+import com.bjsts.manager.service.purchase.PurchaseItemService;
 import com.bjsts.manager.service.purchase.PurchaseService;
+import com.bjsts.manager.service.stock.InBoundService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class InBoundController extends AbstractController {
 
     @Autowired
     private PurchaseService purchaseService;
+
+    @Autowired
+    private PurchaseItemService purchaseItemService;
 
     @ModelAttribute("yesNoStatusList")
     public List<YesNoStatus> getYesNoStatusList() {
@@ -76,6 +80,8 @@ public class InBoundController extends AbstractController {
         }
         inBoundEntity.setPurchase(purchaseEntity);
         inBoundForm.setInBound(inBoundEntity);
+
+
 
         modelMap.put("action", "create");
         return "stock/inBound/edit";

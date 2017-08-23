@@ -56,10 +56,10 @@
                                         [#if page?? && page.content?has_content]
                                             [#list page.content as normalPurchase]
                                                 <tr>
-                                                    <td class="center"><a onclick="diag('日常采购单查看', '${ctx}/normalPurchase/view/${normalPurchase.id}');">${normalPurchase.id}</a></td>
+                                                    <td class="center"><a onclick="diag('日常采购单查看', '${ctx}/normalPurchase/view/${normalPurchase.id}');">${normalPurchase.purchaseNo}</a></td>
                                                     <td class="center">${normalPurchase.name!""}</td>
                                                     <td class="center">${normalPurchase.buyer!""}</td>
-                                                    <td class="center">${normalPurchase.quantity}</td>
+                                                    <td class="center">${normalPurchase.quantity!""}</td>
                                                     <td class="center">[@macro.displayMoney value=normalPurchase.amount!""/]</td>
                                                     <td class="center">${normalPurchase.description}</td>
                                                     <td class="center">${normalPurchase.company}</td>

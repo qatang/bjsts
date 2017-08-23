@@ -1,19 +1,31 @@
 package com.bjsts.manager.controller.purchase;
 
+import com.bjsts.core.api.component.request.ApiPageRequestHelper;
+import com.bjsts.core.api.request.ApiRequest;
+import com.bjsts.core.api.request.ApiRequestPage;
 import com.bjsts.core.api.response.ApiResponse;
 import com.bjsts.core.enums.EnableDisableStatus;
+import com.bjsts.core.enums.PageOrderType;
 import com.bjsts.core.enums.YesNoStatus;
 import com.bjsts.core.util.CoreMathUtils;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.document.DocumentEntity;
 import com.bjsts.manager.entity.purchase.PurchaseEntity;
+import com.bjsts.manager.entity.purchase.PurchaseItemEntity;
+import com.bjsts.manager.entity.purchase.SupplierEntity;
+import com.bjsts.manager.entity.purchase.SupplierItemEntity;
 import com.bjsts.manager.enums.invoice.MakeOutInvoiceStatus;
 import com.bjsts.manager.form.purchase.PurchaseForm;
 import com.bjsts.manager.query.purchase.PurchaseSearchable;
 import com.bjsts.manager.service.document.DocumentService;
 import com.bjsts.manager.service.idgenerator.IdGeneratorService;
+import com.bjsts.manager.service.purchase.PurchaseItemService;
 import com.bjsts.manager.service.purchase.PurchaseService;
+import com.bjsts.manager.service.purchase.SupplierItemService;
+import com.bjsts.manager.service.purchase.SupplierService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -34,8 +46,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author jinsheng
- * @since 2016-04-26 16:56
+ * 物料采购
+ * @author wangzhiliang
  */
 @Controller
 @RequestMapping("/purchase")
@@ -46,10 +58,22 @@ public class PurchaseController extends AbstractController {
     private PurchaseService purchaseService;
 
     @Autowired
+    private PurchaseItemService purchaseItemService;
+
+    @Autowired
+    private SupplierService supplierService;
+
+    @Autowired
+    private SupplierItemService supplierItemService;
+
+    @Autowired
     private IdGeneratorService idGeneratorService;
 
     @Autowired
     private DocumentService documentService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${file.external.url}")
     private String fileExternalUrl;
@@ -63,7 +87,12 @@ public class PurchaseController extends AbstractController {
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list(PurchaseSearchable purchaseSearchable, @PageableDefault(size = GlobalConstants.DEFAULT_PAGE_SIZE, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable, ModelMap modelMap) {
         ApiResponse<PurchaseEntity> apiResponse = purchaseService.findAll(purchaseSearchable, pageable);
-        Page<PurchaseEntity> page = new PageImpl<>(Lists.newArrayList(apiResponse.getPagedData()), pageable, apiResponse.getTotal());
+        List<PurchaseEntity> purchaseEntities = Lists.newArrayList(apiResponse.getPagedData());
+        purchaseEntities.forEach(purchaseEntity -> {
+            SupplierEntity supplierEntity = supplierService.get(purchaseEntity.getSupplierId());
+            purchaseEntity.setSupplier(supplierEntity);
+        });
+        Page<PurchaseEntity> page = new PageImpl<>(purchaseEntities, pageable, apiResponse.getTotal());
         modelMap.addAttribute("page", page);
         return "purchase/purchase/list";
     }
@@ -77,7 +106,17 @@ public class PurchaseController extends AbstractController {
         if (Objects.isNull(purchaseForm.getPurchase())) {
             purchaseForm.setPurchase(new PurchaseEntity());
         }
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+
+        List<SupplierEntity> supplierEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, supplierService::findAll);
+
         modelMap.put("action", "create");
+        modelMap.put("supplierList", supplierEntityList);
         return "purchase/purchase/edit";
     }
 
@@ -89,6 +128,13 @@ public class PurchaseController extends AbstractController {
             return "redirect:/purchase/create";
         }
         PurchaseEntity purchaseEntity = purchaseForm.getPurchase();
+
+        Long supplierId = purchaseEntity.getSupplierId();
+        if (supplierId == null) {
+            logger.error("请选择供应商");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "请选择供应商!");
+            return "redirect:/purchase/create";
+        }
 
         purchaseEntity.setPurchaseNo(PurchaseEntity.SEQ_ID_PREFIX + idGeneratorService.generateDateFormatted(PurchaseEntity.SEQ_ID_GENERATOR));
 
@@ -136,7 +182,20 @@ public class PurchaseController extends AbstractController {
         }
 
         purchaseForm.setPurchase(purchaseEntity);
+
+        ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual("valid", EnableDisableStatus.ENABLE);
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 100)
+                .addOrder("id", PageOrderType.ASC);
+        List<SupplierEntity> supplierEntityList = ApiPageRequestHelper.request(apiRequest, apiRequestPage, supplierService::findAll);
+        List<SupplierItemEntity> supplierItemEntities = supplierItemService.findBySupplierId(purchaseEntity.getSupplierId());
+
+        List<PurchaseItemEntity> purchaseItemEntities = purchaseItemService.findByPurchaseId(purchaseEntity.getId());
+        purchaseForm.setPurchaseItemList(purchaseItemEntities);
+
         modelMap.put("action", "update");
+        modelMap.put("supplierList", supplierEntityList);
+        modelMap.put("supplierItemList", supplierItemEntities);
         return "purchase/purchase/edit";
     }
 
@@ -147,16 +206,20 @@ public class PurchaseController extends AbstractController {
             redirectAttributes.addFlashAttribute(purchaseForm);
             return "redirect:/purchase/update/" + purchaseForm.getPurchase().getId();
         }
+
         PurchaseEntity purchase = purchaseForm.getPurchase();
+
+        Long supplierId = purchase.getSupplierId();
+        if (supplierId == null) {
+            logger.error("请选择供应商");
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "请选择供应商!");
+            return "redirect:/purchase/update/" + purchaseForm.getPurchase().getId();
+        }
+
         PurchaseEntity purchaseEntity = purchaseService.get(purchase.getId());
         if (purchaseEntity.getInBound() == YesNoStatus.NO) {
-            purchaseEntity.setProductName(purchase.getProductName());
-            purchaseEntity.setProductModel(purchase.getProductModel());
-            purchaseEntity.setQuantity(purchase.getQuantity());
             purchaseEntity.setOperator(purchase.getOperator());
-            purchaseEntity.setSupplier(purchase.getSupplier());
-            purchaseEntity.setSupplierLinkman(purchase.getSupplierLinkman());
-            purchaseEntity.setSupplierMobile(purchase.getSupplierMobile());
+            purchaseEntity.setSupplierId(purchase.getSupplierId());
         }
         purchaseEntity.setPurchaseTime(purchase.getPurchaseTime());
         Double totalAmount = CoreMathUtils.mul(purchaseForm.getTotalAmount(), 100L);
@@ -166,6 +229,19 @@ public class PurchaseController extends AbstractController {
         Double unPayedAmount = CoreMathUtils.mul(purchaseForm.getUnPayedAmount(), 100L);
         purchaseEntity.setUnPayedAmount(unPayedAmount.longValue());
         purchaseEntity.setMakeOutInvoiceStatus(purchase.getMakeOutInvoiceStatus());
+
+        purchaseEntity.setProposer(purchase.getProposer());
+        purchaseEntity.setOperator(purchase.getOperator());
+
+        List<PurchaseItemEntity> purchaseItemList = purchaseForm.getPurchaseItemList();
+        List<PurchaseItemEntity> purchaseItemEntities = Lists.newArrayList();
+
+        purchaseItemList.forEach(purchaseItemEntity -> {
+            if (purchaseItemEntity.getSupplierItemId() != null && purchaseItemEntity.getSupplierItemId() > 0) {
+                purchaseItemEntities.add(purchaseItemEntity);
+            }
+        });
+        purchaseEntity.setPurchaseItemEntityList(purchaseItemEntities);
 
         DocumentEntity document = purchaseForm.getDocument();
         if (StringUtils.isEmpty(document.getName())) {
@@ -209,5 +285,71 @@ public class PurchaseController extends AbstractController {
         purchaseEntity.setValid(EnableDisableStatus.DISABLE);
         purchaseService.update(purchaseEntity);
         return "redirect:/purchase/list";
+    }
+
+    @RequiresPermissions("sts:purchase:createItem")
+    @RequestMapping(value = "/createItem/{purchaseId}", method = RequestMethod.GET)
+    public String createItem(@PathVariable Long purchaseId, @ModelAttribute PurchaseForm purchaseForm, ModelMap modelMap) {
+        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
+            modelMap.addAttribute(BindingResult.class.getName().concat(".purchaseForm"), modelMap.get(BINDING_RESULT_KEY));
+        }
+        if (Objects.isNull(purchaseForm.getPurchaseItem())) {
+            purchaseForm.setPurchaseItem(new PurchaseItemEntity());
+        }
+
+        PurchaseEntity purchaseEntity = purchaseService.get(purchaseId);
+
+        List<SupplierItemEntity> supplierItemEntities = supplierItemService.findBySupplierId(purchaseEntity.getSupplierId());
+
+        modelMap.put("supplierItemList", supplierItemEntities);
+        return "purchase/purchase/editItem";
+    }
+
+    @RequiresPermissions("sts:purchase:createItem")
+    @RequestMapping(value = "/createItem", method = RequestMethod.POST)
+    public String createItem(PurchaseForm purchaseForm, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(purchaseForm);
+            return "redirect:/purchase/createItem/" + purchaseForm.getPurchase().getId();
+        }
+        PurchaseItemEntity purchaseItemEntity = purchaseForm.getPurchaseItem();
+        purchaseItemEntity.setPurchaseId(purchaseForm.getPurchase().getId());
+
+        purchaseItemService.save(purchaseItemEntity);
+        return "redirect:/supplier/createItem/" + purchaseForm.getPurchase().getId();
+    }
+
+    @RequiresPermissions("sts:purchase:disableItem")
+    @RequestMapping(value = "/disable/item/{id}", method = RequestMethod.GET)
+    public String disableItem(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        PurchaseItemEntity purchaseItemEntity = purchaseItemService.get(id);
+        if (Objects.isNull(purchaseItemEntity)) {
+            logger.error("删除产品信息,未查询[id={}]的产品信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询到编号为["+id+"]的产品信息!");
+            return "redirect:/error";
+        }
+        supplierItemService.delete(id);
+        return "redirect:/purchase/createItem/" + purchaseItemEntity.getPurchaseId();
+    }
+
+    @RequiresPermissions("sts:purchase:selectSupplierItem")
+    @RequestMapping(value = "/selectSupplierItem/{supplierId}", method = RequestMethod.GET)
+    @ResponseBody
+    public String selectSupplierItem(@PathVariable Long supplierId, ModelMap modelMap) throws JsonProcessingException {
+        List<SupplierItemEntity> supplierItemEntities = supplierItemService.findBySupplierId(supplierId);
+        return objectMapper.writeValueAsString(supplierItemEntities);
+    }
+
+    @RequiresPermissions("sts:purchase:view")
+    @RequestMapping(value = "/viewDetail/{id}", method = RequestMethod.GET)
+    public String viewDetail(@PathVariable Long id, ModelMap modelMap) {
+        List<PurchaseItemEntity> purchaseItemEntities = purchaseItemService.findByPurchaseId(id);
+
+        purchaseItemEntities.forEach(purchaseItemEntity -> {
+            SupplierItemEntity supplierItemEntity = supplierItemService.get(purchaseItemEntity.getSupplierItemId());
+            purchaseItemEntity.setSupplierItem(supplierItemEntity);
+        });
+        modelMap.put("purchaseItemList", purchaseItemEntities);
+        return "purchase/purchase/viewDetail";
     }
 }

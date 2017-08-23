@@ -33,27 +33,51 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">单位名称:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">客户名称:</td>
                                     <td>
-                                        [@macro.inputText name="customer.companyName" value=customerForm.companyName!'' placeholder="单位名称" required=false/]
+                                    [@macro.inputText name="customer.companyName" value=customerForm.customer.companyName!'' placeholder="客户名称" required=false/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">联系人:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">所有者:</td>
                                     <td>
-                                        [@macro.inputText name="customer.linkman" value=customerForm.customer.linkman!'' placeholder="联系人"/]
+                                        [@macro.inputText name="customer.owner" value=customerForm.customer.owner!'' placeholder="所有者" required=false/]
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width:100px;text-align: right;padding-top: 13px;">联系方式:</td>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">公司电话:</td>
                                     <td>
-                                        [@macro.inputText name="customer.contract" value=customerForm.customer.contract!'' placeholder="联系方式"/]
+                                        [@macro.inputText name="customer.tel" value=customerForm.customer.tel!'' placeholder="公司电话" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">公司网址:</td>
+                                    <td>
+                                        [@macro.inputText name="customer.url" value=customerForm.customer.url!'' placeholder="公司网址" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">公司传真:</td>
+                                    <td>
+                                    [@macro.inputText name="customer.fax" value=customerForm.customer.fax!'' placeholder="公司传真" required=false/]
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="width:100px;text-align: right;padding-top: 13px;">单位地址:</td>
                                     <td>
                                         [@macro.inputText name="customer.address" value=customerForm.customer.address!'' placeholder="单位地址" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">邮编:</td>
+                                    <td>
+                                    [@macro.inputText name="customer.postcode" value=customerForm.customer.postcode!'' placeholder="邮编" required=false/]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100px;text-align: right;padding-top: 13px;">备注:</td>
+                                    <td>
+                                    [@macro.inputText name="customer.memo" value=customerForm.customer.memo!'' placeholder="备注" required=false/]
                                     </td>
                                 </tr>
                                 <tr>

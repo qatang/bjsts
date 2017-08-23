@@ -5,8 +5,10 @@ import com.bjsts.core.enums.EnableDisableStatus;
 import com.bjsts.manager.core.constants.GlobalConstants;
 import com.bjsts.manager.core.controller.AbstractController;
 import com.bjsts.manager.entity.purchase.SupplierEntity;
+import com.bjsts.manager.entity.purchase.SupplierItemEntity;
 import com.bjsts.manager.form.purchase.SupplierForm;
 import com.bjsts.manager.query.purchase.SupplierSearchable;
+import com.bjsts.manager.service.purchase.SupplierItemService;
 import com.bjsts.manager.service.purchase.SupplierService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,6 +38,9 @@ public class SupplierController extends AbstractController {
 
     @Autowired
     private SupplierService supplierService;
+
+    @Autowired
+    private SupplierItemService supplierItemService;
 
     @RequiresPermissions("sts:supplier:list")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
@@ -101,7 +107,9 @@ public class SupplierController extends AbstractController {
         supplierEntity.setCompany(supplier.getCompany());
         supplierEntity.setLinkman(supplier.getLinkman());
         supplierEntity.setContact(supplier.getContact());
-        supplierEntity.setProduct(supplier.getProduct());
+        supplierEntity.setAddress(supplier.getAddress());
+        supplierEntity.setBankName(supplier.getBankName());
+        supplierEntity.setBankAccount(supplier.getBankAccount());
         supplierService.save(supplierEntity);
         
         return "result";
@@ -128,5 +136,51 @@ public class SupplierController extends AbstractController {
         supplierEntity.setValid(EnableDisableStatus.DISABLE);
         supplierService.update(supplierEntity);
         return "redirect:/supplier/list";
+    }
+
+    @RequiresPermissions("sts:supplier:createItem")
+    @RequestMapping(value = "/createItem/{supplierId}", method = RequestMethod.GET)
+    public String createItem(@PathVariable Long supplierId, @ModelAttribute SupplierForm supplierForm, ModelMap modelMap) {
+        if (modelMap.containsKey(BINDING_RESULT_KEY)) {
+            modelMap.addAttribute(BindingResult.class.getName().concat(".supplierForm"), modelMap.get(BINDING_RESULT_KEY));
+        }
+        if (Objects.isNull(supplierForm.getSupplierItem())) {
+            supplierForm.setSupplierItem(new SupplierItemEntity());
+        }
+
+        SupplierEntity supplierEntity = supplierService.get(supplierId);
+
+        List<SupplierItemEntity> supplierItemEntities = supplierItemService.findBySupplierId(supplierId);
+
+        modelMap.put("supplierItemList", supplierItemEntities);
+        modelMap.put("supplier", supplierEntity);
+        return "purchase/supplier/editItem";
+    }
+
+    @RequiresPermissions("sts:supplier:createItem")
+    @RequestMapping(value = "/createItem", method = RequestMethod.POST)
+    public String createItem(SupplierForm supplierForm, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute(supplierForm);
+            return "redirect:/supplier/createItem/" + supplierForm.getSupplier().getId();
+        }
+        SupplierItemEntity supplierItemEntity = supplierForm.getSupplierItem();
+        supplierItemEntity.setSupplierId(supplierForm.getSupplier().getId());
+
+        supplierItemService.save(supplierItemEntity);
+        return "redirect:/supplier/createItem/" + supplierForm.getSupplier().getId();
+    }
+
+    @RequiresPermissions("sts:supplier:disableItem")
+    @RequestMapping(value = "/disable/item/{id}", method = RequestMethod.GET)
+    public String disableItem(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        SupplierItemEntity supplierItemEntity = supplierItemService.get(id);
+        if (Objects.isNull(supplierItemEntity)) {
+            logger.error("删除产品信息,未查询[id={}]的产品信息", id);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE_KEY, "未查询到编号为["+id+"]的产品信息!");
+            return "redirect:/error";
+        }
+        supplierItemService.delete(id);
+        return "redirect:/supplier/createItem/" + supplierItemEntity.getSupplierId();
     }
 }

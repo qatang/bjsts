@@ -1,12 +1,16 @@
 package com.bjsts.manager.service.sale.impl;
 
 import com.bjsts.manager.core.service.AbstractService;
+import com.bjsts.manager.entity.invoice.SaleInvoiceEntity;
 import com.bjsts.manager.entity.sale.ContractEntity;
 import com.bjsts.manager.entity.sale.PlanEntity;
 import com.bjsts.manager.entity.sale.PlanTraceEntity;
 import com.bjsts.manager.entity.system.UserEntity;
+import com.bjsts.manager.enums.invoice.InvoiceCategory;
+import com.bjsts.manager.enums.invoice.InvoiceStatus;
 import com.bjsts.manager.enums.sale.ContractStatus;
 import com.bjsts.manager.enums.sale.PlanStatus;
+import com.bjsts.manager.repository.invoice.SaleInvoiceRepository;
 import com.bjsts.manager.repository.sale.ContractRepository;
 import com.bjsts.manager.repository.sale.ProductOrderRepository;
 import com.bjsts.manager.repository.sale.SaleItemRepository;
@@ -36,6 +40,9 @@ public class SaleItemServiceImpl extends AbstractService<PlanTraceEntity, Long> 
     private ContractRepository contractRepository;
 
     @Autowired
+    private SaleInvoiceRepository saleInvoiceRepository;
+
+    @Autowired
     private IdGeneratorService idGeneratorService;
 
     @Override
@@ -51,6 +58,7 @@ public class SaleItemServiceImpl extends AbstractService<PlanTraceEntity, Long> 
         productOrderRepository.save(db);
 
         if (planEntity.getPlanStatus() == PlanStatus.COMPLETE) {
+            //创建合同
             ContractEntity contractEntity = new ContractEntity();
             contractEntity.setPlanNo(db.getPlanNo());
             contractEntity.setPlanName(db.getName());
@@ -59,6 +67,14 @@ public class SaleItemServiceImpl extends AbstractService<PlanTraceEntity, Long> 
             contractEntity.setCompany(db.getCompany());
             contractEntity.setLinkman(db.getLinkman());
             contractRepository.save(contractEntity);
+
+            //创建销售发票
+            SaleInvoiceEntity saleInvoiceEntity = new SaleInvoiceEntity();
+            saleInvoiceEntity.setPlanNo(db.getPlanNo());
+            saleInvoiceEntity.setInvoiceCategory(InvoiceCategory.BT);
+            saleInvoiceEntity.setInvoiceStatus(InvoiceStatus.ZC);
+            saleInvoiceEntity.setInvoiceNo("0");
+            saleInvoiceRepository.save(saleInvoiceEntity);
         }
 
         planTraceEntity.setPlanNo(db.getPlanNo());

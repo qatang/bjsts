@@ -22,15 +22,15 @@
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">名称:</td>
-                                <td>${normalPurchase.name}</td>
+                                <td>${normalPurchase.name!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">购买人:</td>
-                                <td>${normalPurchase.buyer}</td>
+                                <td>${normalPurchase.buyer!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">数量:</td>
-                                <td>${normalPurchase.quantity}</td>
+                                <td>${normalPurchase.quantity!""}</td>
                             </tr>
                             <tr>
                                 <td style="width:100px;text-align: right;padding-top: 13px;">金额:</td>

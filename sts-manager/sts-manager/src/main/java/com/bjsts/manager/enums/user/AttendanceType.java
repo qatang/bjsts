@@ -1,4 +1,4 @@
-package com.bjsts.manager.enums.invoice;
+package com.bjsts.manager.enums.user;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -11,33 +11,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 发票分类
  * @author wangzhiliang
  */
-public enum InvoiceType {
+public enum AttendanceType {
     ALL(-1, "全部"),
-    PURCHASE(1, "采购发票"),
-    SALE(2, "销售发票"),
+    NORMAL(1, "正常"),
+    LEAVE(2, "请假"),
     ;
 
-    private static Logger logger = LoggerFactory.getLogger(InvoiceType.class);
+    private static Logger logger = LoggerFactory.getLogger(AttendanceType.class);
 
     private static final Object _LOCK = new Object();
 
-    private static Map<Integer, InvoiceType> _MAP;
-    private static List<InvoiceType> _LIST;
-    private static List<InvoiceType> _ALL_LIST;
+    private static Map<Integer, AttendanceType> _MAP;
+    private static List<AttendanceType> _LIST;
+    private static List<AttendanceType> _ALL_LIST;
 
     static {
         synchronized (_LOCK) {
-            Map<Integer, InvoiceType> map = new HashMap<>();
-            List<InvoiceType> list = new ArrayList<>();
-            List<InvoiceType> listAll = new ArrayList<>();
-            for (InvoiceType invoiceType : InvoiceType.values()) {
-                map.put(invoiceType.getValue(), invoiceType);
-                listAll.add(invoiceType);
-                if (!invoiceType.equals(ALL)) {
-                    list.add(invoiceType);
+            Map<Integer, AttendanceType> map = new HashMap<>();
+            List<AttendanceType> list = new ArrayList<>();
+            List<AttendanceType> listAll = new ArrayList<>();
+            for (AttendanceType attendanceType : AttendanceType.values()) {
+                map.put(attendanceType.getValue(), attendanceType);
+                listAll.add(attendanceType);
+                if (!attendanceType.equals(ALL)) {
+                    list.add(attendanceType);
                 }
             }
 
@@ -50,7 +49,7 @@ public enum InvoiceType {
     private int value;
     private String name;
 
-    InvoiceType(int value, String name){
+    AttendanceType(int value, String name){
         this.value = value;
         this.name = name;
     }
@@ -63,7 +62,7 @@ public enum InvoiceType {
         return value;
     }
 
-    public static InvoiceType get(int value){
+    public static AttendanceType get(int value){
         try{
             return _MAP.get(value);
         }catch(Exception e){
@@ -72,11 +71,11 @@ public enum InvoiceType {
         }
     }
 
-    public static List<InvoiceType> list() {
+    public static List<AttendanceType> list() {
         return _LIST;
     }
 
-    public static List<InvoiceType> listAll() {
+    public static List<AttendanceType> listAll() {
         return _ALL_LIST;
     }
 }
